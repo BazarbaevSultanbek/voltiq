@@ -10,6 +10,8 @@ import { getSettings } from "./settings";
 import { ALLOWED_BRANDS, detectBrand, luhn, validExpiry } from "./cards";
 import { stripe, stripeEnabled } from "./stripe";
 import { notifyUser, notifyOwner, emailCustomer } from "./notify";
+import { after } from "next/server";
+import { cjEnabled, cjSendOrder, cjAutoOrderOn } from "./cj";
 
 export const AddressInput = z.object({
   fullName: z.string().trim().min(2).max(80),
@@ -35,7 +37,7 @@ export class CheckoutError extends Error {
   constructor(public code: string, public status = 400) { super(code); }
 }
 
-const newNumber = () => "VQ-" + crypto.randomBytes(4).toString("base64url").replace(/[-_]/g, "X").toUpperCase().slice(0, 6);
+const newNumber = () => "KP-" + crypto.randomBytes(4).toString("base64url").replace(/[-_]/g, "X").toUpperCase().slice(0, 6);
 
 async function priceCart(items: z.infer<typeof CheckoutInput>["items"]) {
   const ids = [...new Set(items.map((i) => i.id))];
@@ -49,6 +51,7 @@ async function priceCart(items: z.infer<typeof CheckoutInput>["items"]) {
     return {
       product: p._id, slug: p.slug, title: p.title, image: p.images[colorIdx] || p.images[0],
       price: p.price, qty: i.qty, color: i.color || p.colors[0]?.name || "",
+      vid: (p.variants?.find((v) => v.name === i.color) ?? p.variants?.[0])?.vid,
     };
   });
   const subtotal = Math.round(lines.reduce((s, l) => s + l.price * l.qty, 0) * 100) / 100;
@@ -93,7 +96,7 @@ export async function createOrder(userId: string, input: z.infer<typeof Checkout
     const order = await Order.create({ ...base, payment: { provider: "stripe", brand, last4: pm.card?.last4 } });
     const pi = await s.paymentIntents.create({
       amount: Math.round(total * 100), currency: "usd", payment_method: pm.id, automatic_payment_methods: { enabled: true, allow_redirects: "never" },
-      confirm: true, receipt_email: user.email, description: `VOLTIQ order ${order.number}`,
+      confirm: true, receipt_email: user.email, description: `KAUP order ${order.number}`,
       metadata: { orderId: String(order._id), number: order.number },
     }).catch(async (e) => {
       order.status = "cancelled"; order.timeline.push({ status: "cancelled", at: new Date(), note: "Payment declined" });
@@ -151,6 +154,17 @@ export async function finalize(orderId: string) {
       emailCustomer(order.email!, `Order ${order.number} confirmed`,
         `<h2>Thanks for your order!</h2><p>Order <b>${order.number}</b> is accepted. Total: $${order.total!.toFixed(2)}.</p><p>Estimated delivery: ${eta}.</p>`),
     ]);
+    // Auto-forward to CJ Dropshipping after the response is sent
+    if (cjEnabled()) {
+      const id = String(order._id);
+      after(async () => {
+        try {
+          if (!(await cjAutoOrderOn())) return;
+          const sent = await cjSendOrder(id);
+          await notifyOwner(sent.supplier?.orderId ? `📦 ${sent.number} sent to CJ (${sent.supplier.logisticName})` : `⚠️ ${sent.number} NOT sent to CJ: ${sent.supplier?.error}`);
+        } catch (e) { console.error("[cj] auto-order failed", e); }
+      });
+    }
   }
   return { order: order.toObject() };
 }

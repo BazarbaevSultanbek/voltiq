@@ -1,6 +1,6 @@
 {
   "meta": {
-    "title": "VOLTIQ — Phone & PC Accessories, Factory-Direct Prices",
+    "title": "KAUP — Phone & PC Accessories, Factory-Direct Prices",
     "description": "Shop chargers, cables, power banks, earbuds, keyboards, mice, hubs, SSDs and more. Sourced directly from top factories, shipped worldwide with tracked delivery.",
     "searchTitle": "Search phone & PC accessories",
     "cartTitle": "Your cart",
@@ -24,7 +24,9 @@
     "noNotifications": "You're all caught up.",
     "markAllRead": "Mark all as read",
     "deliverTo": "Deliver to",
-    "language": "Language"
+    "language": "Language",
+    "dark": "Dark mode",
+    "light": "Light mode"
   },
   "promo": {
     "bar": "Free standard shipping on orders over {amount} · Secure card payments · 30-day returns"
@@ -231,7 +233,9 @@
       "shipped": "Shipped",
       "delivered": "Delivered",
       "cancelled": "Cancelled"
-    }
+    },
+    "tracking": "Tracking number",
+    "track": "Track package"
   },
   "profile": {
     "title": "Profile",
@@ -274,7 +278,7 @@
     "password": "Password",
     "signIn": "Sign in",
     "signUp": "Create account",
-    "noAccount": "New to VOLTIQ?",
+    "noAccount": "New to KAUP?",
     "haveAccount": "Already have an account?",
     "switchUp": "Create an account",
     "switchIn": "Sign in",
@@ -311,12 +315,12 @@
   },
   "pages": {
     "about": {
-      "title": "About VOLTIQ",
-      "body": "VOLTIQ connects you with the same factories that build accessories for big-name brands. We hand-pick phone and PC accessories, check supplier quality and ratings, and ship them to you with tracked delivery. Our prices are honest: factory cost, shipping, and a fair margin, nothing hidden."
+      "title": "About KAUP",
+      "body": "KAUP connects you with the same factories that build accessories for big-name brands. We hand-pick phone and PC accessories, check supplier quality and ratings, and ship them to you with tracked delivery. Our prices are honest: factory cost, shipping, and a fair margin, nothing hidden."
     },
     "contact": {
       "title": "Contact us",
-      "body": "Questions about an order, a product or a return? Write to us and we'll reply within 24 hours on business days. Include your order number (for example VQ-AB12CD) so we can help faster."
+      "body": "Questions about an order, a product or a return? Write to us and we'll reply within 24 hours on business days. Include your order number (for example KP-AB12CD) so we can help faster."
     },
     "faq": {
       "title": "Frequently asked questions",
@@ -345,13 +349,13 @@
     },
     "terms": {
       "title": "Terms of service",
-      "body": "By using VOLTIQ you agree to provide accurate information and to use the store lawfully. Prices are in US dollars and may change. An order is accepted once payment is confirmed. Delivery dates are estimates. Our liability is limited to the amount you paid for the product."
+      "body": "By using KAUP you agree to provide accurate information and to use the store lawfully. Prices are in US dollars and may change. An order is accepted once payment is confirmed. Delivery dates are estimates. Our liability is limited to the amount you paid for the product."
     }
   },
   "notif": {
     "orderPlaced": "Order {number} accepted! Estimated delivery {eta}.",
     "orderStatus": "Order {number} is now: {status}.",
-    "welcome": "Welcome to VOLTIQ, {name}! Happy shopping."
+    "welcome": "Welcome to KAUP, {name}! Happy shopping."
   },
   "common": {
     "loading": "Loading…",

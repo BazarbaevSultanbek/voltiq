@@ -11,12 +11,15 @@ import { getSettings } from "@/lib/settings";
 import { CATEGORIES } from "@/lib/catalog";
 import { countryName } from "@/lib/shipping";
 import { aliEnabled } from "@/lib/aliexpress";
+import { cjEnabled } from "@/lib/cj";
+import { Settings } from "@/models/Settings";
 import { stripeEnabled } from "@/lib/stripe";
 import { providerFlags } from "@/auth";
 import en from "@/i18n/messages/en.json";
 import { AdminLogin } from "@/components/admin/AdminLogin";
-import { LogoutButton, StatusSelect, OrderDetails, ProductToggle, ProductCost, SettingsForm, ImportForm, AddProductForm } from "@/components/admin/AdminBits";
+import { LogoutButton, StatusSelect, OrderDetails, ProductToggle, ProductCost, SettingsForm, ImportForm, AddProductForm, SupplierPanel, SyncAllButton } from "@/components/admin/AdminBits";
 import { Logo } from "@/components/Logo";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 const TABS = [
   ["overview", "Overview", LayoutDashboard], ["orders", "Orders", Package], ["users", "Users", Users],
@@ -36,19 +39,20 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
 
   return (
     <div className="flex min-h-screen">
-      <aside className="sticky top-0 hidden h-screen w-60 shrink-0 flex-col bg-ink p-4 text-white md:flex">
+      <aside className="sticky top-0 hidden h-screen w-60 shrink-0 flex-col bg-night p-4 text-white md:flex">
         <div className="px-2 py-3"><Logo dark /></div>
         <nav className="mt-6 flex-1 space-y-1">
           {TABS.map(([id, label, Icon]) => (
             <Link key={id} href={`/admin?tab=${id}`} className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-bold transition ${tab === id ? "bg-volt text-white" : "text-white/60 hover:bg-white/10 hover:text-white"}`}><Icon size={18} />{label}</Link>
           ))}
         </nav>
+        <ThemeToggle className="mb-2 text-white hover:bg-white/10" />
         <Link href="/" className="mb-1 rounded-xl px-3 py-2 text-sm font-bold text-white/60 hover:bg-white/10 hover:text-white">↗ View store</Link>
         <LogoutButton />
       </aside>
       <main className="min-w-0 flex-1 p-4 sm:p-8">
         <div className="no-scrollbar mb-6 flex gap-2 overflow-x-auto md:hidden">
-          {TABS.map(([id, label]) => <Link key={id} href={`/admin?tab=${id}`} className={`shrink-0 rounded-full px-4 py-2 text-sm font-bold ${tab === id ? "bg-ink text-white" : "bg-white"}`}>{label}</Link>)}
+          {TABS.map(([id, label]) => <Link key={id} href={`/admin?tab=${id}`} className={`shrink-0 rounded-full px-4 py-2 text-sm font-bold ${tab === id ? "bg-ink text-white" : "bg-surface"}`}>{label}</Link>)}
         </div>
         {tab === "overview" && <Overview />}
         {tab === "orders" && <Orders />}
@@ -65,7 +69,7 @@ function H({ children, sub }: { children: React.ReactNode; sub?: string }) {
   return <div className="mb-6"><h1 className="font-display text-3xl font-black">{children}</h1>{sub && <p className="mt-1 text-sm text-muted">{sub}</p>}</div>;
 }
 function Card({ children, className = "" }: { children: React.ReactNode; className?: string }) {
-  return <div className={`rounded-3xl bg-white p-5 ring-1 ring-line ${className}`}>{children}</div>;
+  return <div className={`rounded-3xl bg-surface p-5 ring-1 ring-line ${className}`}>{children}</div>;
 }
 
 async function Overview() {
@@ -134,10 +138,12 @@ async function Overview() {
 async function Orders() {
   const orders = await Order.find({}).sort({ createdAt: -1 }).limit(200).lean();
   const ids = [...new Set(orders.flatMap((o) => o.items.map((i) => String(i.product))))];
-  const src = new Map((await Product.find({ _id: { $in: ids } }).select("sourceUrl").lean()).map((p) => [String(p._id), p.sourceUrl]));
+  const plist = await Product.find({ _id: { $in: ids } }).select("sourceUrl source").lean();
+  const src = new Map(plist.map((p) => [String(p._id), p.sourceUrl]));
+  const isCj = new Map(plist.map((p) => [String(p._id), p.source === "cj"]));
   return (
     <>
-      <H sub="Every order is stored as a full object in MongoDB (collection: orders). Changing a status notifies the customer.">Orders ({orders.length})</H>
+      <div className="flex flex-wrap items-start justify-between gap-3"><H sub="Every order is stored as a full object in MongoDB (collection: orders). Changing a status notifies the customer.">Orders ({orders.length})</H>{cjEnabled() && <SyncAllButton />}</div>
       <div className="space-y-3">
         {orders.length === 0 && <Card><p className="text-sm text-muted">No orders yet.</p></Card>}
         {orders.map((o) => (
@@ -148,16 +154,17 @@ async function Orders() {
               {o.payment?.provider === "test" && <span className="rounded-full bg-lime px-2 py-0.5 text-[10px] font-black">TEST PAYMENT</span>}
               <span className="text-sm text-muted">{d(o.createdAt)}</span>
               <span className="ml-auto font-display text-xl font-black">{$(o.total!)}</span>
-              <StatusSelect id={String(o._id)} status={o.status} />
+              <StatusSelect key={o.status} id={String(o._id)} status={o.status} />
             </div>
             <div className="mt-3 grid gap-3 text-sm md:grid-cols-3">
               <div><p className="label">Customer</p><p className="font-bold">{o.address?.fullName}</p><p className="text-muted">{o.email}<br />{o.address?.phone}</p></div>
-              <div><p className="label">Deliver to</p><p className="text-muted">{o.address?.line1}{o.address?.line2 ? `, ${o.address.line2}` : ""}<br />{o.address?.city}{o.address?.region ? `, ${o.address.region}` : ""} {o.address?.postal}<br /><b className="text-ink">{countryName(o.address?.country)}</b></p></div>
+              <div><p className="label">Deliver to</p><p className="text-muted">{o.address?.line1}{o.address?.line2 ? `, ${o.address.line2}` : ""}<br />{o.address?.city}{o.address?.region ? `, ${o.address.region}` : ""} {o.address?.postal}<br /><b className="text-fg">{countryName(o.address?.country)}</b></p></div>
               <div><p className="label">Shipping & payment</p><p className="text-muted">{o.shippingMethod?.id} · {$(o.shipping!)} · ETA {o.eta?.from ? new Date(o.eta.from).toLocaleDateString("en-GB") : ""}–{o.eta?.to ? new Date(o.eta.to).toLocaleDateString("en-GB") : ""}<br />{o.payment?.brand?.toUpperCase()} •••• {o.payment?.last4}</p></div>
             </div>
             <ul className="mt-3 flex flex-wrap gap-2">
               {o.items.map((i, k) => <li key={k} className="flex items-center gap-2 rounded-xl bg-cream py-1 pl-1 pr-3 text-xs"><img src={i.image!} alt="" className="h-8 w-8 rounded-lg" /><b>{i.qty}×</b> {i.title} <span className="capitalize text-muted">({i.color})</span></li>)}
             </ul>
+            {o.status !== "pending_payment" && <div className="mt-3"><SupplierPanel total={o.total!} id={String(o._id)} supplier={o.supplier ? JSON.parse(JSON.stringify(o.supplier)) : null} eligible={cjEnabled() && o.items.every((i) => isCj.get(String(i.product)))} /></div>}
             <div className="mt-3"><OrderDetails json={JSON.stringify(o, null, 2)} supplierLinks={o.items.map((i) => ({ title: i.title!, url: src.get(String(i.product)) ?? undefined }))} /></div>
           </Card>
         ))}
@@ -232,7 +239,7 @@ async function Interests() {
             <p className="mb-4 font-display font-bold">Interest by category</p>
             <div className="space-y-2">{catAgg.map((c) => { const s = c.views + c.carts * 2 + c.sold * 5 + c.hits; return (
               <div key={c._id} className="text-sm"><div className="flex justify-between"><span className="font-semibold">{catLabel(c._id)}</span><span className="text-xs text-muted">{c.views} views · {c.carts} carts · {c.sold} sold</span></div>
-                <div className="mt-1 h-1.5 rounded-full bg-cream"><div className="h-full rounded-full bg-ink" style={{ width: `${(s / maxCat) * 100}%` }} /></div></div>); })}
+                <div className="mt-1 h-1.5 rounded-full bg-cream"><div className="h-full rounded-full bg-fg" style={{ width: `${(s / maxCat) * 100}%` }} /></div></div>); })}
             </div>
           </Card>
           <Card>
@@ -262,7 +269,8 @@ async function Products() {
   return (
     <>
       <H sub={`Customer price = supplier cost + margin (global ${settings.marginPct}%, or per-product override), rounded to .99`}>Products ({products.length})</H>
-      <div className="mb-6 grid gap-6 lg:grid-cols-2">
+      <div className="mb-6 grid gap-6 lg:grid-cols-3">
+        <Card><p className="mb-3 font-display font-bold">Import from CJ Dropshipping</p><ImportForm categories={cats} enabled={cjEnabled()} endpoint="/api/admin/cj/import" source="CJ" envHint="CJ_API_KEY" max={20} /></Card>
         <Card><p className="mb-3 font-display font-bold">Import from AliExpress</p><ImportForm categories={cats} enabled={aliEnabled()} /></Card>
         <Card><p className="mb-3 font-display font-bold">Add product manually (Alibaba link)</p><AddProductForm categories={cats} /></Card>
       </div>
@@ -290,11 +298,13 @@ async function Products() {
 
 async function SettingsTab() {
   const s = await getSettings();
+  const cjAuto = (await Settings.findOne({ key: "global" }).select("cjAutoOrder").lean())?.cjAutoOrder !== false;
   const checks: [string, boolean, string][] = [
     ["MongoDB Atlas", !!process.env.MONGODB_URI, "MONGODB_URI"],
     ["Google sign-in", providerFlags.google, "AUTH_GOOGLE_ID, AUTH_GOOGLE_SECRET"],
     ["Apple (iCloud) sign-in", providerFlags.apple, "AUTH_APPLE_ID, AUTH_APPLE_SECRET"],
     ["Card payments (Stripe)", stripeEnabled(), "STRIPE_SECRET_KEY, NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY — until set, checkout runs in TEST mode"],
+    ["CJ Dropshipping", cjEnabled(), "CJ_API_KEY — import products, auto-send orders, tracking (+ CRON_SECRET for daily sync)"],
     ["AliExpress import", aliEnabled(), "ALIEXPRESS_APP_KEY, ALIEXPRESS_APP_SECRET, ALIEXPRESS_TRACKING_ID"],
     ["Telegram order alerts", !!(process.env.TELEGRAM_BOT_TOKEN && process.env.TELEGRAM_CHAT_ID), "TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID"],
     ["Customer emails", !!process.env.RESEND_API_KEY, "RESEND_API_KEY, EMAIL_FROM"],
@@ -304,7 +314,7 @@ async function SettingsTab() {
     <>
       <H>Settings</H>
       <div className="grid gap-6 lg:grid-cols-2">
-        <Card><p className="mb-4 font-display font-bold">Pricing</p><SettingsForm marginPct={s.marginPct} freeShippingOver={s.freeShippingOver} /></Card>
+        <Card><p className="mb-4 font-display font-bold">Pricing</p><SettingsForm marginPct={s.marginPct} freeShippingOver={s.freeShippingOver} cjAutoOrder={cjAuto} /></Card>
         <Card>
           <p className="mb-4 font-display font-bold">Integrations</p>
           <ul className="space-y-3">{checks.map(([l, ok, env]) => (

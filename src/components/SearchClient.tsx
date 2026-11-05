@@ -42,11 +42,11 @@ export function SearchClient({ items, total }: { items: CardProduct[]; total: nu
     <div className="space-y-7">
       {(["phone", "pc"] as const).map((g) => (
         <div key={g}>
-          <button onClick={() => set({ group: group === g ? null : g, cat: null })} className={cn("mb-2 text-xs font-bold uppercase tracking-widest", group === g ? "text-volt" : "text-muted hover:text-ink")}>{t(`nav.${g}`)}</button>
+          <button onClick={() => set({ group: group === g ? null : g, cat: null })} className={cn("mb-2 text-xs font-bold uppercase tracking-widest", group === g ? "text-volt" : "text-muted hover:text-fg")}>{t(`nav.${g}`)}</button>
           <div className="flex flex-wrap gap-2 lg:flex-col lg:gap-0.5">
             {CATEGORIES.filter((c) => c.group === g).map((c) => (
               <button key={c.slug} onClick={() => set({ cat: cat === c.slug ? null : c.slug, group: null })}
-                className={cn("flex items-center gap-2 rounded-xl px-3 py-2 text-left text-sm font-semibold transition", cat === c.slug ? "bg-ink text-white" : "bg-white hover:bg-cream lg:bg-transparent")}>
+                className={cn("flex items-center gap-2 rounded-xl px-3 py-2 text-left text-sm font-semibold transition", cat === c.slug ? "bg-ink text-white" : "bg-surface hover:bg-cream lg:bg-transparent")}>
                 <img src={`/products/${c.art}-${c.color}.svg`} alt="" className="hidden h-7 w-7 rounded-lg lg:block" />{t(`cat.${c.slug}`)}
               </button>
             ))}
@@ -62,11 +62,11 @@ export function SearchClient({ items, total }: { items: CardProduct[]; total: nu
           <button className="btn btn-dark px-4 py-2.5">→</button>
         </form>
       </div>
-      <label className="flex cursor-pointer items-center justify-between rounded-2xl bg-white p-3 font-semibold">
+      <label className="flex cursor-pointer items-center justify-between rounded-2xl bg-surface p-3 font-semibold">
         {t("search.onlyDeals")}
         <span className={cn("relative h-6 w-11 rounded-full transition", deals ? "bg-volt" : "bg-line")}>
           <input type="checkbox" className="sr-only" checked={deals} onChange={() => set({ deals: deals ? null : "1" })} />
-          <span className={cn("absolute top-0.5 h-5 w-5 rounded-full bg-white shadow transition-all", deals ? "left-[22px]" : "left-0.5")} />
+          <span className={cn("absolute top-0.5 h-5 w-5 rounded-full bg-surface shadow transition-all", deals ? "left-[22px]" : "left-0.5")} />
         </span>
       </label>
       {activeFilters > 0 && <button onClick={() => { setMin(""); setMax(""); set({ cat: null, group: null, deals: null, min: null, max: null }); }} className="text-sm font-bold text-volt">{t("search.clear")}</button>}
@@ -89,7 +89,7 @@ export function SearchClient({ items, total }: { items: CardProduct[]; total: nu
         </div>
         <label className="ml-auto flex items-center gap-2 text-sm font-semibold">
           <span className="hidden text-muted sm:inline">{t("search.sort")}</span>
-          <select value={sort} onChange={(e) => set({ sort: e.target.value })} className="rounded-full border-[1.5px] border-line bg-white px-4 py-2 font-bold outline-none focus:border-volt">
+          <select value={sort} onChange={(e) => set({ sort: e.target.value })} className="rounded-full border-[1.5px] border-line bg-surface px-4 py-2 font-bold outline-none focus:border-volt">
             {SORTS.map(([v, k]) => <option key={v} value={v}>{t(`search.${k}`)}</option>)}
           </select>
         </label>

@@ -33,7 +33,7 @@ export function OrdersClient({ orders }: { orders: OrderView[] }) {
             const step = FLOW.indexOf(o.status);
             const isOpen = open === o._id;
             return (
-              <motion.div key={o._id} initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: idx * 0.05 }} className="overflow-hidden rounded-[1.8rem] bg-white ring-1 ring-line">
+              <motion.div key={o._id} initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: idx * 0.05 }} className="overflow-hidden rounded-[1.8rem] bg-surface ring-1 ring-line">
                 <button onClick={() => setOpen(isOpen ? null : o._id)} className="flex w-full flex-wrap items-center gap-4 p-5 text-left">
                   <div className="flex -space-x-3">{o.items.slice(0, 3).map((i, k) => <img key={k} src={i.image} alt="" className="h-14 w-14 rounded-xl bg-cream object-cover ring-2 ring-white" />)}</div>
                   <div className="min-w-0 flex-1">
@@ -63,6 +63,12 @@ export function OrdersClient({ orders }: { orders: OrderView[] }) {
                           </div>
                         )}
                         <p className="mt-5 flex items-center gap-2 rounded-2xl bg-cream p-3 text-sm font-bold"><Truck size={16} className="text-volt" />{t("orders.eta", { from: fmt(o.eta.from), to: fmt(o.eta.to) })} · {t(`checkout.${o.shippingMethod.id}`)}</p>
+                        {o.tracking && (
+                          <div className="mt-3 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-line p-3 text-sm">
+                            <span><span className="label mb-0">{t("orders.tracking")}</span><b className="font-mono">{o.tracking.number}</b>{o.tracking.carrier && <span className="text-muted"> · {o.tracking.carrier}</span>}</span>
+                            <a href={`https://t.17track.net/en#nums=${o.tracking.number}`} target="_blank" rel="noreferrer" className="btn btn-primary py-2 text-sm">{t("orders.track")}</a>
+                          </div>
+                        )}
                         <ul className="mt-4 divide-y divide-line">
                           {o.items.map((i, k) => (
                             <li key={k} className="flex items-center gap-3 py-3">

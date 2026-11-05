@@ -47,7 +47,7 @@ export async function searchProducts(p: SearchParams) {
     const textMatch = { $and: words.map((w) => ({ $or: [{ title: { $regex: esc(w), $options: "i" } }, { tags: { $regex: esc(w), $options: "i" } }, { category: { $regex: esc(w), $options: "i" } }] })) };
     filter.$or = cats.size ? [textMatch, { category: { $in: [...cats] } }] : [textMatch];
   }
-  let items = await Product.find(filter).select("-costPrice -supplierCompareAt -marginPct").limit(400).lean();
+  let items = await Product.find(filter).select("-costPrice -supplierCompareAt -marginPct -sourceUrl -sourceId -variants").limit(400).lean();
 
   const pop = (x: (typeof items)[number]) => x.sold * 5 + x.cartAdds * 2 + x.views * 0.2 + x.searchHits * 0.5;
   const score = (x: (typeof items)[number]) => {

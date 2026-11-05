@@ -14,7 +14,7 @@ export function Footer() {
     </div>
   );
   return (
-    <footer className="relative mt-24 overflow-hidden bg-ink text-white grain">
+    <footer className="relative mt-24 overflow-hidden bg-night text-white grain">
       <div className="pointer-events-none absolute -left-40 -top-40 h-96 w-96 rounded-full bg-volt/25 blur-3xl" />
       <div className="relative mx-auto max-w-7xl px-4 pb-10 pt-16">
         <div className="grid gap-10 md:grid-cols-[1.4fr_1fr_1fr_1fr]">
@@ -29,9 +29,9 @@ export function Footer() {
           {col(t("footer.company"), [[t("footer.about"), "/info/about"], [t("footer.privacy"), "/info/privacy"], [t("footer.terms"), "/info/terms"]])}
         </div>
         <div className="mt-14 flex flex-col items-start justify-between gap-4 border-t border-white/10 pt-6 text-xs text-white/40 sm:flex-row">
-          <p>© {new Date().getFullYear()} VOLTIQ. {t("footer.rights")}</p>
+          <p>© {new Date().getFullYear()} KAUP. {t("footer.rights")}</p>
         </div>
-        <p aria-hidden className="pointer-events-none mt-6 select-none font-display text-[18vw] font-black leading-none tracking-tighter text-white/[.04]">VOLTIQ</p>
+        <p aria-hidden className="pointer-events-none mt-6 select-none font-display text-[18vw] font-black leading-none tracking-tighter text-white/[.04]">KAUP</p>
       </div>
     </footer>
   );

@@ -55,7 +55,7 @@ export function SearchBox({ autoFocus = false }: { autoFocus?: boolean }) {
   return (
     <div ref={boxRef} className="relative">
       <form role="search" onSubmit={(e) => { e.preventDefault(); if (active >= 0 && sug[active]) router.push(href(`/p/${sug[active].slug}`)); else go(q); }}
-        className="group flex items-center gap-2 rounded-full border-[1.5px] border-line bg-white px-4 transition focus-within:border-volt focus-within:shadow-[0_0_0_4px_rgb(255_91_20/.12)]">
+        className="group flex items-center gap-2 rounded-full border-[1.5px] border-line bg-surface px-4 transition focus-within:border-volt focus-within:shadow-[0_0_0_4px_rgb(255_91_20/.12)]">
         <Search size={18} className="text-muted transition group-focus-within:text-volt" />
         <input value={q} autoFocus={autoFocus} onFocus={() => { setOpen(true); setRecent(readRecent()); }}
           onChange={(e) => { setQ(e.target.value); setActive(-1); setOpen(true); }}
@@ -73,7 +73,7 @@ export function SearchBox({ autoFocus = false }: { autoFocus?: boolean }) {
       <AnimatePresence>
         {open && (
           <motion.div initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 6 }} transition={{ duration: 0.16 }}
-            className="absolute inset-x-0 top-full z-50 mt-2 overflow-hidden rounded-3xl border border-line bg-white p-3 shadow-2xl">
+            className="absolute inset-x-0 top-full z-50 mt-2 overflow-hidden rounded-3xl border border-line bg-surface p-3 shadow-2xl">
             {!q.trim() ? (
               <div className="space-y-4 p-1">
                 {recent.length > 0 && (

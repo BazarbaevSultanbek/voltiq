@@ -51,7 +51,7 @@ export function ProductView({ p, related, freeOver }: { p: FullProduct; related:
     { id: "description", title: t("product.description"), body: <p className="leading-relaxed text-muted">{p.description}</p> },
     { id: "specs", title: t("product.specs"), body: (
       <dl className="divide-y divide-line overflow-hidden rounded-2xl border border-line">
-        {p.specs.map((s) => <div key={s.k} className="grid grid-cols-[40%_1fr] gap-4 bg-white px-4 py-3 text-sm"><dt className="font-semibold text-muted">{s.k}</dt><dd className="font-bold">{s.v}</dd></div>)}
+        {p.specs.map((s) => <div key={s.k} className="grid grid-cols-[40%_1fr] gap-4 bg-surface px-4 py-3 text-sm"><dt className="font-semibold text-muted">{s.k}</dt><dd className="font-bold">{s.v}</dd></div>)}
       </dl>) },
     { id: "shipping", title: t("product.shipping"), body: <ul className="space-y-2 text-sm text-muted"><li>{t("product.freeOver", { amount: price(freeOver) })}</li><li>{t("product.returns")}</li><li>{t("product.secure")}</li></ul> },
   ].filter((s) => s.id !== "specs" || p.specs.length);
@@ -59,9 +59,9 @@ export function ProductView({ p, related, freeOver }: { p: FullProduct; related:
   return (
     <div className="mx-auto max-w-7xl px-4 pb-28 pt-6">
       <nav className="mb-6 flex items-center gap-1 text-sm font-semibold text-muted" aria-label="Breadcrumb">
-        <Link href={href("/")} className="hover:text-ink">{t("common.home")}</Link><ChevronRight size={14} />
-        <Link href={href(`/search?cat=${p.category}`)} className="hover:text-ink">{t(`cat.${p.category}`)}</Link><ChevronRight size={14} />
-        <span className="truncate text-ink">{p.title}</span>
+        <Link href={href("/")} className="hover:text-fg">{t("common.home")}</Link><ChevronRight size={14} />
+        <Link href={href(`/search?cat=${p.category}`)} className="hover:text-fg">{t(`cat.${p.category}`)}</Link><ChevronRight size={14} />
+        <span className="truncate text-fg">{p.title}</span>
       </nav>
 
       <div className="grid gap-10 lg:grid-cols-[1.1fr_1fr] lg:gap-16">
@@ -79,7 +79,7 @@ export function ProductView({ p, related, freeOver }: { p: FullProduct; related:
             <div className="no-scrollbar mt-4 flex gap-3 overflow-x-auto">
               {images.map((src, i) => (
                 <button key={src + i} onClick={() => { if (p.colors && p.colors.length > 1) setCi(i); else setImg(i); }}
-                  className={cn("h-20 w-20 shrink-0 overflow-hidden rounded-2xl border-2 transition", (p.colors && p.colors.length > 1 ? ci : img) === i ? "border-ink" : "border-transparent opacity-70 hover:opacity-100")}>
+                  className={cn("h-20 w-20 shrink-0 overflow-hidden rounded-2xl border-2 transition", (p.colors && p.colors.length > 1 ? ci : img) === i ? "border-fg" : "border-transparent opacity-70 hover:opacity-100")}>
                   <img src={src} alt="" className="h-full w-full object-cover" />
                 </button>
               ))}
@@ -102,20 +102,30 @@ export function ProductView({ p, related, freeOver }: { p: FullProduct; related:
 
           {p.colors && p.colors.length > 0 && (
             <div className="mt-8">
-              <p className="label">{t("product.color")}: <span className="capitalize text-ink">{color}</span></p>
+              <p className="label">{t("product.color")}: <span className="capitalize text-fg">{color}</span></p>
+              {p.colors.some((c) => c.hex === "#8a8f99") ? (
+                <div className="flex flex-wrap gap-2">
+                  {p.colors.map((c, i) => (
+                    <button key={c.name + i} onClick={() => setCi(i)} className={cn("flex items-center gap-2 rounded-2xl border-2 py-1.5 pl-1.5 pr-3 text-sm font-semibold transition", i === ci ? "border-fg" : "border-line hover:border-muted")}>
+                      {p.images[i] && <img src={p.images[i]} alt="" className="h-9 w-9 rounded-xl object-cover" />}{c.name}
+                    </button>
+                  ))}
+                </div>
+              ) : (
               <div className="flex flex-wrap gap-3">
                 {p.colors.map((c, i) => (
                   <button key={c.name} onClick={() => setCi(i)} aria-label={c.name}
-                    className={cn("grid h-11 w-11 place-items-center rounded-full border-2 transition", i === ci ? "scale-110 border-ink" : "border-line hover:border-muted")}>
+                    className={cn("grid h-11 w-11 place-items-center rounded-full border-2 transition", i === ci ? "scale-110 border-fg" : "border-line hover:border-muted")}>
                     <span className="h-8 w-8 rounded-full shadow-inner" style={{ background: c.hex }} />
                   </button>
                 ))}
               </div>
+              )}
             </div>
           )}
 
           <div className="mt-8 flex flex-wrap items-center gap-3">
-            <div className="flex items-center rounded-full border-[1.5px] border-line bg-white">
+            <div className="flex items-center rounded-full border-[1.5px] border-line bg-surface">
               <button onClick={() => setQty((q) => Math.max(1, q - 1))} className="p-3.5 hover:text-volt" aria-label="-"><Minus size={16} /></button>
               <span className="w-8 text-center font-display font-bold tabular-nums">{qty}</span>
               <button onClick={() => setQty((q) => Math.min(20, q + 1))} className="p-3.5 hover:text-volt" aria-label="+"><Plus size={16} /></button>
@@ -133,7 +143,7 @@ export function ProductView({ p, related, freeOver }: { p: FullProduct; related:
             ● {p.stock > 10 ? t("product.inStock") : p.stock > 0 ? t("product.lowStock", { n: p.stock }) : t("product.outOfStock")}
           </p>
 
-          <div className="mt-8 rounded-[1.6rem] border border-line bg-white p-5">
+          <div className="mt-8 rounded-[1.6rem] border border-line bg-surface p-5">
             <div className="flex items-center justify-between gap-3">
               <p className="flex items-center gap-2 font-bold"><MapPin size={18} className="text-volt" />
                 {hydrated && place ? t("product.deliveryTo", { place: `${place.city}, ${countryName(place.country)}` }) : t("product.setLocation")}</p>

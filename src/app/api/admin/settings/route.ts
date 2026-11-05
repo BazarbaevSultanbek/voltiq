@@ -9,7 +9,7 @@ import { json, fail, handle } from "@/lib/api";
 export async function PATCH(req: Request) {
   try {
     if (!(await isAdmin())) return fail("unauthorized", 401);
-    const b = z.object({ marginPct: z.number().min(0).max(500), freeShippingOver: z.number().min(0).max(10000) }).parse(await req.json());
+    const b = z.object({ marginPct: z.number().min(0).max(500), freeShippingOver: z.number().min(0).max(10000), cjAutoOrder: z.boolean().optional() }).parse(await req.json());
     await db();
     await Settings.updateOne({ key: "global" }, { $set: b }, { upsert: true });
     // Re-price every product that follows the global margin

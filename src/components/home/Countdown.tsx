@@ -14,7 +14,7 @@ export function Countdown() {
       {parts.map((p, i) => (
         <span key={i} className="flex items-center gap-1.5">
           <span className="grid h-11 w-11 place-items-center rounded-xl bg-ink text-lg font-black tabular-nums text-white">{left === null ? "--" : p}</span>
-          {i < 2 && <span className="font-black text-ink">:</span>}
+          {i < 2 && <span className="font-black text-fg">:</span>}
         </span>
       ))}
     </div>

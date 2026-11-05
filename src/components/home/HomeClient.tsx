@@ -30,10 +30,10 @@ function SectionHead({ title, sub, link, children }: { title: string; sub?: stri
 export function HomeClient({ trending, deals, fresh, total }: { trending: CardProduct[]; deals: CardProduct[]; fresh: CardProduct[]; total: number }) {
   const { t, href } = useI18n();
   const bento = [
-    { t: t("home.bentoA"), img: "/products/charger-white.svg", link: "/search?cat=chargers", cls: "md:col-span-2 md:row-span-2 bg-ink text-white", big: true },
-    { t: t("home.bentoB"), img: "/products/keyboard-orange.svg", link: "/search?cat=keyboards", cls: "bg-lime" },
-    { t: t("home.bentoC"), img: "/products/headphones-sand.svg", link: "/search?cat=audio", cls: "bg-[#e9e3ff]" },
-    { t: t("home.bentoD"), img: "/products/laptopstand-gray.svg", link: "/search?group=pc", cls: "md:col-span-2 bg-[#ffe1d2]" },
+    { t: t("home.bentoA"), img: "/products/charger-white.svg", link: "/search?cat=chargers", cls: "md:col-span-2 md:row-span-2 bg-night text-white", big: true },
+    { t: t("home.bentoB"), img: "/products/keyboard-orange.svg", link: "/search?cat=keyboards", cls: "bg-lime text-[#0d0d12]" },
+    { t: t("home.bentoC"), img: "/products/headphones-sand.svg", link: "/search?cat=audio", cls: "bg-[#e9e3ff] text-[#0d0d12]" },
+    { t: t("home.bentoD"), img: "/products/laptopstand-gray.svg", link: "/search?group=pc", cls: "md:col-span-2 bg-[#ffe1d2] text-[#0d0d12]" },
   ];
   const why = [
     { i: BadgePercent, t: t("home.why1t"), d: t("home.why1d") },

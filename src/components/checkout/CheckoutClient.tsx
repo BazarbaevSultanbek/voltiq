@@ -160,7 +160,7 @@ function Checkout({ freeOver, stripePk, providers }: { freeOver: number; stripeP
 
   return (
     <div className="mx-auto max-w-7xl px-4 pb-16 pt-8">
-      <Link href={href("/cart")} className="mb-4 inline-flex items-center gap-1 text-sm font-bold text-muted hover:text-ink"><ChevronLeft size={16} />{t("checkout.back")}</Link>
+      <Link href={href("/cart")} className="mb-4 inline-flex items-center gap-1 text-sm font-bold text-muted hover:text-fg"><ChevronLeft size={16} />{t("checkout.back")}</Link>
       <h1 className="mb-8 font-display text-4xl font-black sm:text-5xl">{t("checkout.title")}</h1>
       {!stripePk && (
         <div className="mb-6 flex items-start gap-3 rounded-2xl border border-volt/30 bg-volt/5 p-4 text-sm font-semibold"><Info size={18} className="mt-0.5 shrink-0 text-volt" />{t("checkout.testMode")}</div>
@@ -176,7 +176,7 @@ function Checkout({ freeOver, stripePk, providers }: { freeOver: number; stripeP
                 <div className="no-scrollbar flex gap-2 overflow-x-auto">
                   {me.addresses.map((a) => (
                     <button key={a._id} onClick={() => setAddr({ ...EMPTY, ...a, region: a.region || "", line2: a.line2 || "", postal: a.postal || "" })}
-                      className={cn("shrink-0 rounded-2xl border-2 p-3 text-left text-sm transition", addr.line1 === a.line1 && addr.city === a.city ? "border-volt bg-volt/5" : "border-line bg-white hover:border-muted")}>
+                      className={cn("shrink-0 rounded-2xl border-2 p-3 text-left text-sm transition", addr.line1 === a.line1 && addr.city === a.city ? "border-volt bg-volt/5" : "border-line bg-surface hover:border-muted")}>
                       <p className="font-bold">{a.fullName}</p><p className="text-muted">{a.line1}, {a.city}</p>
                     </button>
                   ))}
@@ -215,7 +215,7 @@ function Checkout({ freeOver, stripePk, providers }: { freeOver: number; stripeP
                 const Icon = ICONS[qq.id];
                 const on = qq.id === method;
                 return (
-                  <button key={qq.id} onClick={() => setMethod(qq.id)} className={cn("relative flex items-center gap-4 rounded-2xl border-2 p-4 text-left transition", on ? "border-volt bg-volt/5" : "border-line bg-white hover:border-muted")}>
+                  <button key={qq.id} onClick={() => setMethod(qq.id)} className={cn("relative flex items-center gap-4 rounded-2xl border-2 p-4 text-left transition", on ? "border-volt bg-volt/5" : "border-line bg-surface hover:border-muted")}>
                     <span className={cn("grid h-12 w-12 shrink-0 place-items-center rounded-xl transition", on ? "bg-volt text-white" : "bg-cream")}><Icon size={22} /></span>
                     <span className="min-w-0 flex-1">
                       <span className="block font-bold">{t(`checkout.${qq.id}`)} <span className="font-semibold text-muted">· {t("checkout.businessDays", { min: qq.minDays, max: qq.maxDays })}</span></span>
@@ -288,7 +288,7 @@ function Checkout({ freeOver, stripePk, providers }: { freeOver: number; stripeP
 
         {/* Summary */}
         <aside className="lg:sticky lg:top-28 lg:self-start">
-          <div className="rounded-[2rem] bg-white p-6 ring-1 ring-line">
+          <div className="rounded-[2rem] bg-surface p-6 ring-1 ring-line">
             <p className="font-display text-xl font-bold">{t("cart.summary")}</p>
             <ul className="mt-4 max-h-64 space-y-3 overflow-auto pr-1">
               {items.map((i) => (
@@ -322,7 +322,7 @@ function Checkout({ freeOver, stripePk, providers }: { freeOver: number; stripeP
 
 function Step({ n, title, done, children }: { n: number; title: string; done: boolean; children: React.ReactNode }) {
   return (
-    <motion.section initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: n * 0.08 }} className="rounded-[2rem] bg-white p-6 ring-1 ring-line sm:p-8">
+    <motion.section initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: n * 0.08 }} className="rounded-[2rem] bg-surface p-6 ring-1 ring-line sm:p-8">
       <h2 className="mb-6 flex items-center gap-3 font-display text-xl font-bold">
         <span className={cn("grid h-9 w-9 place-items-center rounded-full text-sm font-black transition", done ? "bg-ok text-white" : "bg-ink text-white")}>{done ? <Check size={18} /> : n}</span>{title}
       </h2>
@@ -344,7 +344,7 @@ function Timeline({ from, to, fmt }: { from: string; to: string; fmt: (d: string
       {steps.map((s, i) => (
         <div key={i} className="relative text-center">
           {i < steps.length - 1 && <span className="absolute left-1/2 top-4 h-0.5 w-full bg-line" />}
-          <span className={cn("relative mx-auto grid h-8 w-8 place-items-center rounded-full", i === 0 ? "bg-volt text-white" : "bg-white text-muted ring-1 ring-line")}><s.i size={15} /></span>
+          <span className={cn("relative mx-auto grid h-8 w-8 place-items-center rounded-full", i === 0 ? "bg-volt text-white" : "bg-surface text-muted ring-1 ring-line")}><s.i size={15} /></span>
           <p className="mt-2 text-[11px] font-bold leading-tight sm:text-xs">{s.l}</p>
           <p className="text-[10px] font-semibold text-muted sm:text-[11px]">{s.d}</p>
         </div>

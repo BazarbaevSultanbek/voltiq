@@ -48,7 +48,7 @@ export function ProductCard({ p, index = 0 }: { p: CardProduct; index?: number }
         <div className="px-1 pt-3">
           <div className="flex items-center justify-between gap-2 text-xs font-semibold text-muted">
             <span>{t(`cat.${p.category}`)}</span>
-            {p.rating ? <span className="flex items-center gap-0.5 text-ink"><Star size={12} className="fill-volt text-volt" />{p.rating.toFixed(1)}</span> : null}
+            {p.rating ? <span className="flex items-center gap-0.5 text-fg"><Star size={12} className="fill-volt text-volt" />{p.rating.toFixed(1)}</span> : null}
           </div>
           <h3 className="mt-1 line-clamp-2 min-h-[2.6em] text-[15px] font-bold leading-snug group-hover:text-volt">{p.title}</h3>
           <div className="mt-2 flex items-end justify-between">

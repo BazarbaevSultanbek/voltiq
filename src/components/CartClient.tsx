@@ -40,7 +40,7 @@ export function CartClient({ freeOver }: { freeOver: number }) {
       </div>
       <div className="grid gap-8 lg:grid-cols-[1fr_380px]">
         <div>
-          <div className="mb-5 rounded-2xl bg-white p-4 ring-1 ring-line">
+          <div className="mb-5 rounded-2xl bg-surface p-4 ring-1 ring-line">
             <p className="flex items-center gap-2 text-sm font-bold"><Truck size={18} className="text-volt" />{left > 0 ? t("cart.freeProgress", { amount: price(left) }) : t("cart.freeUnlocked")}</p>
             <div className="mt-3 h-2.5 overflow-hidden rounded-full bg-cream"><motion.div className="h-full rounded-full bg-gradient-to-r from-volt to-lime-dark" initial={{ width: 0 }} animate={{ width: `${pct}%` }} transition={{ type: "spring", damping: 20 }} /></div>
           </div>
@@ -48,7 +48,7 @@ export function CartClient({ freeOver }: { freeOver: number }) {
             <AnimatePresence initial={false}>
               {items.map((it) => (
                 <motion.li key={it.id + it.color} layout initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, x: -60, height: 0, marginTop: 0 }} transition={{ duration: 0.3 }}
-                  className="flex gap-4 rounded-[1.6rem] bg-white p-3 ring-1 ring-line sm:p-4">
+                  className="flex gap-4 rounded-[1.6rem] bg-surface p-3 ring-1 ring-line sm:p-4">
                   <Link href={href(`/p/${it.slug}`)} className="shrink-0"><img src={it.image} alt={it.title} className="h-24 w-24 rounded-2xl bg-cream object-cover sm:h-28 sm:w-28" /></Link>
                   <div className="flex min-w-0 flex-1 flex-col">
                     <div className="flex items-start justify-between gap-3">
@@ -78,7 +78,7 @@ export function CartClient({ freeOver }: { freeOver: number }) {
         </div>
 
         <aside className="lg:sticky lg:top-28 lg:self-start">
-          <div className="rounded-[2rem] bg-ink p-6 text-white">
+          <div className="rounded-[2rem] bg-night p-6 ring-1 ring-line text-white">
             <p className="font-display text-xl font-bold">{t("cart.summary")}</p>
             <div className="mt-5 space-y-3 text-sm">
               <div className="flex justify-between"><span className="text-white/60">{t("cart.subtotal")} · {t("cart.items", { n })}</span><span className="font-bold">{price(sub)}</span></div>

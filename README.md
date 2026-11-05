@@ -1,4 +1,4 @@
-# VOLTIQ — Phone & PC accessories store
+# KAUP — Phone & PC accessories store
 
 Next.js 16 · TypeScript · Tailwind v4 · Motion · MongoDB (Mongoose) · Auth.js (Google, Apple, email) · Stripe · 6 languages (EN, RU, ZH, ES, FR, PT).
 

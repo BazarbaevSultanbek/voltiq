@@ -7,7 +7,7 @@ import { siteUrl } from "@/lib/site";
 import { ProductView, type FullProduct } from "@/components/ProductView";
 import type { CardProduct } from "@/components/ProductCard";
 
-const HIDE = "-costPrice -supplierCompareAt -marginPct -sourceUrl";
+const HIDE = "-costPrice -supplierCompareAt -marginPct -sourceUrl -sourceId -variants";
 
 async function load(slug: string) {
   await db();
@@ -39,7 +39,7 @@ export default async function ProductPage({ params }: { params: Promise<{ locale
   const abs = (u: string) => (u.startsWith("http") ? u : `${siteUrl}${u}`);
   const ld = {
     "@context": "https://schema.org", "@type": "Product", name: p.title, description: p.description,
-    image: p.images.map(abs), sku: String(p._id), brand: { "@type": "Brand", name: "VOLTIQ" }, category: p.category,
+    image: p.images.map(abs), sku: String(p._id), brand: { "@type": "Brand", name: "KAUP" }, category: p.category,
     offers: {
       "@type": "Offer", url: `${siteUrl}/${locale}/p/${p.slug}`, priceCurrency: "USD", price: p.price.toFixed(2),
       availability: p.stock > 0 ? "https://schema.org/InStock" : "https://schema.org/OutOfStock", itemCondition: "https://schema.org/NewCondition",

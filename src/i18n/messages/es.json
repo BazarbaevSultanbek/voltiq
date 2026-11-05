@@ -1,6 +1,6 @@
 {
   "meta": {
-    "title": "VOLTIQ — Accesorios para móvil y PC a precio de fábrica",
+    "title": "KAUP — Accesorios para móvil y PC a precio de fábrica",
     "description": "Compra cargadores, cables, power banks, auriculares, teclados, ratones, hubs, SSD y más. Directo de las mejores fábricas, con envío internacional y seguimiento.",
     "searchTitle": "Buscar accesorios para móvil y PC",
     "cartTitle": "Tu carrito",
@@ -24,7 +24,9 @@
     "noNotifications": "Estás al día.",
     "markAllRead": "Marcar todo como leído",
     "deliverTo": "Enviar a",
-    "language": "Idioma"
+    "language": "Idioma",
+    "dark": "Modo oscuro",
+    "light": "Modo claro"
   },
   "promo": {
     "bar": "Envío estándar gratis en pedidos desde {amount} · Pago seguro con tarjeta · Devoluciones en 30 días"
@@ -231,7 +233,9 @@
       "shipped": "Enviado",
       "delivered": "Entregado",
       "cancelled": "Cancelado"
-    }
+    },
+    "tracking": "Número de seguimiento",
+    "track": "Seguir paquete"
   },
   "profile": {
     "title": "Perfil",
@@ -274,7 +278,7 @@
     "password": "Contraseña",
     "signIn": "Iniciar sesión",
     "signUp": "Crear cuenta",
-    "noAccount": "¿Nuevo en VOLTIQ?",
+    "noAccount": "¿Nuevo en KAUP?",
     "haveAccount": "¿Ya tienes cuenta?",
     "switchUp": "Crear una cuenta",
     "switchIn": "Iniciar sesión",
@@ -311,12 +315,12 @@
   },
   "pages": {
     "about": {
-      "title": "Sobre VOLTIQ",
-      "body": "VOLTIQ te conecta con las mismas fábricas que producen accesorios para grandes marcas. Seleccionamos accesorios para móvil y PC, comprobamos la calidad y valoración de cada proveedor y te los enviamos con seguimiento. Nuestros precios son honestos: coste de fábrica, envío y un margen justo, sin nada oculto."
+      "title": "Sobre KAUP",
+      "body": "KAUP te conecta con las mismas fábricas que producen accesorios para grandes marcas. Seleccionamos accesorios para móvil y PC, comprobamos la calidad y valoración de cada proveedor y te los enviamos con seguimiento. Nuestros precios son honestos: coste de fábrica, envío y un margen justo, sin nada oculto."
     },
     "contact": {
       "title": "Contáctanos",
-      "body": "¿Dudas sobre un pedido, un producto o una devolución? Escríbenos y te responderemos en 24 horas en días laborables. Incluye tu número de pedido (por ejemplo VQ-AB12CD) para ayudarte más rápido."
+      "body": "¿Dudas sobre un pedido, un producto o una devolución? Escríbenos y te responderemos en 24 horas en días laborables. Incluye tu número de pedido (por ejemplo KP-AB12CD) para ayudarte más rápido."
     },
     "faq": {
       "title": "Preguntas frecuentes",
@@ -345,13 +349,13 @@
     },
     "terms": {
       "title": "Términos del servicio",
-      "body": "Al usar VOLTIQ aceptas proporcionar información veraz y usar la tienda de forma legal. Los precios están en dólares estadounidenses y pueden cambiar. Un pedido se acepta cuando se confirma el pago. Las fechas de entrega son estimadas. Nuestra responsabilidad se limita al importe pagado por el producto."
+      "body": "Al usar KAUP aceptas proporcionar información veraz y usar la tienda de forma legal. Los precios están en dólares estadounidenses y pueden cambiar. Un pedido se acepta cuando se confirma el pago. Las fechas de entrega son estimadas. Nuestra responsabilidad se limita al importe pagado por el producto."
     }
   },
   "notif": {
     "orderPlaced": "¡Pedido {number} aceptado! Entrega estimada {eta}.",
     "orderStatus": "El pedido {number} ahora está: {status}.",
-    "welcome": "¡Bienvenido a VOLTIQ, {name}! Felices compras."
+    "welcome": "¡Bienvenido a KAUP, {name}! Felices compras."
   },
   "common": {
     "loading": "Cargando…",

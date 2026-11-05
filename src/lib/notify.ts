@@ -28,6 +28,6 @@ export async function emailCustomer(to: string, subject: string, html: string) {
   await fetch("https://api.resend.com/emails", {
     method: "POST",
     headers: { authorization: `Bearer ${key}`, "content-type": "application/json" },
-    body: JSON.stringify({ from: process.env.EMAIL_FROM || "VOLTIQ <orders@resend.dev>", to, subject, html }),
+    body: JSON.stringify({ from: process.env.EMAIL_FROM || "KAUP <orders@resend.dev>", to, subject, html }),
   }).catch(() => {});
 }

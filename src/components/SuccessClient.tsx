@@ -12,7 +12,7 @@ export type OrderView = {
   items: { slug: string; title: string; image: string; price: number; qty: number; color: string }[];
   address: { fullName: string; phone: string; country: string; region?: string; city: string; line1: string; line2?: string; postal?: string };
   shippingMethod: { id: string; minDays: number; maxDays: number }; eta: { from: string; to: string };
-  payment: { provider: string; brand: string; last4: string }; timeline: { status: string; at: string; note?: string }[];
+  payment: { provider: string; brand: string; last4: string }; tracking?: { number: string; carrier?: string } | null; timeline: { status: string; at: string; note?: string }[];
 };
 
 const COLORS = ["#ff5b14", "#c8f43c", "#ff2e63", "#3d7bff", "#0d0d12"];
@@ -36,7 +36,7 @@ export function SuccessClient({ o }: { o: OrderView }) {
         <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.45 }} className="mx-auto mt-3 max-w-lg text-lg text-muted">{t("success.sub", { name: o.address.fullName.split(" ")[0], number: o.number })}</motion.p>
       </div>
 
-      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }} className="mt-10 overflow-hidden rounded-[2rem] bg-white ring-1 ring-line">
+      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }} className="mt-10 overflow-hidden rounded-[2rem] bg-surface ring-1 ring-line">
         <div className="grid gap-px bg-line sm:grid-cols-3">
           {[
             [CalendarClock, t("success.eta"), `${fmt(o.eta.from)} – ${fmt(o.eta.to)}`],
@@ -44,7 +44,7 @@ export function SuccessClient({ o }: { o: OrderView }) {
             [CreditCard, "", t("success.paid", { brand: o.payment.brand.toUpperCase(), last4: o.payment.last4 })],
           ].map(([I, l, v], i) => {
             const Icon = I as typeof MapPin;
-            return <div key={i} className="bg-white p-5"><Icon size={20} className="text-volt" />{l ? <p className="mt-2 text-xs font-bold uppercase tracking-wider text-muted">{l as string}</p> : <p className="mt-2 h-4" />}<p className="mt-1 font-bold">{v as string}</p></div>;
+            return <div key={i} className="bg-surface p-5"><Icon size={20} className="text-volt" />{l ? <p className="mt-2 text-xs font-bold uppercase tracking-wider text-muted">{l as string}</p> : <p className="mt-2 h-4" />}<p className="mt-1 font-bold">{v as string}</p></div>;
           })}
         </div>
         <ul className="divide-y divide-line">

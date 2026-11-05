@@ -10,7 +10,7 @@ const OrderSchema = new Schema(
     items: [
       {
         product: { type: Types.ObjectId, ref: "Product" },
-        slug: String, title: String, image: String, price: Number, qty: Number, color: String,
+        slug: String, title: String, image: String, price: Number, qty: Number, color: String, vid: String,
       },
     ],
     subtotal: Number,
@@ -27,6 +27,10 @@ const OrderSchema = new Schema(
     payment: {
       provider: { type: String, enum: ["stripe", "test"] },
       brand: String, last4: String, intentId: String, status: String,
+    },
+    supplier: {
+      provider: String, orderId: String, status: String, logisticName: String,
+      trackNumber: String, cost: Number, error: String, sentAt: Date, syncedAt: Date,
     },
     status: { type: String, enum: ORDER_STATUSES, default: "pending_payment", index: true },
     timeline: [{ status: String, at: Date, note: String }],

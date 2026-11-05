@@ -1,6 +1,6 @@
 {
   "meta": {
-    "title": "VOLTIQ — Accessoires téléphone & PC au prix usine",
+    "title": "KAUP — Accessoires téléphone & PC au prix usine",
     "description": "Chargeurs, câbles, batteries externes, écouteurs, claviers, souris, hubs, SSD et plus. Directement des meilleures usines, livrés dans le monde entier avec suivi.",
     "searchTitle": "Rechercher des accessoires téléphone & PC",
     "cartTitle": "Votre panier",
@@ -24,7 +24,9 @@
     "noNotifications": "Vous êtes à jour.",
     "markAllRead": "Tout marquer comme lu",
     "deliverTo": "Livrer à",
-    "language": "Langue"
+    "language": "Langue",
+    "dark": "Mode sombre",
+    "light": "Mode clair"
   },
   "promo": {
     "bar": "Livraison standard offerte dès {amount} · Paiement par carte sécurisé · Retours sous 30 jours"
@@ -231,7 +233,9 @@
       "shipped": "Expédiée",
       "delivered": "Livrée",
       "cancelled": "Annulée"
-    }
+    },
+    "tracking": "Numéro de suivi",
+    "track": "Suivre le colis"
   },
   "profile": {
     "title": "Profil",
@@ -274,7 +278,7 @@
     "password": "Mot de passe",
     "signIn": "Se connecter",
     "signUp": "Créer un compte",
-    "noAccount": "Nouveau sur VOLTIQ ?",
+    "noAccount": "Nouveau sur KAUP ?",
     "haveAccount": "Déjà un compte ?",
     "switchUp": "Créer un compte",
     "switchIn": "Se connecter",
@@ -311,12 +315,12 @@
   },
   "pages": {
     "about": {
-      "title": "À propos de VOLTIQ",
-      "body": "VOLTIQ vous relie aux mêmes usines qui fabriquent des accessoires pour les grandes marques. Nous sélectionnons des accessoires pour téléphone et PC, vérifions la qualité et les notes des fournisseurs, puis vous les expédions avec suivi. Nos prix sont honnêtes : coût usine, livraison et une marge juste, rien de caché."
+      "title": "À propos de KAUP",
+      "body": "KAUP vous relie aux mêmes usines qui fabriquent des accessoires pour les grandes marques. Nous sélectionnons des accessoires pour téléphone et PC, vérifions la qualité et les notes des fournisseurs, puis vous les expédions avec suivi. Nos prix sont honnêtes : coût usine, livraison et une marge juste, rien de caché."
     },
     "contact": {
       "title": "Nous contacter",
-      "body": "Une question sur une commande, un produit ou un retour ? Écrivez-nous, nous répondons sous 24 h les jours ouvrés. Indiquez votre numéro de commande (par exemple VQ-AB12CD) pour une aide plus rapide."
+      "body": "Une question sur une commande, un produit ou un retour ? Écrivez-nous, nous répondons sous 24 h les jours ouvrés. Indiquez votre numéro de commande (par exemple KP-AB12CD) pour une aide plus rapide."
     },
     "faq": {
       "title": "Questions fréquentes",
@@ -345,13 +349,13 @@
     },
     "terms": {
       "title": "Conditions d'utilisation",
-      "body": "En utilisant VOLTIQ, vous vous engagez à fournir des informations exactes et à utiliser la boutique légalement. Les prix sont en dollars américains et peuvent changer. Une commande est acceptée une fois le paiement confirmé. Les dates de livraison sont estimées. Notre responsabilité est limitée au montant payé pour le produit."
+      "body": "En utilisant KAUP, vous vous engagez à fournir des informations exactes et à utiliser la boutique légalement. Les prix sont en dollars américains et peuvent changer. Une commande est acceptée une fois le paiement confirmé. Les dates de livraison sont estimées. Notre responsabilité est limitée au montant payé pour le produit."
     }
   },
   "notif": {
     "orderPlaced": "Commande {number} acceptée ! Livraison estimée {eta}.",
     "orderStatus": "Commande {number} : {status}.",
-    "welcome": "Bienvenue sur VOLTIQ, {name} ! Bon shopping."
+    "welcome": "Bienvenue sur KAUP, {name} ! Bon shopping."
   },
   "common": {
     "loading": "Chargement…",

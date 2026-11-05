@@ -15,7 +15,7 @@ async function resolveUri(): Promise<string> {
     const { MongoMemoryServer } = await import("mongodb-memory-server");
     const server = await MongoMemoryServer.create();
     console.log("[db] Using in-memory MongoDB (set MONGODB_URI to use Atlas)");
-    return server.getUri("voltiq");
+    return server.getUri("kaup");
   })();
   return g.__memUri;
 }
@@ -23,7 +23,7 @@ async function resolveUri(): Promise<string> {
 export async function db() {
   if (cache.conn) return cache.conn;
   cache.promise ??= resolveUri().then((uri) =>
-    mongoose.connect(uri, { bufferCommands: false, dbName: process.env.MONGODB_DB || "voltiq", maxPoolSize: 10 }),
+    mongoose.connect(uri, { bufferCommands: false, dbName: process.env.MONGODB_DB || "kaup", maxPoolSize: 10 }),
   );
   try {
     cache.conn = await cache.promise;

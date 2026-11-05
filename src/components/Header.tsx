@@ -12,6 +12,7 @@ import { useMe } from "@/lib/user-context";
 import { CATEGORIES } from "@/lib/catalog";
 import { countryName } from "@/lib/shipping";
 import { Logo } from "./Logo";
+import { ThemeToggle } from "./ThemeToggle";
 import { SearchBox } from "./SearchBox";
 import { useHydrated } from "./useHydrated";
 import { cn } from "@/lib/cn";
@@ -68,7 +69,7 @@ export function Header({ freeOver }: { freeOver: number }) {
 
   return (
     <>
-      <div className="relative z-50 overflow-hidden bg-ink text-[13px] font-semibold text-white">
+      <div className="relative z-50 overflow-hidden bg-night text-[13px] font-semibold text-white">
         <div className="mx-auto flex max-w-7xl items-center justify-center gap-2 px-4 py-2">
           <Zap size={14} className="text-lime" />
           <span className="truncate">{t("promo.bar", { amount: price(freeOver) })}</span>
@@ -77,7 +78,7 @@ export function Header({ freeOver }: { freeOver: number }) {
       <header ref={headerRef} className={cn("sticky top-0 z-50 transition-all duration-300", scrolled ? "bg-paper/85 shadow-[0_8px_30px_-12px_rgb(0_0_0/.18)] backdrop-blur-xl" : "bg-paper")} onMouseLeave={() => setMega(null)}>
         <div className="mx-auto flex h-[72px] max-w-7xl items-center gap-3 px-4 lg:gap-6">
           <button className="rounded-full p-2 lg:hidden" onClick={() => setMobile(true)} aria-label="Menu"><Menu /></button>
-          <Link href={href("/")} aria-label="VOLTIQ home"><Logo /></Link>
+          <Link href={href("/")} aria-label="KAUP home"><Logo /></Link>
 
           <nav className="hidden items-center gap-1 lg:flex">
             {(["phone", "pc"] as const).map((g) => (
@@ -97,6 +98,8 @@ export function Header({ freeOver }: { freeOver: number }) {
               <span className="leading-tight"><span className="block text-muted">{t("nav.deliverTo")}</span>
                 <span className="block max-w-[120px] truncate font-bold">{hydrated && place ? `${place.city}, ${place.country}` : "—"}</span></span>
             </button>
+
+            <ThemeToggle labels={{ dark: t("nav.dark"), light: t("nav.light") }} />
 
             <div className="relative">
               <button onClick={() => setMenu(menu === "lang" ? null : "lang")} className="flex items-center gap-1 rounded-full p-2.5 text-sm font-bold hover:bg-cream" aria-label={t("nav.language")}>
@@ -177,7 +180,7 @@ export function Header({ freeOver }: { freeOver: number }) {
                     </motion.div>
                   ))}
                 </div>
-                <Link href={href(`/search?group=${mega}`)} className="group relative overflow-hidden rounded-3xl bg-ink p-6 text-white">
+                <Link href={href(`/search?group=${mega}`)} className="group relative overflow-hidden rounded-3xl bg-night p-6 text-white">
                   <img src={mega === "phone" ? "/products/earbuds-white.svg" : "/products/keyboard-blue.svg"} alt="" className="absolute -bottom-6 -right-6 h-48 w-48 rounded-3xl opacity-90 transition-transform duration-500 group-hover:scale-110 group-hover:-rotate-3" />
                   <p className="relative font-display text-2xl font-bold">{t(`cat.${mega}`)}</p>
                   <p className="relative mt-2 inline-flex items-center gap-1 text-sm font-bold text-lime">{t("home.viewAll")} →</p>
@@ -201,7 +204,7 @@ export function Header({ freeOver }: { freeOver: number }) {
                   <p className="mb-2 font-display text-sm font-bold uppercase tracking-wider text-muted">{t(`nav.${g}`)}</p>
                   <div className="grid grid-cols-2 gap-2">
                     {CATEGORIES.filter((c) => c.group === g).map((c) => (
-                      <Link key={c.slug} href={href(`/search?cat=${c.slug}`)} className="flex items-center gap-2 rounded-xl bg-white p-2 text-sm font-semibold"><img src={`/products/${c.art}-${c.color}.svg`} alt="" className="h-9 w-9 rounded-lg" />{t(`cat.${c.slug}`)}</Link>
+                      <Link key={c.slug} href={href(`/search?cat=${c.slug}`)} className="flex items-center gap-2 rounded-xl bg-surface p-2 text-sm font-semibold"><img src={`/products/${c.art}-${c.color}.svg`} alt="" className="h-9 w-9 rounded-lg" />{t(`cat.${c.slug}`)}</Link>
                     ))}
                   </div>
                 </div>
@@ -220,7 +223,7 @@ function Pop({ open, children, className }: { open: boolean; children: React.Rea
     <AnimatePresence>
       {open && (
         <motion.div initial={{ opacity: 0, y: 6, scale: 0.97 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: 6, scale: 0.97 }} transition={{ duration: 0.16 }}
-          className={cn("absolute right-0 top-full z-50 mt-2 origin-top-right rounded-2xl border border-line bg-white p-2 shadow-2xl", className)}>
+          className={cn("absolute right-0 top-full z-50 mt-2 origin-top-right rounded-2xl border border-line bg-surface p-2 shadow-2xl", className)}>
           {children}
         </motion.div>
       )}

@@ -14,5 +14,6 @@ export default async function Success({ params }: { params: Promise<{ locale: st
   await db();
   const o = await Order.findOne({ _id: id, user: uid }).lean();
   if (!o) notFound();
-  return <SuccessClient o={plain<OrderView>(o)} />;
+  const { supplier: _s, ...safe } = o;
+  return <SuccessClient o={plain<OrderView>(safe)} />;
 }

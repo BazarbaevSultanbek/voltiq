@@ -11,7 +11,7 @@ export function AdminLogin() {
   const [err, setErr] = useState("");
   const [busy, setBusy] = useState(false);
   return (
-    <div className="grid min-h-screen place-items-center bg-ink p-4 grain relative">
+    <div className="grid min-h-screen place-items-center bg-night p-4 grain relative">
       <div className="absolute left-1/3 top-1/4 h-80 w-80 rounded-full bg-volt/30 blur-3xl" />
       <motion.form initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="relative w-full max-w-sm rounded-[2rem] bg-paper p-8 shadow-2xl"
         onSubmit={async (e) => {

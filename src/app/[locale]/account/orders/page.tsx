@@ -13,5 +13,6 @@ export default async function OrdersPage({ params }: { params: Promise<{ locale:
   if (!uid) redirect(`/${locale}/login?callbackUrl=/${locale}/account/orders`);
   await db();
   const orders = await Order.find({ user: uid, status: { $ne: "pending_payment" } }).sort({ createdAt: -1 }).lean();
-  return <OrdersClient orders={plain<OrderView[]>(orders)} />;
+  const safe = orders.map(({ supplier, ...o }) => ({ ...o, tracking: supplier?.trackNumber ? { number: supplier.trackNumber, carrier: supplier.logisticName } : null }));
+  return <OrdersClient orders={plain<OrderView[]>(safe)} />;
 }

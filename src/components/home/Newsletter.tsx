@@ -17,7 +17,7 @@ export function Newsletter() {
           <h2 className="font-display text-3xl font-black sm:text-5xl">{t("home.newsletterT")}</h2>
           <p className="mt-3 text-white/85">{t("home.newsletterD")}</p>
           {ok ? (
-            <p className="mt-8 flex items-center gap-2 text-lg font-bold"><Check className="rounded-full bg-white p-1 text-volt" />{t("home.newsletterOk")}</p>
+            <p className="mt-8 flex items-center gap-2 text-lg font-bold"><Check className="rounded-full bg-surface p-1 text-volt" />{t("home.newsletterOk")}</p>
           ) : (
             <form className="mt-8 flex max-w-md gap-2 rounded-full bg-white p-1.5" onSubmit={async (e) => { e.preventDefault(); const r = await fetch("/api/newsletter", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ email }) }); if (r.ok) setOk(true); }}>
               <input type="email" required value={email} onChange={(e) => setEmail(e.target.value)} placeholder={t("home.emailPlaceholder")} aria-label="Email" className="min-w-0 flex-1 bg-transparent px-4 font-semibold text-ink outline-none" />

@@ -70,7 +70,7 @@ export function ProfileClient() {
   return (
     <div className="mx-auto max-w-4xl px-4 pb-10 pt-8">
       <AccountTabs />
-      <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} className="relative overflow-hidden rounded-[2rem] bg-ink p-6 text-white sm:p-8">
+      <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} className="relative overflow-hidden rounded-[2rem] bg-night p-6 text-white sm:p-8">
         <div className="absolute -right-20 -top-20 h-64 w-64 rounded-full bg-volt/40 blur-3xl" />
         <div className="relative flex flex-wrap items-center gap-6">
           <div className="relative">
@@ -90,7 +90,7 @@ export function ProfileClient() {
       </motion.div>
 
       <div className="mt-6 grid gap-6 md:grid-cols-2">
-        <form onSubmit={save} className="rounded-[2rem] bg-white p-6 ring-1 ring-line md:col-span-2">
+        <form onSubmit={save} className="rounded-[2rem] bg-surface p-6 ring-1 ring-line md:col-span-2">
           <h2 className="mb-5 flex items-center gap-2 font-display text-lg font-bold"><UserRound size={20} className="text-volt" />{t("nav.profile")}</h2>
           <div className="grid gap-4 sm:grid-cols-2">
             <div><label className="label" htmlFor="p-name">{t("profile.name")}</label><input id="p-name" className="input" value={form.name} onChange={(e) => setF({ ...form, name: e.target.value })} /></div>
@@ -102,7 +102,7 @@ export function ProfileClient() {
           <button className="btn btn-primary mt-6" disabled={saving || !f}>{saving && <Loader2 size={16} className="animate-spin" />}{t("profile.save")}</button>
         </form>
 
-        <form onSubmit={changePw} className="rounded-[2rem] bg-white p-6 ring-1 ring-line">
+        <form onSubmit={changePw} className="rounded-[2rem] bg-surface p-6 ring-1 ring-line">
           <h2 className="mb-2 flex items-center gap-2 font-display text-lg font-bold"><KeyRound size={20} className="text-volt" />{t("profile.password")}</h2>
           {!me.hasPassword && <p className="mb-4 text-sm text-muted">{t("profile.noPasswordYet", { provider: oauth ? oauth[0].toUpperCase() + oauth.slice(1) : "Google" })}</p>}
           <div className="space-y-3">
@@ -114,7 +114,7 @@ export function ProfileClient() {
         </form>
 
         <div className="flex flex-col gap-6">
-          <div className="rounded-[2rem] bg-white p-6 ring-1 ring-line">
+          <div className="rounded-[2rem] bg-surface p-6 ring-1 ring-line">
             <h2 className="mb-4 flex items-center gap-2 font-display text-lg font-bold"><MapPin size={20} className="text-volt" />{t("profile.addresses")}</h2>
             {me.addresses.length === 0 ? <p className="text-sm text-muted">{t("profile.noAddresses")}</p> : (
               <ul className="space-y-2">{me.addresses.map((a) => (
@@ -125,7 +125,7 @@ export function ProfileClient() {
               </ul>
             )}
           </div>
-          <div className="rounded-[2rem] bg-white p-6 ring-1 ring-line">
+          <div className="rounded-[2rem] bg-surface p-6 ring-1 ring-line">
             <h2 className="font-display text-lg font-bold">{t("profile.logout")}</h2>
             <p className="mt-1 text-sm text-muted">{t("profile.logoutSub")}</p>
             <button onClick={() => signOut({ callbackUrl: href("/") })} className="btn mt-4 border-[1.5px] border-berry/30 text-berry hover:bg-berry hover:text-white"><LogOut size={16} />{t("profile.logout")}</button>

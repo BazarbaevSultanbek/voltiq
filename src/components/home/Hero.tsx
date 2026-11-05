@@ -19,7 +19,7 @@ export function Hero({ productCount }: { productCount: number }) {
   const words = [t("home.heroA"), t("home.heroB")];
 
   return (
-    <section className="relative overflow-hidden bg-ink text-white grain"
+    <section className="relative overflow-hidden bg-night text-white grain"
       onMouseMove={(e) => { const r = e.currentTarget.getBoundingClientRect(); mx.set((e.clientX - r.left) / r.width - 0.5); my.set((e.clientY - r.top) / r.height - 0.5); }}>
       <motion.div aria-hidden className="absolute -left-32 top-10 h-[520px] w-[520px] rounded-full bg-volt/40 blur-[120px]" animate={{ x: [0, 60, 0], y: [0, 40, 0] }} transition={{ duration: 14, repeat: Infinity, ease: "easeInOut" }} />
       <motion.div aria-hidden className="absolute -right-20 bottom-0 h-[420px] w-[420px] rounded-full bg-berry/30 blur-[120px]" animate={{ x: [0, -50, 0], y: [0, -30, 0] }} transition={{ duration: 16, repeat: Infinity, ease: "easeInOut" }} />
