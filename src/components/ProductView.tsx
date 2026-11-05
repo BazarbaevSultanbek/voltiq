@@ -4,10 +4,10 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { toast } from "sonner";
-import { Check, ChevronDown, ChevronRight, Minus, Plus, ShieldCheck, Star, Truck, RotateCcw, MapPin, Zap } from "lucide-react";
+import { Check, ChevronDown, ChevronRight, Minus, Plus, ShieldCheck, Star, Truck, Bell, MapPin, Zap } from "lucide-react";
 import { useI18n } from "@/i18n/client";
 import { useCart, useLocation } from "@/lib/store";
-import { quote, countryName } from "@/lib/shipping";
+import { quote, countryName, COUNTRIES } from "@/lib/shipping";
 import { ProductCard, type CardProduct } from "./ProductCard";
 import { CardBrands } from "./CardBrands";
 import { useHydrated } from "./useHydrated";
@@ -53,7 +53,7 @@ export function ProductView({ p, related, freeOver }: { p: FullProduct; related:
       <dl className="divide-y divide-line overflow-hidden rounded-2xl border border-line">
         {p.specs.map((s) => <div key={s.k} className="grid grid-cols-[40%_1fr] gap-4 bg-surface px-4 py-3 text-sm"><dt className="font-semibold text-muted">{s.k}</dt><dd className="font-bold">{s.v}</dd></div>)}
       </dl>) },
-    { id: "shipping", title: t("product.shipping"), body: <ul className="space-y-2 text-sm text-muted"><li>{t("product.freeOver", { amount: price(freeOver) })}</li><li>{t("product.returns")}</li><li>{t("product.secure")}</li></ul> },
+    { id: "shipping", title: t("product.shipping"), body: <ul className="space-y-2 text-sm text-muted">{freeOver > 0 && <li>{t("product.freeOver", { amount: price(freeOver) })}</li>}<li>{t("product.returns")}</li><li>{t("product.secure")}</li></ul> },
   ].filter((s) => s.id !== "specs" || p.specs.length);
 
   return (
@@ -163,7 +163,7 @@ export function ProductView({ p, related, freeOver }: { p: FullProduct; related:
           </div>
 
           <div className="mt-4 grid grid-cols-3 gap-2 text-center text-xs font-bold">
-            {[[ShieldCheck, t("home.why3t")], [RotateCcw, t("home.why4t")], [Truck, t("home.why2t")]].map(([I, l], i) => {
+            {[[ShieldCheck, t("home.why3t")], [Bell, t("home.why4t")], [Truck, t("home.why2t", { n: COUNTRIES.length })]].map(([I, l], i) => {
               const Icon = I as typeof ShieldCheck;
               return <div key={i} className="rounded-2xl bg-cream p-3"><Icon size={20} className="mx-auto mb-1 text-volt" />{l as string}</div>;
             })}

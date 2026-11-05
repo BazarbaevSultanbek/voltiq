@@ -1,7 +1,7 @@
 {
   "meta": {
-    "title": "KAUP — Phone & PC Accessories, Factory-Direct Prices",
-    "description": "Shop chargers, cables, power banks, earbuds, keyboards, mice, hubs, SSDs and more. Sourced directly from top factories, shipped worldwide with tracked delivery.",
+    "title": "KAUP — Phone & PC Accessories",
+    "description": "Shop chargers, cables, power banks, earbuds, keyboards, mice, hubs, storage and more. Delivery price and estimated dates are shown before you pay.",
     "searchTitle": "Search phone & PC accessories",
     "cartTitle": "Your cart",
     "checkoutTitle": "Checkout"
@@ -28,46 +28,29 @@
     "dark": "Dark mode",
     "light": "Light mode"
   },
-  "promo": {
-    "bar": "Free standard shipping on orders over {amount} · Secure card payments · 30-day returns"
-  },
   "home": {
-    "eyebrow": "New season drop",
     "heroA": "Power up",
     "heroB": "every device",
     "heroC": "you own.",
-    "heroSub": "Factory-direct phone and PC accessories. Premium quality, honest prices, delivered to your door.",
-    "ctaShop": "Shop the drop",
-    "ctaDeals": "Today's deals",
+    "heroSub": "Chargers, cables, earbuds, keyboards, mice and more. See the delivery price and estimated dates before you pay.",
+    "ctaShop": "Shop all products",
+    "ctaDeals": "On sale",
     "stat1": "Products",
-    "stat2": "Countries we ship to",
+    "stat2": "Countries we deliver to",
     "stat3": "Secure checkout",
     "shopBy": "Shop by category",
     "phoneTitle": "For your phone",
     "pcTitle": "For your PC & desk",
     "viewAll": "View all",
-    "trending": "Trending right now",
-    "trendingSub": "What shoppers are adding to cart this week.",
-    "dealsTitle": "Today's deals",
-    "dealsSub": "Ends in",
+    "trending": "Popular products",
+    "dealsTitle": "On sale",
     "newIn": "Fresh arrivals",
-    "bentoA": "Charge 3 devices from one brick",
-    "bentoB": "Clicky. Wireless. Yours.",
-    "bentoC": "Silence the world",
-    "bentoD": "Desk setup essentials",
-    "why1t": "Factory-direct prices",
-    "why1d": "We source straight from verified manufacturers, so you skip the middlemen.",
-    "why2t": "Tracked worldwide delivery",
-    "why2d": "Every order ships with tracking and a clear delivery window before you pay.",
-    "why3t": "Protected card payments",
-    "why3d": "Visa, Mastercard and UnionPay, processed with bank-grade encryption.",
-    "why4t": "30-day easy returns",
-    "why4d": "Not right? Send it back within 30 days of delivery.",
-    "newsletterT": "Get first dibs on drops",
-    "newsletterD": "Weekly deals and new arrivals. No spam, unsubscribe anytime.",
-    "newsletterBtn": "Subscribe",
-    "newsletterOk": "You're in! Watch your inbox.",
-    "emailPlaceholder": "you@email.com"
+    "why2t": "Delivery to {n} countries",
+    "why2d": "The delivery price and estimated dates for your country are shown before you pay.",
+    "why3t": "Secure card payments",
+    "why3d": "Visa, Mastercard and UnionPay, processed by Stripe. We never see your full card number.",
+    "why4t": "Order status updates",
+    "why4d": "Follow your order in your account. You get a notification every time its status changes."
   },
   "cat": {
     "chargers": "Chargers",
@@ -136,7 +119,7 @@
     "deliveryFrom": "from {price}",
     "arrives": "Arrives {from} – {to}",
     "freeOver": "Free standard shipping over {amount}",
-    "returns": "30-day returns. Refund to your original card.",
+    "returns": "Problem with your order? Contact us with your order number.",
     "secure": "Secure payment: Visa, Mastercard, UnionPay",
     "related": "You may also like",
     "new": "New",
@@ -302,7 +285,7 @@
     "change": "Change"
   },
   "footer": {
-    "tag": "Factory-direct tech accessories for every phone, laptop and desk.",
+    "tag": "Phone and PC accessories, delivered to your door.",
     "shop": "Shop",
     "help": "Help",
     "company": "Company",
@@ -319,11 +302,11 @@
   "pages": {
     "about": {
       "title": "About KAUP",
-      "body": "KAUP connects you with the same factories that build accessories for big-name brands. We hand-pick phone and PC accessories, check supplier quality and ratings, and ship them to you with tracked delivery. Our prices are honest: factory cost, shipping, and a fair margin, nothing hidden."
+      "body": "KAUP is an online store for phone and PC accessories. Products are supplied and shipped by our fulfilment partner, mostly from warehouses in China. The price you see includes the product and our margin; delivery is charged separately and shown before you pay."
     },
     "contact": {
       "title": "Contact us",
-      "body": "Questions about an order, a product or a return? Write to us and we'll reply within 24 hours on business days. Include your order number (for example KP-AB12CD) so we can help faster."
+      "body": "Questions about an order, a product or a delivery? Write to us and include your order number (for example KP-AB12CD) so we can help faster."
     },
     "faq": {
       "title": "Frequently asked questions",
@@ -336,15 +319,15 @@
       "q4": "Do I pay customs duties?",
       "a4": "Some countries charge import duty on parcels above a certain value. Any duties are set by your local customs office.",
       "q5": "Can I return an item?",
-      "a5": "Yes. Contact us within 30 days of delivery and we'll arrange a return and refund to your original card."
+      "a5": "If your item arrives damaged, faulty or isn't what you ordered, contact us with your order number and photos and we'll work out a solution with you."
     },
     "shipping": {
       "title": "Shipping information",
-      "body": "We ship to over 60 countries. Choose Standard, Express or Priority at checkout. The exact price and delivery window for your country are shown before you pay. Orders are processed within 1–2 business days."
+      "body": "Choose Standard, Express or Priority at checkout. The exact price and estimated delivery window for your country are shown before you pay. Delivery dates are estimates and can vary with customs and local carriers."
     },
     "returns": {
       "title": "Returns & refunds",
-      "body": "You can return most items within 30 days of delivery if they're unused and in original packaging. Defective items are replaced or refunded free of charge. Refunds go back to your original card within 5–10 business days after we receive the return."
+      "body": "If your item arrives damaged, faulty or isn't what you ordered, contact us with your order number and photos. We'll review it and arrange a replacement or a refund to your original card where appropriate."
     },
     "privacy": {
       "title": "Privacy policy",

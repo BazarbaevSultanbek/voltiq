@@ -7,6 +7,7 @@ import { SlidersHorizontal, X, SearchX, ChevronLeft, ChevronRight } from "lucide
 import { useI18n } from "@/i18n/client";
 import { CATEGORIES } from "@/lib/catalog";
 import { ProductCard, type CardProduct } from "./ProductCard";
+import { CategoryIcon } from "./CategoryIcon";
 import { cn } from "@/lib/cn";
 
 const SORTS = [["relevance", "sortRelevance"], ["popular", "sortPopular"], ["new", "sortNew"], ["price_asc", "sortPriceAsc"], ["price_desc", "sortPriceDesc"]] as const;
@@ -49,7 +50,7 @@ export function SearchClient({ items, total, page, pages }: { items: CardProduct
             {CATEGORIES.filter((c) => c.group === g).map((c) => (
               <button key={c.slug} onClick={() => set({ cat: cat === c.slug ? null : c.slug, group: null })}
                 className={cn("flex items-center gap-2 rounded-xl px-3 py-2 text-left text-sm font-semibold transition", cat === c.slug ? "bg-ink text-white" : "bg-surface hover:bg-cream lg:bg-transparent")}>
-                <img src={`/products/${c.art}-${c.color}.svg`} alt="" className="hidden h-7 w-7 rounded-lg lg:block" />{t(`cat.${c.slug}`)}
+                <CategoryIcon slug={c.slug} className="hidden h-7 w-7 lg:grid" size={15} />{t(`cat.${c.slug}`)}
               </button>
             ))}
           </div>

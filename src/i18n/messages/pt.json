@@ -1,7 +1,7 @@
 {
   "meta": {
-    "title": "KAUP — Acessórios para celular e PC com preço de fábrica",
-    "description": "Compre carregadores, cabos, power banks, fones, teclados, mouses, hubs, SSDs e muito mais. Direto das melhores fábricas, com entrega mundial e rastreamento.",
+    "title": "KAUP — Acessórios para celular e PC",
+    "description": "Compre carregadores, cabos, power banks, fones, teclados, mouses, hubs, armazenamento e mais. O preço e as datas de entrega aparecem antes do pagamento.",
     "searchTitle": "Buscar acessórios para celular e PC",
     "cartTitle": "Seu carrinho",
     "checkoutTitle": "Finalizar compra"
@@ -28,17 +28,13 @@
     "dark": "Modo escuro",
     "light": "Modo claro"
   },
-  "promo": {
-    "bar": "Frete padrão grátis acima de {amount} · Pagamento seguro com cartão · Devolução em 30 dias"
-  },
   "home": {
-    "eyebrow": "Nova coleção",
     "heroA": "Energia para",
     "heroB": "cada aparelho",
     "heroC": "que você tem.",
-    "heroSub": "Acessórios para celular e PC direto da fábrica. Qualidade premium, preços honestos, entregues na sua porta.",
-    "ctaShop": "Comprar agora",
-    "ctaDeals": "Ofertas do dia",
+    "heroSub": "Carregadores, cabos, fones, teclados, mouses e mais. Veja o preço do frete e as datas estimadas antes de pagar.",
+    "ctaShop": "Ver todos os produtos",
+    "ctaDeals": "Em promoção",
     "stat1": "Produtos",
     "stat2": "Países atendidos",
     "stat3": "Pagamento seguro",
@@ -46,28 +42,15 @@
     "phoneTitle": "Para o seu celular",
     "pcTitle": "Para o seu PC e mesa",
     "viewAll": "Ver tudo",
-    "trending": "Em alta agora",
-    "trendingSub": "O que os clientes estão colocando no carrinho esta semana.",
-    "dealsTitle": "Ofertas do dia",
-    "dealsSub": "Termina em",
+    "trending": "Produtos populares",
+    "dealsTitle": "Em promoção",
     "newIn": "Acabaram de chegar",
-    "bentoA": "Carregue 3 aparelhos com um só carregador",
-    "bentoB": "Clique. Sem fio. Seu.",
-    "bentoC": "Silencie o mundo",
-    "bentoD": "Essenciais para a mesa",
-    "why1t": "Preço de fábrica",
-    "why1d": "Compramos direto de fabricantes verificados, sem intermediários.",
-    "why2t": "Entrega mundial rastreada",
-    "why2d": "Todo pedido tem rastreamento e prazo de entrega claro antes de pagar.",
-    "why3t": "Pagamentos com cartão protegidos",
-    "why3d": "Visa, Mastercard e UnionPay, com criptografia de nível bancário.",
-    "why4t": "Devolução fácil em 30 dias",
-    "why4d": "Não gostou? Devolva em até 30 dias após a entrega.",
-    "newsletterT": "Saiba primeiro dos lançamentos",
-    "newsletterD": "Ofertas e novidades toda semana. Sem spam, cancele quando quiser.",
-    "newsletterBtn": "Inscrever-se",
-    "newsletterOk": "Pronto! Fique de olho no seu e-mail.",
-    "emailPlaceholder": "voce@email.com"
+    "why2t": "Entrega em {n} países",
+    "why2d": "O preço do frete e as datas estimadas para o seu país aparecem antes do pagamento.",
+    "why3t": "Pagamento seguro com cartão",
+    "why3d": "Visa, Mastercard e UnionPay, processados pela Stripe. Nunca vemos o número completo do seu cartão.",
+    "why4t": "Atualizações do pedido",
+    "why4d": "Acompanhe seu pedido na sua conta. Você recebe uma notificação sempre que o status muda."
   },
   "cat": {
     "chargers": "Carregadores",
@@ -136,7 +119,7 @@
     "deliveryFrom": "a partir de {price}",
     "arrives": "Chega {from} – {to}",
     "freeOver": "Frete padrão grátis acima de {amount}",
-    "returns": "Devolução em 30 dias. Reembolso no cartão original.",
+    "returns": "Problema com o pedido? Fale conosco informando o número do pedido.",
     "secure": "Pagamento seguro: Visa, Mastercard, UnionPay",
     "related": "Você também pode gostar",
     "new": "Novo",
@@ -302,7 +285,7 @@
     "change": "Alterar"
   },
   "footer": {
-    "tag": "Acessórios de tecnologia direto da fábrica para todo celular, notebook e mesa.",
+    "tag": "Acessórios para celular e PC, entregues na sua porta.",
     "shop": "Loja",
     "help": "Ajuda",
     "company": "Empresa",
@@ -319,11 +302,11 @@
   "pages": {
     "about": {
       "title": "Sobre a KAUP",
-      "body": "A KAUP conecta você às mesmas fábricas que produzem acessórios para grandes marcas. Selecionamos acessórios para celular e PC, verificamos a qualidade e a avaliação dos fornecedores e enviamos até você com rastreamento. Nossos preços são honestos: custo de fábrica, frete e uma margem justa, nada escondido."
+      "body": "A KAUP é uma loja online de acessórios para celular e PC. Os produtos são fornecidos e enviados pelo nosso parceiro logístico, principalmente a partir de armazéns na China. O preço inclui o produto e a nossa margem; o frete é cobrado à parte e mostrado antes do pagamento."
     },
     "contact": {
       "title": "Fale conosco",
-      "body": "Dúvidas sobre um pedido, produto ou devolução? Escreva para nós e responderemos em até 24 horas em dias úteis. Informe o número do pedido (por exemplo KP-AB12CD) para agilizar."
+      "body": "Dúvidas sobre um pedido, produto ou entrega? Escreva para nós e inclua o número do pedido (por exemplo KP-AB12CD) para ajudarmos mais rápido."
     },
     "faq": {
       "title": "Perguntas frequentes",
@@ -336,15 +319,15 @@
       "q4": "Vou pagar taxas alfandegárias?",
       "a4": "Alguns países cobram imposto de importação em encomendas acima de certo valor. As taxas são definidas pela alfândega local.",
       "q5": "Posso devolver um item?",
-      "a5": "Sim. Fale conosco em até 30 dias após a entrega e organizamos a devolução e o reembolso no seu cartão."
+      "a5": "Se o item chegar danificado, com defeito ou diferente do que você pediu, fale conosco com o número do pedido e fotos, e vamos encontrar uma solução com você."
     },
     "shipping": {
       "title": "Informações de entrega",
-      "body": "Entregamos em mais de 60 países. Escolha Padrão, Expresso ou Prioritário no checkout. O preço exato e o prazo para o seu país aparecem antes do pagamento. Os pedidos são processados em 1–2 dias úteis."
+      "body": "Escolha frete Padrão, Expresso ou Prioritário no checkout. O preço exato e o prazo estimado para o seu país aparecem antes do pagamento. As datas são estimativas e podem variar por alfândega e transportadoras locais."
     },
     "returns": {
       "title": "Trocas e reembolsos",
-      "body": "A maioria dos itens pode ser devolvida em até 30 dias após a entrega, sem uso e na embalagem original. Itens com defeito são trocados ou reembolsados sem custo. O reembolso volta ao seu cartão em 5–10 dias úteis após recebermos a devolução."
+      "body": "Se o item chegar danificado, com defeito ou diferente do que você pediu, fale conosco com o número do pedido e fotos. Vamos analisar e, quando for o caso, enviar um substituto ou reembolsar no seu cartão original."
     },
     "privacy": {
       "title": "Política de privacidade",

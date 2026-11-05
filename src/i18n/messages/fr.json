@@ -1,7 +1,7 @@
 {
   "meta": {
-    "title": "KAUP — Accessoires téléphone & PC au prix usine",
-    "description": "Chargeurs, câbles, batteries externes, écouteurs, claviers, souris, hubs, SSD et plus. Directement des meilleures usines, livrés dans le monde entier avec suivi.",
+    "title": "KAUP — Accessoires téléphone et PC",
+    "description": "Chargeurs, câbles, batteries externes, écouteurs, claviers, souris, hubs, stockage et plus. Le prix et les dates de livraison sont affichés avant le paiement.",
     "searchTitle": "Rechercher des accessoires téléphone & PC",
     "cartTitle": "Votre panier",
     "checkoutTitle": "Paiement"
@@ -28,17 +28,13 @@
     "dark": "Mode sombre",
     "light": "Mode clair"
   },
-  "promo": {
-    "bar": "Livraison standard offerte dès {amount} · Paiement par carte sécurisé · Retours sous 30 jours"
-  },
   "home": {
-    "eyebrow": "Nouvelle collection",
     "heroA": "Boostez",
     "heroB": "chacun de",
     "heroC": "vos appareils.",
-    "heroSub": "Accessoires téléphone et PC en direct d'usine. Qualité premium, prix honnêtes, livrés chez vous.",
-    "ctaShop": "Découvrir",
-    "ctaDeals": "Promos du jour",
+    "heroSub": "Chargeurs, câbles, écouteurs, claviers, souris et plus. Le prix de livraison et les dates estimées sont affichés avant le paiement.",
+    "ctaShop": "Voir tous les produits",
+    "ctaDeals": "En promotion",
     "stat1": "Produits",
     "stat2": "Pays livrés",
     "stat3": "Paiement sécurisé",
@@ -46,28 +42,15 @@
     "phoneTitle": "Pour votre téléphone",
     "pcTitle": "Pour votre PC & bureau",
     "viewAll": "Tout voir",
-    "trending": "Tendances du moment",
-    "trendingSub": "Ce que les clients ajoutent au panier cette semaine.",
-    "dealsTitle": "Promos du jour",
-    "dealsSub": "Se termine dans",
+    "trending": "Produits populaires",
+    "dealsTitle": "En promotion",
     "newIn": "Nouveaux arrivages",
-    "bentoA": "Chargez 3 appareils avec un seul chargeur",
-    "bentoB": "Clic. Sans fil. À vous.",
-    "bentoC": "Coupez le bruit du monde",
-    "bentoD": "L'essentiel du bureau",
-    "why1t": "Prix usine",
-    "why1d": "Nous achetons directement auprès de fabricants vérifiés, sans intermédiaires.",
-    "why2t": "Livraison mondiale suivie",
-    "why2d": "Chaque commande est suivie, avec une fenêtre de livraison claire avant de payer.",
-    "why3t": "Paiements par carte protégés",
-    "why3d": "Visa, Mastercard et UnionPay, avec un chiffrement de niveau bancaire.",
-    "why4t": "Retours faciles sous 30 jours",
-    "why4d": "Pas convaincu ? Renvoyez-le dans les 30 jours suivant la livraison.",
-    "newsletterT": "Soyez les premiers informés",
-    "newsletterD": "Promos et nouveautés chaque semaine. Pas de spam, désinscription à tout moment.",
-    "newsletterBtn": "S'abonner",
-    "newsletterOk": "C'est fait ! Surveillez votre boîte mail.",
-    "emailPlaceholder": "vous@email.com"
+    "why2t": "Livraison dans {n} pays",
+    "why2d": "Le prix de livraison et les dates estimées pour votre pays sont affichés avant le paiement.",
+    "why3t": "Paiement par carte sécurisé",
+    "why3d": "Visa, Mastercard et UnionPay, traités par Stripe. Nous ne voyons jamais votre numéro de carte complet.",
+    "why4t": "Suivi du statut de commande",
+    "why4d": "Suivez votre commande dans votre compte. Vous recevez une notification à chaque changement de statut."
   },
   "cat": {
     "chargers": "Chargeurs",
@@ -136,7 +119,7 @@
     "deliveryFrom": "à partir de {price}",
     "arrives": "Arrive le {from} – {to}",
     "freeOver": "Livraison standard offerte dès {amount}",
-    "returns": "Retours sous 30 jours. Remboursement sur votre carte.",
+    "returns": "Un problème avec votre commande ? Contactez-nous avec votre numéro de commande.",
     "secure": "Paiement sécurisé : Visa, Mastercard, UnionPay",
     "related": "Vous aimerez aussi",
     "new": "Nouveau",
@@ -302,7 +285,7 @@
     "change": "Modifier"
   },
   "footer": {
-    "tag": "Accessoires tech en direct d'usine pour chaque téléphone, ordinateur et bureau.",
+    "tag": "Accessoires pour téléphone et PC, livrés chez vous.",
     "shop": "Boutique",
     "help": "Aide",
     "company": "Entreprise",
@@ -319,11 +302,11 @@
   "pages": {
     "about": {
       "title": "À propos de KAUP",
-      "body": "KAUP vous relie aux mêmes usines qui fabriquent des accessoires pour les grandes marques. Nous sélectionnons des accessoires pour téléphone et PC, vérifions la qualité et les notes des fournisseurs, puis vous les expédions avec suivi. Nos prix sont honnêtes : coût usine, livraison et une marge juste, rien de caché."
+      "body": "KAUP est une boutique en ligne d'accessoires pour téléphone et PC. Les produits sont fournis et expédiés par notre partenaire logistique, principalement depuis des entrepôts en Chine. Le prix affiché comprend le produit et notre marge ; la livraison est facturée à part et affichée avant le paiement."
     },
     "contact": {
       "title": "Nous contacter",
-      "body": "Une question sur une commande, un produit ou un retour ? Écrivez-nous, nous répondons sous 24 h les jours ouvrés. Indiquez votre numéro de commande (par exemple KP-AB12CD) pour une aide plus rapide."
+      "body": "Une question sur une commande, un produit ou une livraison ? Écrivez-nous en indiquant votre numéro de commande (par exemple KP-AB12CD) pour que nous puissions vous aider plus vite."
     },
     "faq": {
       "title": "Questions fréquentes",
@@ -336,15 +319,15 @@
       "q4": "Dois-je payer des droits de douane ?",
       "a4": "Certains pays taxent les colis au-delà d'une certaine valeur. Ces droits sont fixés par votre douane locale.",
       "q5": "Puis-je retourner un article ?",
-      "a5": "Oui. Contactez-nous dans les 30 jours suivant la livraison et nous organiserons le retour et le remboursement sur votre carte."
+      "a5": "Si votre article arrive endommagé, défectueux ou ne correspond pas à votre commande, contactez-nous avec votre numéro de commande et des photos, et nous trouverons une solution avec vous."
     },
     "shipping": {
       "title": "Informations de livraison",
-      "body": "Nous livrons dans plus de 60 pays. Choisissez Standard, Express ou Prioritaire au paiement. Le prix exact et le délai pour votre pays sont affichés avant de payer. Les commandes sont traitées sous 1 à 2 jours ouvrés."
+      "body": "Choisissez la livraison Standard, Express ou Prioritaire lors du paiement. Le prix exact et le délai de livraison estimé pour votre pays sont affichés avant le paiement. Les dates sont estimées et peuvent varier selon la douane et les transporteurs locaux."
     },
     "returns": {
       "title": "Retours & remboursements",
-      "body": "La plupart des articles peuvent être retournés dans les 30 jours suivant la livraison s'ils sont neufs et dans leur emballage d'origine. Les articles défectueux sont remplacés ou remboursés gratuitement. Le remboursement arrive sur votre carte sous 5 à 10 jours ouvrés après réception du retour."
+      "body": "Si votre article arrive endommagé, défectueux ou ne correspond pas à votre commande, contactez-nous avec votre numéro de commande et des photos. Nous examinerons la demande et, le cas échéant, organiserons un remplacement ou un remboursement sur votre carte d'origine."
     },
     "privacy": {
       "title": "Politique de confidentialité",

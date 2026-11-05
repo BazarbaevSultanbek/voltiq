@@ -1,27 +1,22 @@
 export type Group = "phone" | "pc";
-export type Category = { slug: string; group: Group; art: string; color: string };
+export type Category = { slug: string; group: Group };
 
 export const CATEGORIES: Category[] = [
-  { slug: "chargers", group: "phone", art: "charger", color: "lime" },
-  { slug: "cables", group: "phone", art: "cable", color: "orange" },
-  { slug: "power-banks", group: "phone", art: "powerbank", color: "black" },
-  { slug: "cases", group: "phone", art: "case", color: "blue" },
-  { slug: "screen-protectors", group: "phone", art: "protector", color: "blue" },
-  { slug: "audio", group: "phone", art: "earbuds", color: "white" },
-  { slug: "mounts", group: "phone", art: "mount", color: "blue" },
-  { slug: "wearables", group: "phone", art: "watchband", color: "black" },
-  { slug: "keyboards", group: "pc", art: "keyboard", color: "blue" },
-  { slug: "mice", group: "pc", art: "mouse", color: "lime" },
-  { slug: "mousepads", group: "pc", art: "mousepad", color: "orange" },
-  { slug: "webcams", group: "pc", art: "webcam", color: "blue" },
-  { slug: "hubs", group: "pc", art: "hub", color: "black" },
-  { slug: "storage", group: "pc", art: "ssd", color: "orange" },
-  { slug: "stands", group: "pc", art: "laptopstand", color: "lime" },
-  { slug: "gaming", group: "pc", art: "controller", color: "orange" },
-  { slug: "lighting", group: "pc", art: "ringlight", color: "lime" },
+  { slug: "chargers", group: "phone" },
+  { slug: "cables", group: "phone" },
+  { slug: "power-banks", group: "phone" },
+  { slug: "cases", group: "phone" },
+  { slug: "screen-protectors", group: "phone" },
+  { slug: "audio", group: "phone" },
+  { slug: "mounts", group: "phone" },
+  { slug: "wearables", group: "phone" },
+  { slug: "keyboards", group: "pc" },
+  { slug: "mice", group: "pc" },
+  { slug: "mousepads", group: "pc" },
+  { slug: "webcams", group: "pc" },
+  { slug: "hubs", group: "pc" },
+  { slug: "storage", group: "pc" },
+  { slug: "stands", group: "pc" },
+  { slug: "gaming", group: "pc" },
+  { slug: "lighting", group: "pc" },
 ];
-
-export const categoryArt = (slug: string) => {
-  const c = CATEGORIES.find((x) => x.slug === slug);
-  return c ? `/products/${c.art}-${c.color}.svg` : "/products/charger-orange.svg";
-};

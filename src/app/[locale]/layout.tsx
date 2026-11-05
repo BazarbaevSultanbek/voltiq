@@ -8,7 +8,6 @@ import { Providers } from "@/components/Providers";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { themeInitScript } from "@/components/ThemeToggle";
-import { getSettings } from "@/lib/settings";
 
 import { siteUrl } from "@/lib/site";
 
@@ -37,7 +36,6 @@ export default async function LocaleLayout({ children, params }: { children: Rea
   const { locale } = await params;
   if (!isLocale(locale)) notFound();
   const dict = await getDict(locale as Locale);
-  const { freeShippingOver } = await getSettings();
   const orgLd = {
     "@context": "https://schema.org", "@type": "OnlineStore", name: "KAUP", url: siteUrl,
     logo: `${siteUrl}/icon.svg`, description: dict.meta.description,
@@ -49,7 +47,7 @@ export default async function LocaleLayout({ children, params }: { children: Rea
       <body className="min-h-screen">
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(orgLd) }} />
         <Providers locale={locale as Locale} dict={dict}>
-          <Header freeOver={freeShippingOver} />
+          <Header />
           <main>{children}</main>
           <Footer />
         </Providers>

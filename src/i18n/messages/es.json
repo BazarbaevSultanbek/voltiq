@@ -1,7 +1,7 @@
 {
   "meta": {
-    "title": "KAUP — Accesorios para móvil y PC a precio de fábrica",
-    "description": "Compra cargadores, cables, power banks, auriculares, teclados, ratones, hubs, SSD y más. Directo de las mejores fábricas, con envío internacional y seguimiento.",
+    "title": "KAUP — Accesorios para móvil y PC",
+    "description": "Compra cargadores, cables, baterías externas, auriculares, teclados, ratones, hubs, almacenamiento y más. El precio y las fechas de entrega se muestran antes de pagar.",
     "searchTitle": "Buscar accesorios para móvil y PC",
     "cartTitle": "Tu carrito",
     "checkoutTitle": "Finalizar compra"
@@ -28,46 +28,29 @@
     "dark": "Modo oscuro",
     "light": "Modo claro"
   },
-  "promo": {
-    "bar": "Envío estándar gratis en pedidos desde {amount} · Pago seguro con tarjeta · Devoluciones en 30 días"
-  },
   "home": {
-    "eyebrow": "Nueva temporada",
     "heroA": "Dale energía",
     "heroB": "a cada",
     "heroC": "dispositivo.",
-    "heroSub": "Accesorios para móvil y PC directos de fábrica. Calidad premium, precios honestos, entrega en tu puerta.",
-    "ctaShop": "Comprar ahora",
-    "ctaDeals": "Ofertas del día",
+    "heroSub": "Cargadores, cables, auriculares, teclados, ratones y más. Ve el precio del envío y las fechas estimadas antes de pagar.",
+    "ctaShop": "Ver todos los productos",
+    "ctaDeals": "En oferta",
     "stat1": "Productos",
-    "stat2": "Países de envío",
+    "stat2": "Países de entrega",
     "stat3": "Pago seguro",
     "shopBy": "Compra por categoría",
     "phoneTitle": "Para tu móvil",
     "pcTitle": "Para tu PC y escritorio",
     "viewAll": "Ver todo",
-    "trending": "Tendencia ahora",
-    "trendingSub": "Lo que más se añade al carrito esta semana.",
-    "dealsTitle": "Ofertas del día",
-    "dealsSub": "Termina en",
+    "trending": "Productos populares",
+    "dealsTitle": "En oferta",
     "newIn": "Recién llegados",
-    "bentoA": "Carga 3 dispositivos con un solo cargador",
-    "bentoB": "Clic. Inalámbrico. Tuyo.",
-    "bentoC": "Silencia el mundo",
-    "bentoD": "Imprescindibles del escritorio",
-    "why1t": "Precios de fábrica",
-    "why1d": "Compramos directamente a fabricantes verificados, sin intermediarios.",
-    "why2t": "Envío internacional con seguimiento",
-    "why2d": "Cada pedido incluye seguimiento y un plazo de entrega claro antes de pagar.",
-    "why3t": "Pagos con tarjeta protegidos",
-    "why3d": "Visa, Mastercard y UnionPay, con cifrado de nivel bancario.",
-    "why4t": "Devolución fácil en 30 días",
-    "why4d": "¿No te convence? Devuélvelo en los 30 días siguientes a la entrega.",
-    "newsletterT": "Sé el primero en enterarte",
-    "newsletterD": "Ofertas y novedades cada semana. Sin spam, date de baja cuando quieras.",
-    "newsletterBtn": "Suscribirme",
-    "newsletterOk": "¡Listo! Revisa tu correo.",
-    "emailPlaceholder": "tu@email.com"
+    "why2t": "Envío a {n} países",
+    "why2d": "El precio del envío y las fechas estimadas para tu país se muestran antes de pagar.",
+    "why3t": "Pagos seguros con tarjeta",
+    "why3d": "Visa, Mastercard y UnionPay, procesados por Stripe. Nunca vemos el número completo de tu tarjeta.",
+    "why4t": "Avisos del estado del pedido",
+    "why4d": "Sigue tu pedido desde tu cuenta. Recibes una notificación cada vez que cambia su estado."
   },
   "cat": {
     "chargers": "Cargadores",
@@ -136,7 +119,7 @@
     "deliveryFrom": "desde {price}",
     "arrives": "Llega {from} – {to}",
     "freeOver": "Envío estándar gratis desde {amount}",
-    "returns": "Devoluciones en 30 días. Reembolso a tu tarjeta original.",
+    "returns": "¿Algún problema con tu pedido? Escríbenos con tu número de pedido.",
     "secure": "Pago seguro: Visa, Mastercard, UnionPay",
     "related": "También te puede gustar",
     "new": "Nuevo",
@@ -302,7 +285,7 @@
     "change": "Cambiar"
   },
   "footer": {
-    "tag": "Accesorios tecnológicos directos de fábrica para cada móvil, portátil y escritorio.",
+    "tag": "Accesorios para móvil y PC, entregados en tu puerta.",
     "shop": "Tienda",
     "help": "Ayuda",
     "company": "Empresa",
@@ -319,11 +302,11 @@
   "pages": {
     "about": {
       "title": "Sobre KAUP",
-      "body": "KAUP te conecta con las mismas fábricas que producen accesorios para grandes marcas. Seleccionamos accesorios para móvil y PC, comprobamos la calidad y valoración de cada proveedor y te los enviamos con seguimiento. Nuestros precios son honestos: coste de fábrica, envío y un margen justo, sin nada oculto."
+      "body": "KAUP es una tienda online de accesorios para móvil y PC. Los productos los suministra y envía nuestro socio logístico, principalmente desde almacenes en China. El precio que ves incluye el producto y nuestro margen; el envío se cobra aparte y se muestra antes de pagar."
     },
     "contact": {
       "title": "Contáctanos",
-      "body": "¿Dudas sobre un pedido, un producto o una devolución? Escríbenos y te responderemos en 24 horas en días laborables. Incluye tu número de pedido (por ejemplo KP-AB12CD) para ayudarte más rápido."
+      "body": "¿Dudas sobre un pedido, un producto o una entrega? Escríbenos e incluye tu número de pedido (por ejemplo KP-AB12CD) para ayudarte más rápido."
     },
     "faq": {
       "title": "Preguntas frecuentes",
@@ -336,15 +319,15 @@
       "q4": "¿Tengo que pagar aduanas?",
       "a4": "Algunos países cobran aranceles a los paquetes que superan cierto valor. Los aranceles los fija la aduana local.",
       "q5": "¿Puedo devolver un artículo?",
-      "a5": "Sí. Contáctanos en los 30 días siguientes a la entrega y organizaremos la devolución y el reembolso a tu tarjeta."
+      "a5": "Si tu artículo llega dañado, defectuoso o no es lo que pediste, contáctanos con tu número de pedido y fotos y buscaremos una solución contigo."
     },
     "shipping": {
       "title": "Información de envío",
-      "body": "Enviamos a más de 60 países. Elige Estándar, Exprés o Prioritario al finalizar la compra. El precio exacto y el plazo de entrega para tu país se muestran antes de pagar. Los pedidos se procesan en 1–2 días hábiles."
+      "body": "Elige envío Estándar, Exprés o Prioritario al pagar. El precio exacto y la ventana de entrega estimada para tu país se muestran antes de pagar. Las fechas son estimadas y pueden variar por aduanas y transportistas locales."
     },
     "returns": {
       "title": "Devoluciones y reembolsos",
-      "body": "Puedes devolver la mayoría de artículos en los 30 días siguientes a la entrega si no se han usado y están en su embalaje original. Los artículos defectuosos se reemplazan o reembolsan sin coste. El reembolso llega a tu tarjeta en 5–10 días hábiles tras recibir la devolución."
+      "body": "Si tu artículo llega dañado, defectuoso o no es lo que pediste, contáctanos con tu número de pedido y fotos. Lo revisaremos y, cuando corresponda, te enviaremos un reemplazo o te reembolsaremos en tu tarjeta original."
     },
     "privacy": {
       "title": "Política de privacidad",

@@ -22,11 +22,6 @@ export default async function Login({ params, searchParams }: { params: Promise<
         <div className="hidden lg:block">
           <h1 className="font-display text-5xl font-black leading-tight">{d.auth.welcome}</h1>
           <p className="mt-4 max-w-md text-lg text-muted">{d.auth.sub}</p>
-          <div className="mt-10 grid max-w-md grid-cols-3 gap-3">
-            {["earbuds-white", "powerbank-lime", "mouse-orange", "case-blue", "watchband-black", "keyboard-white"].map((s, i) => (
-              <img key={s} src={`/products/${s}.svg`} alt="" className="rounded-3xl shadow-lg animate-float" style={{ animationDelay: `${i * 0.4}s` }} />
-            ))}
-          </div>
         </div>
         <div className="mx-auto w-full max-w-md">
           <h1 className="mb-6 font-display text-3xl font-black lg:hidden">{d.auth.welcome}</h1>

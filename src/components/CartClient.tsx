@@ -17,7 +17,7 @@ export function CartClient({ freeOver }: { freeOver: number }) {
   const sub = cartSubtotal(items);
   const n = cartCount(items);
   const left = Math.max(0, freeOver - sub);
-  const pct = Math.min(100, (sub / freeOver) * 100);
+  const pct = freeOver > 0 ? Math.min(100, (sub / freeOver) * 100) : 0;
 
   if (!items.length) {
     return (
@@ -40,10 +40,10 @@ export function CartClient({ freeOver }: { freeOver: number }) {
       </div>
       <div className="grid gap-8 lg:grid-cols-[1fr_380px]">
         <div>
-          <div className="mb-5 rounded-2xl bg-surface p-4 ring-1 ring-line">
+          {freeOver > 0 && <div className="mb-5 rounded-2xl bg-surface p-4 ring-1 ring-line">
             <p className="flex items-center gap-2 text-sm font-bold"><Truck size={18} className="text-volt" />{left > 0 ? t("cart.freeProgress", { amount: price(left) }) : t("cart.freeUnlocked")}</p>
             <div className="mt-3 h-2.5 overflow-hidden rounded-full bg-cream"><motion.div className="h-full rounded-full bg-gradient-to-r from-volt to-lime-dark" initial={{ width: 0 }} animate={{ width: `${pct}%` }} transition={{ type: "spring", damping: 20 }} /></div>
-          </div>
+          </div>}
           <ul className="space-y-3">
             <AnimatePresence initial={false}>
               {items.map((it) => (

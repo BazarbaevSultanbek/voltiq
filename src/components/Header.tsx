@@ -4,7 +4,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { signOut } from "next-auth/react";
-import { Bell, ChevronDown, Globe, MapPin, Menu, Search, ShoppingBag, User, X, LogOut, Package, Zap } from "lucide-react";
+import { Bell, ChevronDown, Globe, MapPin, Menu, Search, ShoppingBag, User, X, LogOut, Package, Smartphone, Laptop } from "lucide-react";
 import { useI18n } from "@/i18n/client";
 import { locales, localeNames, type Locale } from "@/i18n/config";
 import { useCart, cartCount, useLocation } from "@/lib/store";
@@ -14,12 +14,13 @@ import { countryName } from "@/lib/shipping";
 import { Logo } from "./Logo";
 import { ThemeToggle } from "./ThemeToggle";
 import { SearchBox } from "./SearchBox";
+import { CategoryIcon } from "./CategoryIcon";
 import { useHydrated } from "./useHydrated";
 import { cn } from "@/lib/cn";
 
 type Notif = { _id: string; key: string; vars: Record<string, string>; link?: string; read: boolean; createdAt: string };
 
-export function Header({ freeOver }: { freeOver: number }) {
+export function Header() {
   const { t, href, locale, price } = useI18n();
   const items = useCart((s) => s.items);
   const bump = useCart((s) => s.bump);
@@ -69,12 +70,6 @@ export function Header({ freeOver }: { freeOver: number }) {
 
   return (
     <>
-      <div className="relative z-50 overflow-hidden bg-night text-[13px] font-semibold text-white">
-        <div className="mx-auto flex max-w-7xl items-center justify-center gap-2 px-4 py-2">
-          <Zap size={14} className="text-lime" />
-          <span className="truncate">{t("promo.bar", { amount: price(freeOver) })}</span>
-        </div>
-      </div>
       <header ref={headerRef} className={cn("sticky top-0 z-50 transition-all duration-300", scrolled ? "bg-paper/85 shadow-[0_8px_30px_-12px_rgb(0_0_0/.18)] backdrop-blur-xl" : "bg-paper")} onMouseLeave={() => setMega(null)}>
         <div className="mx-auto flex h-[72px] max-w-7xl items-center gap-3 px-4 lg:gap-6">
           <button className="rounded-full p-2 lg:hidden" onClick={() => setMobile(true)} aria-label="Menu"><Menu /></button>
@@ -174,14 +169,14 @@ export function Header({ freeOver }: { freeOver: number }) {
                   {CATEGORIES.filter((c) => c.group === mega).map((c, i) => (
                     <motion.div key={c.slug} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.03 }}>
                       <Link href={href(`/search?cat=${c.slug}`)} className="group flex items-center gap-3 rounded-2xl p-2 hover:bg-cream">
-                        <img src={`/products/${c.art}-${c.color}.svg`} alt="" className="h-14 w-14 rounded-xl transition-transform group-hover:scale-110" />
+                        <CategoryIcon slug={c.slug} className="h-14 w-14 rounded-xl transition-transform group-hover:scale-110" size={24} />
                         <span className="font-bold">{t(`cat.${c.slug}`)}</span>
                       </Link>
                     </motion.div>
                   ))}
                 </div>
                 <Link href={href(`/search?group=${mega}`)} className="group relative overflow-hidden rounded-3xl bg-night p-6 text-white">
-                  <img src={mega === "phone" ? "/products/earbuds-white.svg" : "/products/keyboard-blue.svg"} alt="" className="absolute -bottom-6 -right-6 h-48 w-48 rounded-3xl opacity-90 transition-transform duration-500 group-hover:scale-110 group-hover:-rotate-3" />
+                  {mega === "phone" ? <Smartphone aria-hidden size={150} strokeWidth={1.25} className="absolute -bottom-6 -right-4 text-white/15 transition-transform duration-500 group-hover:scale-110 group-hover:-rotate-6" /> : <Laptop aria-hidden size={160} strokeWidth={1.25} className="absolute -bottom-6 -right-6 text-white/15 transition-transform duration-500 group-hover:scale-110 group-hover:-rotate-6" />}
                   <p className="relative font-display text-2xl font-bold">{t(`cat.${mega}`)}</p>
                   <p className="relative mt-2 inline-flex items-center gap-1 text-sm font-bold text-lime">{t("home.viewAll")} →</p>
                 </Link>
@@ -204,7 +199,7 @@ export function Header({ freeOver }: { freeOver: number }) {
                   <p className="mb-2 font-display text-sm font-bold uppercase tracking-wider text-muted">{t(`nav.${g}`)}</p>
                   <div className="grid grid-cols-2 gap-2">
                     {CATEGORIES.filter((c) => c.group === g).map((c) => (
-                      <Link key={c.slug} href={href(`/search?cat=${c.slug}`)} className="flex items-center gap-2 rounded-xl bg-surface p-2 text-sm font-semibold"><img src={`/products/${c.art}-${c.color}.svg`} alt="" className="h-9 w-9 rounded-lg" />{t(`cat.${c.slug}`)}</Link>
+                      <Link key={c.slug} href={href(`/search?cat=${c.slug}`)} className="flex items-center gap-2 rounded-xl bg-surface p-2 text-sm font-semibold"><CategoryIcon slug={c.slug} className="h-9 w-9" size={16} />{t(`cat.${c.slug}`)}</Link>
                     ))}
                   </div>
                 </div>
