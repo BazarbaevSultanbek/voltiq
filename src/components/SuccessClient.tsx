@@ -6,6 +6,7 @@ import { toast } from "sonner";
 import { CalendarClock, MapPin, CreditCard, Package, ArrowRight } from "lucide-react";
 import { useI18n } from "@/i18n/client";
 import { countryName } from "@/lib/shipping";
+import { formatDate } from "@/i18n/date";
 
 export type OrderView = {
   _id: string; number: string; status: string; total: number; subtotal: number; shipping: number; createdAt: string;
@@ -19,7 +20,7 @@ const COLORS = ["#ff5b14", "#c8f43c", "#ff2e63", "#3d7bff", "#0d0d12"];
 
 export function SuccessClient({ o }: { o: OrderView }) {
   const { t, href, price, locale } = useI18n();
-  const fmt = (d: string) => new Date(d).toLocaleDateString(locale, { weekday: "short", month: "long", day: "numeric" });
+  const fmt = (d: string) => formatDate(locale, d, { weekday: "short", month: "long", day: "numeric" });
   useEffect(() => { toast.success(t("success.title"), { description: t("success.notified") }); }, [t]);
 
   return (

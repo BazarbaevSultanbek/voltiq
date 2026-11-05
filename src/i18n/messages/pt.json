@@ -342,7 +342,24 @@
   "notif": {
     "orderPlaced": "Pedido {number} aceito! Entrega estimada {eta}.",
     "orderStatus": "O pedido {number} agora está: {status}.",
-    "welcome": "Bem-vindo à KAUP, {name}! Boas compras."
+    "welcome": "Bem-vindo à KAUP, {name}! Boas compras.",
+    "reviewAsk": "O que achou de {title}? Dê estrelas e deixe um comentário."
+  },
+  "reviews": {
+    "title": "Avaliações",
+    "empty": "Ainda não há avaliações.",
+    "write": "Escrever avaliação",
+    "edit": "Editar sua avaliação",
+    "yourRating": "Sua nota",
+    "placeholder": "Do que você gostou ou não gostou? (opcional)",
+    "submit": "Publicar avaliação",
+    "update": "Atualizar avaliação",
+    "thanks": "Obrigado! Sua avaliação foi publicada.",
+    "verified": "Compra verificada",
+    "onlyBuyers": "Só clientes que compraram este produto podem avaliar.",
+    "signIn": "Entre para deixar uma avaliação",
+    "pickStars": "Escolha de 1 a 5 estrelas.",
+    "rate": "Avaliar"
   },
   "common": {
     "loading": "Carregando…",

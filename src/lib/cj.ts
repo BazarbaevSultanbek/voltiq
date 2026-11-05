@@ -8,6 +8,7 @@ import { priceProduct } from "./pricing";
 import { getSettings } from "./settings";
 import { countryName } from "./shipping";
 import { notifyUser, emailOrderStatus } from "./notify";
+import { askForReviews } from "./reviews";
 
 /**
  * CJ Dropshipping API v2 — https://developers.cjdropshipping.com
@@ -298,6 +299,7 @@ export async function cjSyncOrder(orderId: string) {
   }
   await o.save();
   if (changed) await emailOrderStatus(o);
+  if (changed && next === "delivered") await askForReviews(String(o._id));
   return o;
 }
 

@@ -289,7 +289,7 @@ export function UserActions({ user }: { user: AdminUser }) {
     if (ok) { toast.success("User updated"); setOpen(false); router.refresh(); } else toast.error(USER_ERRORS[d.error] || d.error || "Failed");
   };
   const del = async () => {
-    if (!confirm(`Delete ${user.email}?\n\nTheir account, saved addresses and notifications are removed. Their past orders stay in Orders. This can't be undone.`)) return;
+    if (!confirm(`Delete ${user.email}?\n\nTheir account, saved addresses, notifications and reviews are removed. Their past orders stay in Orders. This can't be undone.`)) return;
     setBusy(true);
     const { ok, d } = await call("DELETE", { id: user.id });
     setBusy(false);
@@ -383,5 +383,20 @@ export function TranslateButton({ pending, enabled }: { pending: number; enabled
       <p className="text-xs text-muted">{pending ? `${pending} products aren't translated yet.` : "All products are translated."} New products are also translated automatically each night.</p>
       <button className="btn btn-dark w-full" disabled={!!busy || !enabled || !pending} onClick={run}>{busy && <Loader2 size={16} className="animate-spin" />}{busy ?? "Translate now"}</button>
     </div>
+  );
+}
+
+/** Admin: remove a review (spam, abuse). */
+export function DeleteReview({ id }: { id: string }) {
+  const router = useRouter();
+  const [busy, setBusy] = useState(false);
+  return (
+    <button disabled={busy} onClick={async () => {
+      if (!confirm("Delete this review? The product's average rating is recalculated.")) return;
+      setBusy(true);
+      const r = await fetch("/api/admin/reviews", { method: "DELETE", headers: { "content-type": "application/json" }, body: JSON.stringify({ id }) });
+      setBusy(false);
+      if (r.ok) { toast.success("Review deleted"); router.refresh(); } else toast.error("Failed");
+    }} className="rounded-lg px-3 py-1.5 text-xs font-bold text-berry hover:bg-berry/10 disabled:opacity-40">Delete</button>
   );
 }

@@ -17,6 +17,7 @@ import { SearchBox } from "./SearchBox";
 import { CategoryIcon } from "./CategoryIcon";
 import { useHydrated } from "./useHydrated";
 import { cn } from "@/lib/cn";
+import { formatDate } from "@/i18n/date";
 
 type Notif = { _id: string; key: string; vars: Record<string, string>; link?: string; read: boolean; createdAt: string };
 
@@ -125,7 +126,7 @@ export function Header() {
                     {notifs.items.map((n) => (
                       <Link key={n._id} href={href(n.link || "/account/orders")} className={cn("block rounded-xl px-3 py-2.5 text-sm hover:bg-cream", !n.read && "bg-volt/5")}>
                         <span className="flex gap-2">{!n.read && <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-volt" />}<span className="font-semibold">{notifText(n)}</span></span>
-                        <span className="mt-0.5 block text-xs text-muted">{new Date(n.createdAt).toLocaleString(locale)}</span>
+                        <span className="mt-0.5 block text-xs text-muted">{formatDate(locale, n.createdAt, { day: "numeric", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" })}</span>
                       </Link>
                     ))}
                   </div>

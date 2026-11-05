@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { connection } from "next/server";
-import { BarChart3, Boxes, Flame, LayoutDashboard, Package, Settings2, Users, CheckCircle2, XCircle } from "lucide-react";
+import { BarChart3, Boxes, Flame, LayoutDashboard, Package, Settings2, Users, CheckCircle2, XCircle, Star } from "lucide-react";
 import { isAdmin } from "@/lib/admin";
 import { db } from "@/lib/db";
 import { Order } from "@/models/Order";
@@ -14,17 +14,18 @@ import { aliEnabled } from "@/lib/aliexpress";
 import { cjEnabled } from "@/lib/cj";
 import { translateEnabled } from "@/lib/translate";
 import { Settings } from "@/models/Settings";
+import { Review } from "@/models/Review";
 import { stripeEnabled } from "@/lib/stripe";
 import { providerFlags } from "@/auth";
 import en from "@/i18n/messages/en.json";
 import { AdminLogin } from "@/components/admin/AdminLogin";
-import { LogoutButton, StatusSelect, OrderDetails, ProductToggle, ProductCost, SettingsForm, ImportForm, AddProductForm, SupplierPanel, SyncAllButton, AutoImport, UserActions, AutoImportSchedule, TranslateButton } from "@/components/admin/AdminBits";
+import { LogoutButton, StatusSelect, OrderDetails, ProductToggle, ProductCost, SettingsForm, ImportForm, AddProductForm, SupplierPanel, SyncAllButton, AutoImport, UserActions, AutoImportSchedule, TranslateButton, DeleteReview } from "@/components/admin/AdminBits";
 import { Logo } from "@/components/Logo";
 import { ThemeToggle } from "@/components/ThemeToggle";
 
 const TABS = [
   ["overview", "Overview", LayoutDashboard], ["orders", "Orders", Package], ["users", "Users", Users],
-  ["interests", "Interests", Flame], ["products", "Products", Boxes], ["settings", "Settings", Settings2],
+  ["interests", "Interests", Flame], ["products", "Products", Boxes], ["reviews", "Reviews", Star], ["settings", "Settings", Settings2],
 ] as const;
 
 const $ = (n: number) => `$${(n || 0).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
@@ -60,6 +61,7 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
         {tab === "users" && <UsersTab />}
         {tab === "interests" && <Interests />}
         {tab === "products" && <Products />}
+        {tab === "reviews" && <ReviewsTab />}
         {tab === "settings" && <SettingsTab />}
       </main>
     </div>
@@ -292,6 +294,34 @@ async function Products() {
               <td className="px-4 py-2"><ProductToggle id={String(p._id)} field="active" value={p.active} /></td>
               <td className="px-4 py-2"><ProductToggle id={String(p._id)} field="featured" value={p.featured} /></td>
             </tr>))}
+          </tbody>
+        </table>
+      </Card>
+    </>
+  );
+}
+
+async function ReviewsTab() {
+  const reviews = await Review.find({}).sort({ createdAt: -1 }).limit(300).populate<{ product: { title: string; slug: string } | null; user: { email: string } | null }>([{ path: "product", select: "title slug" }, { path: "user", select: "email" }]).lean();
+  const avg = reviews.length ? reviews.reduce((s, r) => s + r.rating, 0) / reviews.length : 0;
+  return (
+    <>
+      <H sub={reviews.length ? `${reviews.length} reviews · average ${avg.toFixed(1)} ★ · only customers who bought the product can post` : "Customers who bought a product can rate it; they're reminded when their order is delivered."}>Reviews</H>
+      <Card className="overflow-x-auto p-0">
+        <table className="w-full min-w-[900px] text-sm">
+          <thead className="bg-cream text-left text-xs uppercase tracking-wider text-muted"><tr>{["Product", "Rating", "Comment", "Customer", "Date", ""].map((h) => <th key={h} className="px-4 py-3">{h}</th>)}</tr></thead>
+          <tbody className="divide-y divide-line">
+            {reviews.length === 0 && <tr><td colSpan={6} className="px-4 py-8 text-center text-muted">No reviews yet.</td></tr>}
+            {reviews.map((r) => (
+              <tr key={String(r._id)} className={r.rating <= 2 ? "bg-berry/5" : ""}>
+                <td className="px-4 py-3">{r.product ? <a href={`/en/p/${r.product.slug}#reviews`} target="_blank" className="line-clamp-2 max-w-64 font-semibold hover:text-volt">{r.product.title}</a> : <span className="text-muted">(deleted product)</span>}</td>
+                <td className="whitespace-nowrap px-4 py-3 font-bold text-volt">{"★".repeat(r.rating)}<span className="text-line">{"★".repeat(5 - r.rating)}</span></td>
+                <td className="max-w-md px-4 py-3"><p className="line-clamp-3 whitespace-pre-line">{r.text || <span className="text-muted">—</span>}</p></td>
+                <td className="px-4 py-3 text-xs"><b>{r.name}</b><br /><span className="text-muted">{r.user?.email ?? "(deleted user)"}</span></td>
+                <td className="whitespace-nowrap px-4 py-3 text-xs">{d(r.createdAt)}</td>
+                <td className="px-4 py-3"><DeleteReview id={String(r._id)} /></td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </Card>

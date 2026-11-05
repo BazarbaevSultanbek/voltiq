@@ -342,7 +342,24 @@
   "notif": {
     "orderPlaced": "{number} buyurtmasi qabul qilindi! Taxminiy yetkazish: {eta}.",
     "orderStatus": "{number} buyurtmasi holati: {status}.",
-    "welcome": "KAUP’ga xush kelibsiz, {name}! Xaridlaringiz yoqimli bo‘lsin."
+    "welcome": "KAUP’ga xush kelibsiz, {name}! Xaridlaringiz yoqimli bo‘lsin.",
+    "reviewAsk": "{title} sizga yoqdimi? Yulduz bilan baholang va sharh qoldiring."
+  },
+  "reviews": {
+    "title": "Sharhlar",
+    "empty": "Hali sharhlar yo‘q.",
+    "write": "Sharh yozish",
+    "edit": "Sharhingizni tahrirlash",
+    "yourRating": "Bahoingiz",
+    "placeholder": "Nimasi yoqdi yoki yoqmadi? (ixtiyoriy)",
+    "submit": "Sharhni joylash",
+    "update": "Sharhni yangilash",
+    "thanks": "Rahmat! Sharhingiz joylandi.",
+    "verified": "Tasdiqlangan xarid",
+    "onlyBuyers": "Faqat ushbu mahsulotni sotib olgan mijozlar sharh qoldira oladi.",
+    "signIn": "Sharh qoldirish uchun kiring",
+    "pickStars": "1 dan 5 gacha yulduz tanlang.",
+    "rate": "Baholash"
   },
   "common": {
     "loading": "Yuklanmoqda…",

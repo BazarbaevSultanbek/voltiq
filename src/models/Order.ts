@@ -36,6 +36,7 @@ const OrderSchema = new Schema(
     status: { type: String, enum: ORDER_STATUSES, default: "pending_payment", index: true },
     timeline: [{ status: String, at: Date, note: String }],
     note: String,
+    reviewAskedAt: Date, // when buyers were asked to rate the items (sent once)
   },
   { timestamps: true },
 );

@@ -2,12 +2,13 @@
 import Link from "next/link";
 import { useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
-import { ChevronDown, Package, Check, Plane, MapPin, X, Truck } from "lucide-react";
+import { ChevronDown, Package, Check, Plane, MapPin, X, Truck, Star } from "lucide-react";
 import { useI18n } from "@/i18n/client";
 import { countryName } from "@/lib/shipping";
 import type { OrderView } from "../SuccessClient";
 import { AccountTabs } from "./AccountTabs";
 import { cn } from "@/lib/cn";
+import { formatDate } from "@/i18n/date";
 
 const FLOW = ["paid", "processing", "shipped", "delivered"];
 const ICON = [Check, Package, Plane, MapPin];
@@ -16,7 +17,7 @@ const BADGE: Record<string, string> = { paid: "bg-sky/10 text-sky", processing: 
 export function OrdersClient({ orders }: { orders: OrderView[] }) {
   const { t, href, price, locale } = useI18n();
   const [open, setOpen] = useState<string | null>(orders[0]?._id ?? null);
-  const fmt = (d: string) => new Date(d).toLocaleDateString(locale, { month: "short", day: "numeric", year: "numeric" });
+  const fmt = (d: string) => formatDate(locale, d, { month: "short", day: "numeric", year: "numeric" });
 
   return (
     <div className="mx-auto max-w-4xl px-4 pb-10 pt-8">
@@ -74,7 +75,12 @@ export function OrdersClient({ orders }: { orders: OrderView[] }) {
                             <li key={k} className="flex items-center gap-3 py-3">
                               <Link href={href(`/p/${i.slug}`)}><img src={i.image} alt="" className="h-14 w-14 rounded-xl bg-cream object-cover" /></Link>
                               <div className="min-w-0 flex-1"><Link href={href(`/p/${i.slug}`)} className="line-clamp-1 font-bold hover:text-volt">{i.title}</Link><p className="text-sm capitalize text-muted">{i.color} · ×{i.qty}</p></div>
-                              <p className="font-bold">{price(i.price * i.qty)}</p>
+                              <div className="flex flex-col items-end gap-1">
+                                <p className="font-bold">{price(i.price * i.qty)}</p>
+                                {["paid", "processing", "shipped", "delivered"].includes(o.status) && (
+                                  <Link href={href(`/p/${i.slug}#reviews`)} className="flex items-center gap-1 rounded-full bg-volt/10 px-2.5 py-1 text-xs font-bold text-volt hover:bg-volt/20"><Star size={12} className="fill-volt" />{t("reviews.rate")}</Link>
+                                )}
+                              </div>
                             </li>
                           ))}
                         </ul>

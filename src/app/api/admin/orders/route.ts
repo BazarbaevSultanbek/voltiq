@@ -4,6 +4,7 @@ import { Order, ORDER_STATUSES } from "@/models/Order";
 import { isAdmin } from "@/lib/admin";
 import { notifyUser, emailOrderStatus } from "@/lib/notify";
 import { json, fail, handle } from "@/lib/api";
+import { askForReviews } from "@/lib/reviews";
 
 export async function PATCH(req: Request) {
   try {
@@ -17,6 +18,7 @@ export async function PATCH(req: Request) {
     await o.save();
     await notifyUser(o.user, "notif.orderStatus", { number: o.number, status: b.status }, "/account/orders");
     await emailOrderStatus(o);
+    if (b.status === "delivered") await askForReviews(String(o._id));
     return json({ ok: true });
   } catch (e) { return handle(e); }
 }

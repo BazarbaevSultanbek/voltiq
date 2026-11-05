@@ -7,6 +7,8 @@ import { siteUrl } from "@/lib/site";
 import { ProductView, type FullProduct } from "@/components/ProductView";
 import type { CardProduct } from "@/components/ProductCard";
 import { localize } from "@/lib/localize";
+import { listReviews } from "@/lib/reviews";
+import type { PublicReview } from "@/components/Reviews";
 
 const HIDE = "-costPrice -supplierCompareAt -marginPct -sourceUrl -sourceId -variants";
 
@@ -33,6 +35,7 @@ export default async function ProductPage({ params }: { params: Promise<{ locale
   const { slug, locale } = await params;
   const p = await load(slug, locale);
   if (!p) notFound();
+  const reviews = await listReviews(String(p._id));
   const [related, settings] = await Promise.all([
     Product.find({ active: true, category: p.category, _id: { $ne: p._id } }).sort({ sold: -1, featured: -1 }).limit(4).select(HIDE).lean(),
     getSettings(),
@@ -51,7 +54,7 @@ export default async function ProductPage({ params }: { params: Promise<{ locale
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(ld) }} />
-      <ProductView p={plain<FullProduct>(p)} related={plain<CardProduct[]>([...related, ...extra])} freeOver={settings.freeShippingOver} />
+      <ProductView p={plain<FullProduct>(p)} related={plain<CardProduct[]>([...related, ...extra])} freeOver={settings.freeShippingOver} reviews={plain<PublicReview[]>(reviews)} />
     </>
   );
 }

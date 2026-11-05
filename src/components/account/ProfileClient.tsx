@@ -9,6 +9,7 @@ import { useMe } from "@/lib/user-context";
 import { countryName } from "@/lib/shipping";
 import { Avatar } from "../Header";
 import { AccountTabs } from "./AccountTabs";
+import { formatDate } from "@/i18n/date";
 
 /** Resize to a 256px square JPEG so avatars stay tiny in the database. */
 async function resize(file: File): Promise<string> {
@@ -83,7 +84,7 @@ export function ProfileClient() {
           <div className="min-w-0 flex-1">
             <h1 className="truncate font-display text-3xl font-black">{me.name || me.email}</h1>
             <p className="text-white/60">{me.username ? `@${me.username} · ` : ""}{me.email}</p>
-            <p className="mt-1 text-xs font-semibold text-white/40">{t("profile.memberSince", { date: new Date(me.createdAt).toLocaleDateString(locale, { month: "long", year: "numeric" }) })}</p>
+            <p className="mt-1 text-xs font-semibold text-white/40">{t("profile.memberSince", { date: formatDate(locale, me.createdAt, { month: "long", year: "numeric" }) })}</p>
           </div>
           {me.image && <button onClick={() => patch({ image: "" })} className="text-sm font-bold text-white/60 hover:text-white">{t("profile.removePhoto")}</button>}
         </div>

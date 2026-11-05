@@ -20,6 +20,7 @@ import { CardPreview } from "./CardPreview";
 import { AuthForm } from "../AuthForm";
 import { cn } from "@/lib/cn";
 import { validPhone } from "@/lib/phone";
+import { formatDate } from "@/i18n/date";
 
 type Addr = { fullName: string; phone: string; country: string; region: string; city: string; line1: string; line2: string; postal: string };
 const EMPTY: Addr = { fullName: "", phone: "", country: "", region: "", city: "", line1: "", line2: "", postal: "" };
@@ -85,7 +86,7 @@ function Checkout({ freeOver, stripePk, providers }: { freeOver: number; stripeP
   const total = Math.round((sub + q.price) * 100) / 100;
   const brand: Brand = stripePk ? ((stripeBrand as Brand) || "unknown") : detectBrand(card.number);
   const brandBad = (stripePk ? stripeBrand !== "unknown" : card.number.replace(/\D/g, "").length >= 2) && !ALLOWED_BRANDS.includes(brand);
-  const fmtDate = (d: string) => new Date(d).toLocaleDateString(locale, { weekday: "short", month: "short", day: "numeric" });
+  const fmtDate = (d: string) => formatDate(locale, d, { weekday: "short", month: "short", day: "numeric" });
 
   const addrOk = addr.fullName.trim().length > 1 && validPhone(addr.phone) && addr.country && addr.city.trim() && addr.line1.trim().length > 2;
   const cardOk = stripePk ? stripeComplete && !brandBad : luhn(card.number) && validExpiry(card.exp) && /^\d{3,4}$/.test(card.cvc) && card.name.trim().length > 1 && !brandBad;

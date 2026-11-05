@@ -12,10 +12,12 @@ import { ProductCard, type CardProduct } from "./ProductCard";
 import { CardBrands } from "./CardBrands";
 import { useHydrated } from "./useHydrated";
 import { cn } from "@/lib/cn";
+import { Reviews, type PublicReview } from "./Reviews";
+import { formatDate } from "@/i18n/date";
 
 export type FullProduct = CardProduct & { description: string; specs: { k: string; v: string }[]; stock: number; group: string };
 
-export function ProductView({ p, related, freeOver }: { p: FullProduct; related: CardProduct[]; freeOver: number }) {
+export function ProductView({ p, related, freeOver, reviews }: { p: FullProduct; related: CardProduct[]; freeOver: number; reviews: PublicReview[] }) {
   const { t, href, price, locale } = useI18n();
   const router = useRouter();
   const add = useCart((s) => s.add);
@@ -37,7 +39,7 @@ export function ProductView({ p, related, freeOver }: { p: FullProduct; related:
   const off = p.compareAt && p.compareAt > p.price ? Math.round((1 - p.price / p.compareAt) * 100) : 0;
   const color = p.colors?.[ci]?.name || "";
   const quotes = hydrated && place ? quote(place.country, qty, p.price * qty, freeOver) : null;
-  const fmtDate = (d: string) => new Date(d).toLocaleDateString(locale, { month: "short", day: "numeric" });
+  const fmtDate = (d: string) => formatDate(locale, d, { month: "short", day: "numeric" });
 
   const doAdd = (buy = false) => {
     add({ id: p._id, slug: p.slug, title: p.title, image: shown, price: p.price, color, compareAt: p.compareAt }, qty);
@@ -184,6 +186,8 @@ export function ProductView({ p, related, freeOver }: { p: FullProduct; related:
           </div>
         </div>
       </div>
+
+      <Reviews productId={p._id} rating={p.rating ?? null} count={p.reviewsCount ?? 0} reviews={reviews} />
 
       {related.length > 0 && (
         <section className="mt-24">

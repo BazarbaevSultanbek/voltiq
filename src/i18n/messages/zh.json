@@ -342,7 +342,24 @@
   "notif": {
     "orderPlaced": "订单 {number} 已被接受！预计送达 {eta}。",
     "orderStatus": "订单 {number} 状态更新为：{status}。",
-    "welcome": "欢迎来到 KAUP，{name}！祝您购物愉快。"
+    "welcome": "欢迎来到 KAUP，{name}！祝您购物愉快。",
+    "reviewAsk": "{title} 怎么样？请打分并留下评价。"
+  },
+  "reviews": {
+    "title": "评价",
+    "empty": "暂无评价。",
+    "write": "写评价",
+    "edit": "修改您的评价",
+    "yourRating": "您的评分",
+    "placeholder": "您喜欢或不喜欢什么？（可选）",
+    "submit": "发布评价",
+    "update": "更新评价",
+    "thanks": "谢谢！您的评价已发布。",
+    "verified": "已验证购买",
+    "onlyBuyers": "只有购买过此商品的顾客才能发表评价。",
+    "signIn": "登录后发表评价",
+    "pickStars": "请选择 1 到 5 颗星。",
+    "rate": "评价"
   },
   "common": {
     "loading": "加载中…",

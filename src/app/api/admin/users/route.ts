@@ -2,6 +2,8 @@ import { z } from "zod";
 import { db } from "@/lib/db";
 import { User } from "@/models/User";
 import { Notification } from "@/models/Notification";
+import { Review } from "@/models/Review";
+import { refreshRating } from "@/lib/reviews";
 import { isAdmin } from "@/lib/admin";
 import { validPhone } from "@/lib/phone";
 import { json, fail, handle } from "@/lib/api";
@@ -33,7 +35,7 @@ export async function PATCH(req: Request) {
   } catch (e) { return handle(e); }
 }
 
-/** Admin: delete a customer account. Their past orders are kept (each order stores its own email and address). */
+/** Admin: delete a customer account and their reviews. Past orders are kept (each order stores its own email and address). */
 export async function DELETE(req: Request) {
   try {
     if (!(await isAdmin())) return fail("unauthorized", 401);
@@ -42,6 +44,10 @@ export async function DELETE(req: Request) {
     const r = await User.deleteOne({ _id: id });
     if (!r.deletedCount) return fail("not_found", 404);
     await Notification.deleteMany({ user: id });
+    // Remove their reviews too and recalculate those products' ratings.
+    const products = await Review.distinct("product", { user: id });
+    await Review.deleteMany({ user: id });
+    await Promise.all(products.map((p) => refreshRating(String(p))));
     return json({ ok: true });
   } catch (e) { return handle(e); }
 }
