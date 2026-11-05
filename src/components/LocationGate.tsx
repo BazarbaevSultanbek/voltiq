@@ -25,6 +25,12 @@ export function LocationGate() {
   }, [hydrated, asked, place, setOpen]);
 
   useEffect(() => { if (open) { setCountry(place?.country || ""); setCity(place?.city || ""); setErr(""); } }, [open, place]);
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") setOpen(false); };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [open, setOpen]);
 
   const detect = async () => {
     setBusy(true); setErr("");
@@ -43,8 +49,8 @@ export function LocationGate() {
             className="relative w-full max-w-md overflow-hidden rounded-t-[2rem] bg-paper p-7 shadow-2xl sm:rounded-[2rem]"
             initial={{ y: 60, scale: 0.96 }} animate={{ y: 0, scale: 1 }} exit={{ y: 40, opacity: 0 }}
             transition={{ type: "spring", damping: 24, stiffness: 260 }} onClick={(e) => e.stopPropagation()}>
-            <div className="absolute -right-16 -top-16 h-48 w-48 rounded-full bg-lime/40 blur-2xl" />
-            <button onClick={() => setOpen(false)} aria-label={t("common.close")} className="absolute right-4 top-4 rounded-full p-2 hover:bg-cream"><X size={18} /></button>
+            <div aria-hidden className="pointer-events-none absolute -right-16 -top-16 h-48 w-48 rounded-full bg-lime/40 blur-2xl" />
+            <button onClick={() => setOpen(false)} aria-label={t("common.close")} className="absolute right-3 top-3 z-10 grid h-10 w-10 place-items-center rounded-full hover:bg-cream"><X size={18} /></button>
             <div className="relative">
               <div className="mb-4 grid h-14 w-14 place-items-center rounded-2xl bg-volt text-white animate-pulse-ring"><MapPin /></div>
               <h2 id="loc-title" className="font-display text-2xl font-bold">{t("location.title")}</h2>

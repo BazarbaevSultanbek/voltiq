@@ -134,7 +134,7 @@ export function SearchClient({ items, total, page, pages }: { items: CardProduct
 }
 
 function Chip({ children, onX }: { children: React.ReactNode; onX: () => void }) {
-  return <span className="flex items-center gap-1 whitespace-nowrap rounded-full bg-ink py-1.5 pl-3 pr-1.5 text-sm font-bold text-white">{children}<button onClick={onX} className="rounded-full p-0.5 hover:bg-white/20" aria-label="remove"><X size={14} /></button></span>;
+  return <span className="flex items-center gap-1 whitespace-nowrap rounded-full bg-ink py-1.5 pl-3 pr-1.5 text-sm font-bold text-white">{children}<button onClick={onX} className="-my-1 grid h-7 w-7 place-items-center rounded-full hover:bg-white/20" aria-label="remove"><X size={14} /></button></span>;
 }
 
 /** 1 … 4 5 [6] 7 8 … 20 */
