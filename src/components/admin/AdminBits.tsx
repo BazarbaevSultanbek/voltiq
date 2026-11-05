@@ -236,8 +236,13 @@ export function AutoImport({ categories, enabled }: { categories: { slug: string
       setLog((l) => [...l, `${c.label}: ${added} added${added < n && !error ? " (no more matching products found)" : ""}${rejected ? `, ${rejected} off-topic skipped` : ""}${failed ? `, ${failed} failed` : ""}${error ? ` — ${error}` : ""}`]);
       if (/CJ_API_KEY|auth/i.test(error)) break outer;
     }
-    setBusy(null);
     toast.success(`Done — ${total} products added`);
+    // Translate the new products right away (skipped if translation isn't set up).
+    if (total > 0) {
+      try { const r = await translateAll(setBusy); setLog((l) => [...l, `Translated ${r.total} products${r.remaining > 0 ? `, ${r.remaining} still waiting` : ""}`]); }
+      catch (e) { setLog((l) => [...l, `Translation skipped: ${(e as Error).message}`]); }
+    }
+    setBusy(null);
     router.refresh();
   };
 
@@ -341,6 +346,42 @@ export function AutoImportSchedule({ enabled, target, last }: { enabled: boolean
         <button type="button" onClick={() => save()} disabled={busy} className="rounded-lg bg-ink px-3 py-1.5 text-xs font-bold text-white disabled:opacity-40">Save</button>
       </div>
       <p className="pl-7 text-xs text-muted">{last?.at ? `Last run ${new Date(last.at).toLocaleString()}: ${last.created ?? 0} added — ${last.note ?? ""}` : "Hasn't run yet — first run tonight (03:30 UTC)."}</p>
+    </div>
+  );
+}
+
+/** Translate untranslated products batch by batch until done (or nothing more succeeds). */
+async function translateAll(onProgress: (msg: string) => void) {
+  let total = 0;
+  for (let round = 0; round < 200; round++) {
+    const r = await fetch("/api/admin/translate", { method: "POST" });
+    const d = await r.json().catch(() => ({}));
+    if (!r.ok) throw new Error(d.error || "Translation failed");
+    total += d.translated;
+    onProgress(`Translating… ${total} done, ${d.remaining} left`);
+    if (d.remaining === 0 || d.translated === 0) return { total, remaining: d.remaining as number, failed: d.failed as number };
+  }
+  return { total, remaining: -1, failed: 0 };
+}
+
+/** Admin button: translate product names and descriptions into every store language. */
+export function TranslateButton({ pending, enabled }: { pending: number; enabled: boolean }) {
+  const router = useRouter();
+  const [busy, setBusy] = useState<string | null>(null);
+  const run = async () => {
+    setBusy("Starting…");
+    try {
+      const r = await translateAll(setBusy);
+      if (r.remaining > 0) toast.warning(`${r.total} translated; ${r.remaining} couldn't be translated right now — try again later.`);
+      else toast.success(`${r.total} products translated`);
+    } catch (e) { toast.error((e as Error).message); }
+    setBusy(null); router.refresh();
+  };
+  return (
+    <div className="space-y-2">
+      {!enabled && <p className="rounded-xl bg-volt/10 p-3 text-xs font-semibold text-volt-dark">Add ANTHROPIC_API_KEY in Vercel to enable translation.</p>}
+      <p className="text-xs text-muted">{pending ? `${pending} products aren't translated yet.` : "All products are translated."} New products are also translated automatically each night.</p>
+      <button className="btn btn-dark w-full" disabled={!!busy || !enabled || !pending} onClick={run}>{busy && <Loader2 size={16} className="animate-spin" />}{busy ?? "Translate now"}</button>
     </div>
   );
 }

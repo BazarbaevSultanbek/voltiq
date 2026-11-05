@@ -19,12 +19,12 @@ export async function generateMetadata({ params, searchParams }: { params: Promi
   return { title, alternates: { canonical: `/${locale}/search${qs}` }, robots: sp.q ? { index: false, follow: true } : undefined };
 }
 
-export default async function SearchPage({ searchParams }: { searchParams: SP }) {
-  const sp = await searchParams;
+export default async function SearchPage({ params, searchParams }: { params: Promise<{ locale: string }>; searchParams: SP }) {
+  const [{ locale }, sp] = await Promise.all([params, searchParams]);
   const n = (v?: string) => (v && !isNaN(Number(v)) ? Number(v) : undefined);
   const r = await searchProducts({
     q: sp.q, cat: sp.cat, group: sp.group, min: n(sp.min), max: n(sp.max), deals: sp.deals === "1",
-    sort: (sp.sort as never) || "relevance", limit: PER_PAGE, page: n(sp.page),
+    sort: (sp.sort as never) || "relevance", limit: PER_PAGE, page: n(sp.page), locale,
   });
   return <SearchClient items={plain<CardProduct[]>(r.items)} total={r.total} page={r.page} pages={r.pages} />;
 }

@@ -27,6 +27,10 @@ const ProductSchema = new Schema(
     variants: { type: [{ vid: String, name: String, image: String, cost: Number, sku: String }], default: [] },
     sourceId: String,
     sourceUrl: String,
+    // Translations of title/description, e.g. { uz: { title, description }, ru: {...} }.
+    tr: { type: Schema.Types.Mixed, default: {} },
+    // null until every language is translated; reset to null when the English text changes.
+    trDone: { type: Boolean, default: false, index: true },
     active: { type: Boolean, default: true, index: true },
     featured: { type: Boolean, default: false },
   },

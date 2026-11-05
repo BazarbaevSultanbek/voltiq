@@ -15,7 +15,7 @@ export const pushRecent = (q: string) => {
 };
 
 export function SearchBox({ autoFocus = false }: { autoFocus?: boolean }) {
-  const { t, href, price } = useI18n();
+  const { t, href, price, locale } = useI18n();
   const router = useRouter();
   const params = useSearchParams();
   const [q, setQ] = useState(params.get("q") || "");
@@ -37,12 +37,12 @@ export function SearchBox({ autoFocus = false }: { autoFocus?: boolean }) {
     if (!open) return;
     const ctl = new AbortController();
     const tm = setTimeout(() => {
-      fetch(`/api/search/suggest?q=${encodeURIComponent(q)}`, { signal: ctl.signal }).then((r) => r.json()).then((d) => {
+      fetch(`/api/search/suggest?q=${encodeURIComponent(q)}&locale=${locale}`, { signal: ctl.signal }).then((r) => r.json()).then((d) => {
         setSug(d.items || []); setTotal(d.total || 0); if (d.trending) setTrending(d.trending);
       }).catch(() => {});
     }, 140);
     return () => { clearTimeout(tm); ctl.abort(); };
-  }, [q, open]);
+  }, [q, open, locale]);
 
   const go = (term: string) => {
     const s = term.trim();

@@ -12,12 +12,13 @@ import { CATEGORIES } from "@/lib/catalog";
 import { countryName } from "@/lib/shipping";
 import { aliEnabled } from "@/lib/aliexpress";
 import { cjEnabled } from "@/lib/cj";
+import { translateEnabled } from "@/lib/translate";
 import { Settings } from "@/models/Settings";
 import { stripeEnabled } from "@/lib/stripe";
 import { providerFlags } from "@/auth";
 import en from "@/i18n/messages/en.json";
 import { AdminLogin } from "@/components/admin/AdminLogin";
-import { LogoutButton, StatusSelect, OrderDetails, ProductToggle, ProductCost, SettingsForm, ImportForm, AddProductForm, SupplierPanel, SyncAllButton, AutoImport, UserActions, AutoImportSchedule } from "@/components/admin/AdminBits";
+import { LogoutButton, StatusSelect, OrderDetails, ProductToggle, ProductCost, SettingsForm, ImportForm, AddProductForm, SupplierPanel, SyncAllButton, AutoImport, UserActions, AutoImportSchedule, TranslateButton } from "@/components/admin/AdminBits";
 import { Logo } from "@/components/Logo";
 import { ThemeToggle } from "@/components/ThemeToggle";
 
@@ -265,14 +266,15 @@ async function Interests() {
 }
 
 async function Products() {
-  const [products, settings, auto] = await Promise.all([Product.find({}).sort({ createdAt: -1 }).limit(500).lean(), getSettings(), Settings.findOne({ key: "global" }).select("cjAutoImport cjAutoImportTarget cjLastAutoImport").lean()]);
+  const [products, settings, auto] = await Promise.all([Product.find({}).select("-tr").sort({ createdAt: -1 }).limit(500).lean(), getSettings(), Settings.findOne({ key: "global" }).select("cjAutoImport cjAutoImportTarget cjLastAutoImport").lean()]);
+  const untranslated = await Product.countDocuments({ active: true, trDone: { $ne: true } });
   const cats = CATEGORIES.map((c) => ({ slug: c.slug, label: catLabel(c.slug) }));
   return (
     <>
       <H sub={`Customer price = supplier cost + margin (global ${settings.marginPct}%, or per-product override), rounded to .99`}>Products ({products.length})</H>
       <div className="mb-6 grid gap-6 lg:grid-cols-3">
         <Card><p className="mb-3 font-display font-bold">Import from CJ Dropshipping</p><div className="mb-4"><AutoImportSchedule enabled={auto?.cjAutoImport !== false} target={auto?.cjAutoImportTarget ?? 40} last={auto?.cjLastAutoImport ? JSON.parse(JSON.stringify(auto.cjLastAutoImport)) : null} /></div><AutoImport categories={cats} enabled={cjEnabled()} /></Card>
-        <Card><p className="mb-3 font-display font-bold">Import from AliExpress</p><ImportForm categories={cats} enabled={aliEnabled()} /></Card>
+        <Card><p className="mb-3 font-display font-bold">Translations</p><TranslateButton pending={untranslated} enabled={translateEnabled()} /><p className="mb-3 mt-6 font-display font-bold">Import from AliExpress</p><ImportForm categories={cats} enabled={aliEnabled()} /></Card>
         <Card><p className="mb-3 font-display font-bold">Add product manually (Alibaba link)</p><AddProductForm categories={cats} /></Card>
       </div>
       <Card className="overflow-x-auto p-0">

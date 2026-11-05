@@ -103,7 +103,12 @@ export async function cjImportOne(pid: string, category: string, marginPct: numb
     stock: 999, active: true,
   };
   const ex = await Product.findOne({ source: "cj", sourceId: d.pid });
-  if (ex) { await Product.updateOne({ _id: ex._id }, { $set: doc }); return "updated" as const; }
+  if (ex) {
+    // English text changed → translations are stale and get redone.
+    const stale = ex.title !== doc.title || ex.description !== doc.description;
+    await Product.updateOne({ _id: ex._id }, { $set: { ...doc, ...(stale ? { tr: {}, trDone: false } : {}) } });
+    return "updated" as const;
+  }
   await Product.create({ ...doc, slug: `${slugify(doc.title)}-${d.pid.slice(-5).toLowerCase()}` });
   return "created" as const;
 }

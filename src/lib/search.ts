@@ -3,6 +3,8 @@ import { db } from "./db";
 import { Product } from "@/models/Product";
 import { SearchStat } from "@/models/SearchStat";
 import { CATEGORIES } from "./catalog";
+import { locales } from "@/i18n/config";
+import { localize } from "./localize";
 import en from "@/i18n/messages/en.json";
 import ru from "@/i18n/messages/ru.json";
 import zh from "@/i18n/messages/zh.json";
@@ -28,9 +30,14 @@ function categoriesFor(q: string) {
   return out;
 }
 
+const TR_TITLES = locales.filter((l) => l !== "en").map((l) => `tr.${l}.title`);
+// Card fields only (no descriptions) + every translated title, used for matching and display.
+const FIELDS = ["slug", "title", "price", "compareAt", "images", "colors", "rating", "reviewsCount", "category", "group", "tags",
+  "sold", "cartAdds", "views", "searchHits", "featured", "createdAt", "stock", ...TR_TITLES].join(" ");
+
 export type SearchParams = {
   q?: string; cat?: string; group?: string; min?: number; max?: number; deals?: boolean;
-  sort?: "relevance" | "popular" | "new" | "price_asc" | "price_desc"; limit?: number; page?: number;
+  sort?: "relevance" | "popular" | "new" | "price_asc" | "price_desc"; limit?: number; page?: number; locale?: string;
 };
 
 export async function searchProducts(p: SearchParams) {
@@ -45,14 +52,16 @@ export async function searchProducts(p: SearchParams) {
   const words = q.split(" ").filter((w) => w.length > 0).slice(0, 6);
   const cats = categoriesFor(q);
   if (words.length) {
-    const textMatch = { $and: words.map((w) => ({ $or: [{ title: { $regex: esc(w), $options: "i" } }, { tags: { $regex: esc(w), $options: "i" } }, { category: { $regex: esc(w), $options: "i" } }] })) };
+    // Match the English title, tags, category, or the title in any translated language.
+    const fields = ["title", "tags", "category", ...TR_TITLES];
+    const textMatch = { $and: words.map((w) => ({ $or: fields.map((f) => ({ [f]: { $regex: esc(w), $options: "i" } })) })) };
     filter.$or = cats.size ? [textMatch, { category: { $in: [...cats] } }] : [textMatch];
   }
-  let items = await Product.find(filter).select("-costPrice -supplierCompareAt -marginPct -sourceUrl -sourceId -variants").limit(2000).lean();
+  let items = await Product.find(filter).select(FIELDS).limit(2000).lean();
 
   const pop = (x: (typeof items)[number]) => x.sold * 5 + x.cartAdds * 2 + x.views * 0.2 + x.searchHits * 0.5;
   const score = (x: (typeof items)[number]) => {
-    let s = 0; const t = x.title.toLowerCase();
+    let s = 0; const t = [x.title, ...Object.values((x.tr as Record<string, { title?: string }>) ?? {}).map((v) => v?.title ?? "")].join(" \u0000 ").toLowerCase();
     if (t.includes(q)) s += 20;
     for (const w of words) { if (t.includes(w)) s += 6; if (x.tags.some((g) => g.includes(w))) s += 3; }
     if (cats.has(x.category)) s += 4;
@@ -69,7 +78,8 @@ export async function searchProducts(p: SearchParams) {
   const limit = p.limit ?? 200;
   const pages = Math.max(1, Math.ceil(items.length / limit));
   const page = Math.min(Math.max(1, Math.floor(p.page ?? 1)), pages);
-  return { q, items: items.slice((page - 1) * limit, page * limit), total: items.length, page, pages };
+  const loc = p.locale || "en";
+  return { q, items: items.slice((page - 1) * limit, page * limit).map((x) => localize(x, loc)), total: items.length, page, pages };
 }
 
 /** Count what people search for — shown in the admin "Interests" tab. */
