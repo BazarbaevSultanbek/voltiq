@@ -1,15 +1,10 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { locales, defaultLocale, isLocale } from "@/i18n/config";
 
+/** English unless the visitor picked another language before (saved in a cookie). */
 function pickLocale(req: NextRequest) {
   const saved = req.cookies.get("vq_locale")?.value;
-  if (isLocale(saved)) return saved;
-  const header = req.headers.get("accept-language") || "";
-  for (const part of header.split(",")) {
-    const code = part.split(";")[0].trim().slice(0, 2).toLowerCase();
-    if (isLocale(code)) return code;
-  }
-  return defaultLocale;
+  return isLocale(saved) ? saved : defaultLocale;
 }
 
 export function proxy(req: NextRequest) {

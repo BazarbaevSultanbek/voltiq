@@ -6,6 +6,7 @@ export type Dict = typeof en;
 
 const loaders: Record<Locale, () => Promise<Dict>> = {
   en: async () => en,
+  uz: () => import("./messages/uz.json").then((m) => m.default as Dict),
   ru: () => import("./messages/ru.json").then((m) => m.default as Dict),
   zh: () => import("./messages/zh.json").then((m) => m.default as Dict),
   es: () => import("./messages/es.json").then((m) => m.default as Dict),

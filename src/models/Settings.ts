@@ -9,6 +9,9 @@ const SettingsSchema = new Schema(
     cjRefreshToken: { type: String, select: false },
     cjTokenExpiry: Date,
     cjAutoOrder: { type: Boolean, default: true },
+    cjAutoImport: { type: Boolean, default: true }, // daily automatic product import
+    cjAutoImportTarget: { type: Number, default: 40 }, // stop filling a category once it has this many CJ products
+    cjLastAutoImport: { at: Date, created: Number, note: String },
   },
   { timestamps: true },
 );

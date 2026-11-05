@@ -152,6 +152,7 @@
     "step3": "Paiement",
     "fullName": "Nom complet",
     "phone": "Téléphone",
+    "phoneInvalid": "Saisissez un numéro de téléphone valide, par ex. +33 6 12 34 56 78.",
     "country": "Pays",
     "region": "Région / État",
     "city": "Ville",

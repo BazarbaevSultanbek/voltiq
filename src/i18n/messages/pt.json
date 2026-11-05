@@ -152,6 +152,7 @@
     "step3": "Pagamento",
     "fullName": "Nome completo",
     "phone": "Telefone",
+    "phoneInvalid": "Digite um telefone válido, por exemplo +55 11 91234 5678.",
     "country": "País",
     "region": "Estado / Região",
     "city": "Cidade",

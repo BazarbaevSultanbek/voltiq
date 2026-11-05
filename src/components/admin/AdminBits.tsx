@@ -265,3 +265,82 @@ export function AutoImport({ categories, enabled }: { categories: { slug: string
     </div>
   );
 }
+
+type AdminUser = { id: string; name: string; email: string; username: string; phone: string };
+const USER_ERRORS: Record<string, string> = { email_taken: "Another account already uses this email", username_taken: "That username is taken", invalid_input: "Check the fields (email, phone, username: 3-30 letters/numbers)" };
+
+/** Edit / delete buttons for one row of the admin Users table. */
+export function UserActions({ user }: { user: AdminUser }) {
+  const router = useRouter();
+  const [open, setOpen] = useState(false);
+  const [f, setF] = useState(user);
+  const [busy, setBusy] = useState(false);
+  const call = (method: "PATCH" | "DELETE", body: object) => fetch("/api/admin/users", { method, headers: { "content-type": "application/json" }, body: JSON.stringify(body) }).then(async (r) => ({ ok: r.ok, d: await r.json().catch(() => ({})) }));
+
+  const save = async (e: React.FormEvent) => {
+    e.preventDefault(); setBusy(true);
+    const { ok, d } = await call("PATCH", { id: user.id, name: f.name, email: f.email, username: f.username, phone: f.phone });
+    setBusy(false);
+    if (ok) { toast.success("User updated"); setOpen(false); router.refresh(); } else toast.error(USER_ERRORS[d.error] || d.error || "Failed");
+  };
+  const del = async () => {
+    if (!confirm(`Delete ${user.email}?\n\nTheir account, saved addresses and notifications are removed. Their past orders stay in Orders. This can't be undone.`)) return;
+    setBusy(true);
+    const { ok, d } = await call("DELETE", { id: user.id });
+    setBusy(false);
+    if (ok) { toast.success("User deleted"); router.refresh(); } else toast.error(d.error || "Failed");
+  };
+
+  return (
+    <>
+      <div className="flex gap-1.5">
+        <button onClick={() => { setF(user); setOpen(true); }} className="rounded-lg bg-cream px-3 py-1.5 text-xs font-bold hover:bg-line">Edit</button>
+        <button onClick={del} disabled={busy} className="rounded-lg px-3 py-1.5 text-xs font-bold text-berry hover:bg-berry/10 disabled:opacity-40">Delete</button>
+      </div>
+      {open && (
+        <div className="fixed inset-0 z-[90] grid place-items-center bg-ink/50 p-4 backdrop-blur-sm" onClick={() => setOpen(false)}>
+          <form onSubmit={save} onClick={(e) => e.stopPropagation()} className="w-full max-w-md space-y-3 rounded-3xl bg-paper p-6 text-left shadow-2xl">
+            <p className="font-display text-lg font-bold">Edit user</p>
+            {([["name", "Name"], ["email", "Email"], ["username", "Username"], ["phone", "Phone"]] as const).map(([k, l]) => (
+              <label key={k} className="block"><span className="label">{l}</span>
+                <input className="input" type={k === "email" ? "email" : k === "phone" ? "tel" : "text"} value={f[k]} onChange={(e) => setF({ ...f, [k]: e.target.value })} required={k === "email"} />
+              </label>
+            ))}
+            <div className="flex justify-end gap-2 pt-2">
+              <button type="button" onClick={() => setOpen(false)} className="btn btn-ghost">Cancel</button>
+              <button className="btn btn-dark" disabled={busy}>{busy && <Loader2 size={16} className="animate-spin" />}Save</button>
+            </div>
+          </form>
+        </div>
+      )}
+    </>
+  );
+}
+
+/** On/off switch and target for the daily automatic CJ import. */
+export function AutoImportSchedule({ enabled, target, last }: { enabled: boolean; target: number; last: { at?: string; created?: number; note?: string } | null }) {
+  const router = useRouter();
+  const [on, setOn] = useState(enabled);
+  const [n, setN] = useState(String(target));
+  const [busy, setBusy] = useState(false);
+  const save = async (nextOn = on) => {
+    setBusy(true);
+    const r = await fetch("/api/admin/cj/auto", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ action: "settings", enabled: nextOn, target: Math.max(5, Math.min(500, Number(n) || 40)) }) });
+    setBusy(false);
+    if (r.ok) { toast.success("Saved"); router.refresh(); } else toast.error("Failed");
+  };
+  return (
+    <div className="space-y-2 rounded-2xl bg-cream p-3 text-sm">
+      <label className="flex cursor-pointer items-start gap-3">
+        <input type="checkbox" checked={on} disabled={busy} onChange={(e) => { setOn(e.target.checked); save(e.target.checked); }} className="mt-1 h-4 w-4 accent-[#ff5b14]" />
+        <span><b>Import new products automatically every day</b><br /><span className="text-xs text-muted">Each night it adds on-topic products to the emptiest categories (about 30–40 a day) until each has the target below.</span></span>
+      </label>
+      <div className="flex items-center gap-2 pl-7">
+        <span className="text-xs font-semibold">Target per category</span>
+        <input className="input w-20 py-1.5" inputMode="numeric" value={n} onChange={(e) => setN(e.target.value.replace(/\D/g, ""))} />
+        <button type="button" onClick={() => save()} disabled={busy} className="rounded-lg bg-ink px-3 py-1.5 text-xs font-bold text-white disabled:opacity-40">Save</button>
+      </div>
+      <p className="pl-7 text-xs text-muted">{last?.at ? `Last run ${new Date(last.at).toLocaleString()}: ${last.created ?? 0} added — ${last.note ?? ""}` : "Hasn't run yet — first run tonight (03:30 UTC)."}</p>
+    </div>
+  );
+}

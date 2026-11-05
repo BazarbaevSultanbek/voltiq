@@ -9,8 +9,9 @@ import zh from "@/i18n/messages/zh.json";
 import es from "@/i18n/messages/es.json";
 import fr from "@/i18n/messages/fr.json";
 import pt from "@/i18n/messages/pt.json";
+import uz from "@/i18n/messages/uz.json";
 
-const DICTS = [en, ru, zh, es, fr, pt];
+const DICTS = [en, uz, ru, zh, es, fr, pt];
 const esc = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 export const normalize = (q: string) => q.toLowerCase().normalize("NFKC").replace(/\s+/g, " ").trim().slice(0, 80);
 

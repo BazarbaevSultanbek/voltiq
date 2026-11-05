@@ -2,7 +2,7 @@ import { z } from "zod";
 import { db } from "@/lib/db";
 import { Order, ORDER_STATUSES } from "@/models/Order";
 import { isAdmin } from "@/lib/admin";
-import { notifyUser } from "@/lib/notify";
+import { notifyUser, emailOrderStatus } from "@/lib/notify";
 import { json, fail, handle } from "@/lib/api";
 
 export async function PATCH(req: Request) {
@@ -16,6 +16,7 @@ export async function PATCH(req: Request) {
     o.timeline.push({ status: b.status, at: new Date(), note: b.note || "" });
     await o.save();
     await notifyUser(o.user, "notif.orderStatus", { number: o.number, status: b.status }, "/account/orders");
+    await emailOrderStatus(o);
     return json({ ok: true });
   } catch (e) { return handle(e); }
 }

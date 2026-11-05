@@ -12,10 +12,11 @@ import { stripe, stripeEnabled } from "./stripe";
 import { notifyUser, notifyOwner, emailCustomer } from "./notify";
 import { after } from "next/server";
 import { cjEnabled, cjSendOrder, cjAutoOrderOn } from "./cj";
+import { validPhone } from "./phone";
 
 export const AddressInput = z.object({
   fullName: z.string().trim().min(2).max(80),
-  phone: z.string().trim().min(5).max(30),
+  phone: z.string().trim().max(30).refine(validPhone, "invalid_phone"),
   country: z.string().length(2),
   region: z.string().trim().max(80).optional().default(""),
   city: z.string().trim().min(1).max(80),

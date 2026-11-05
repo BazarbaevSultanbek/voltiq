@@ -152,6 +152,7 @@
     "step3": "支付",
     "fullName": "姓名",
     "phone": "手机号码",
+    "phoneInvalid": "请输入有效的电话号码，例如 +86 138 0000 0000。",
     "country": "国家/地区",
     "region": "省 / 州",
     "city": "城市",

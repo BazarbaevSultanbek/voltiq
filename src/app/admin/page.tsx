@@ -17,7 +17,7 @@ import { stripeEnabled } from "@/lib/stripe";
 import { providerFlags } from "@/auth";
 import en from "@/i18n/messages/en.json";
 import { AdminLogin } from "@/components/admin/AdminLogin";
-import { LogoutButton, StatusSelect, OrderDetails, ProductToggle, ProductCost, SettingsForm, ImportForm, AddProductForm, SupplierPanel, SyncAllButton, AutoImport } from "@/components/admin/AdminBits";
+import { LogoutButton, StatusSelect, OrderDetails, ProductToggle, ProductCost, SettingsForm, ImportForm, AddProductForm, SupplierPanel, SyncAllButton, AutoImport, UserActions, AutoImportSchedule } from "@/components/admin/AdminBits";
 import { Logo } from "@/components/Logo";
 import { ThemeToggle } from "@/components/ThemeToggle";
 
@@ -184,8 +184,8 @@ async function UsersTab() {
     <>
       <H sub={`${users.length} signed up · ${buyers} have ordered`}>Users</H>
       <Card className="overflow-x-auto p-0">
-        <table className="w-full min-w-[900px] text-sm">
-          <thead className="bg-cream text-left text-xs uppercase tracking-wider text-muted"><tr>{["User", "Phone", "Sign-in", "Joined", "Last login", "Orders", "Spent", "Address"].map((h) => <th key={h} className="px-4 py-3">{h}</th>)}</tr></thead>
+        <table className="w-full min-w-[1000px] text-sm">
+          <thead className="bg-cream text-left text-xs uppercase tracking-wider text-muted"><tr>{["User", "Phone", "Sign-in", "Joined", "Last login", "Orders", "Spent", "Address", ""].map((h) => <th key={h} className="px-4 py-3">{h}</th>)}</tr></thead>
           <tbody className="divide-y divide-line">
             {users.map((u) => { const s = m.get(String(u._id)); const a = u.addresses?.[0]; return (
               <tr key={String(u._id)} className={s ? "bg-lime/10" : ""}>
@@ -197,6 +197,7 @@ async function UsersTab() {
                 <td className="px-4 py-3 font-bold">{s?.n ?? 0}</td>
                 <td className="px-4 py-3 font-bold">{s ? $(s.spent) : "—"}</td>
                 <td className="px-4 py-3 text-xs text-muted">{a ? `${a.city}, ${countryName(a.country)}` : "—"}</td>
+                <td className="px-4 py-3"><UserActions user={{ id: String(u._id), name: u.name || "", email: u.email, username: u.username || "", phone: u.phone || "" }} /></td>
               </tr>); })}
           </tbody>
         </table>
@@ -264,13 +265,13 @@ async function Interests() {
 }
 
 async function Products() {
-  const [products, settings] = await Promise.all([Product.find({}).sort({ createdAt: -1 }).limit(500).lean(), getSettings()]);
+  const [products, settings, auto] = await Promise.all([Product.find({}).sort({ createdAt: -1 }).limit(500).lean(), getSettings(), Settings.findOne({ key: "global" }).select("cjAutoImport cjAutoImportTarget cjLastAutoImport").lean()]);
   const cats = CATEGORIES.map((c) => ({ slug: c.slug, label: catLabel(c.slug) }));
   return (
     <>
       <H sub={`Customer price = supplier cost + margin (global ${settings.marginPct}%, or per-product override), rounded to .99`}>Products ({products.length})</H>
       <div className="mb-6 grid gap-6 lg:grid-cols-3">
-        <Card><p className="mb-3 font-display font-bold">Import from CJ Dropshipping</p><AutoImport categories={cats} enabled={cjEnabled()} /></Card>
+        <Card><p className="mb-3 font-display font-bold">Import from CJ Dropshipping</p><div className="mb-4"><AutoImportSchedule enabled={auto?.cjAutoImport !== false} target={auto?.cjAutoImportTarget ?? 40} last={auto?.cjLastAutoImport ? JSON.parse(JSON.stringify(auto.cjLastAutoImport)) : null} /></div><AutoImport categories={cats} enabled={cjEnabled()} /></Card>
         <Card><p className="mb-3 font-display font-bold">Import from AliExpress</p><ImportForm categories={cats} enabled={aliEnabled()} /></Card>
         <Card><p className="mb-3 font-display font-bold">Add product manually (Alibaba link)</p><AddProductForm categories={cats} /></Card>
       </div>

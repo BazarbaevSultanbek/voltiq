@@ -31,3 +31,18 @@ export async function emailCustomer(to: string, subject: string, html: string) {
     body: JSON.stringify({ from: process.env.EMAIL_FROM || "KAUP <orders@resend.dev>", to, subject, html }),
   }).catch(() => {});
 }
+
+const STATUS_TEXT: Record<string, string> = {
+  paid: "has been accepted", processing: "is being prepared", shipped: "has been shipped",
+  delivered: "has been delivered", cancelled: "has been cancelled",
+};
+const esc = (s: string) => s.replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]!);
+
+/** Email the customer when their order status changes (only sends if an email service is configured). */
+export async function emailOrderStatus(o: { email?: string | null; number?: string | null; status?: string | null; supplier?: { trackNumber?: string | null } | null }) {
+  if (!o.email || !o.number || !o.status || !STATUS_TEXT[o.status]) return;
+  const site = process.env.NEXT_PUBLIC_SITE_URL || (process.env.VERCEL_PROJECT_PRODUCTION_URL ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}` : "");
+  const track = o.supplier?.trackNumber ? `<p>Tracking number: <b>${esc(o.supplier.trackNumber)}</b></p>` : "";
+  await emailCustomer(o.email, `Order ${o.number} ${STATUS_TEXT[o.status]}`,
+    `<h2>Your order ${esc(o.number)} ${STATUS_TEXT[o.status]}.</h2>${track}${site ? `<p><a href="${site}/en/account/orders">View your order</a></p>` : ""}<p>— KAUP</p>`);
+}

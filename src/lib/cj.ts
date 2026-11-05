@@ -7,7 +7,7 @@ import { CATEGORIES } from "./catalog";
 import { priceProduct } from "./pricing";
 import { getSettings } from "./settings";
 import { countryName } from "./shipping";
-import { notifyUser } from "./notify";
+import { notifyUser, emailOrderStatus } from "./notify";
 
 /**
  * CJ Dropshipping API v2 — https://developers.cjdropshipping.com
@@ -186,6 +186,34 @@ export async function cjAutoImport(category: string, count: number, budgetMs = 4
   return { category, created, rejected, failed, timedOut: late() };
 }
 
+/**
+ * Daily job: tops up the categories that have the fewest products, a few at a time,
+ * until each reaches the target. Runs inside one serverless call, so it stops
+ * after ~50 s and continues with the next categories the following day.
+ */
+export async function cjDailyImport(budgetMs = 50_000) {
+  await db();
+  const s = await Settings.findOne({ key: "global" }).select("cjAutoImport cjAutoImportTarget").lean();
+  if (s?.cjAutoImport === false) return { skipped: "turned off in admin" };
+  const target = s?.cjAutoImportTarget ?? 40;
+  const counts = new Map((await Product.aggregate<{ _id: string; n: number }>([{ $match: { source: "cj", active: true } }, { $group: { _id: "$category", n: { $sum: 1 } } }])).map((c) => [c._id, c.n]));
+  const todo = Object.keys(CJ_RULES).map((slug) => ({ slug, n: counts.get(slug) ?? 0 })).filter((c) => c.n < target).sort((a, b) => a.n - b.n);
+  const t0 = Date.now();
+  const results: { category: string; created: number }[] = [];
+  for (const c of todo) {
+    const left = budgetMs - (Date.now() - t0);
+    if (left < 10_000) break;
+    try {
+      const r = await cjAutoImport(c.slug, Math.min(6, target - c.n), left - 3_000);
+      results.push({ category: c.slug, created: r.created });
+    } catch (e) { results.push({ category: c.slug, created: 0 }); console.error("[cj daily import]", c.slug, e); }
+  }
+  const created = results.reduce((n, r) => n + r.created, 0);
+  const note = todo.length ? results.map((r) => `${r.category} +${r.created}`).join(", ") : `all categories have ${target}+ products`;
+  await Settings.updateOne({ key: "global" }, { $set: { cjLastAutoImport: { at: new Date(), created, note } } }, { upsert: true });
+  return { created, results, fullCategories: Object.keys(CJ_RULES).length - todo.length };
+}
+
 /** Switch off CJ products whose title doesn't fit their category (e.g. earlier keyword mistakes). */
 export async function cjHideOffTopic() {
   await db();
@@ -257,12 +285,14 @@ export async function cjSyncOrder(orderId: string) {
   if (d.trackNumber) o.supplier.trackNumber = d.trackNumber;
   const map: Record<string, "shipped" | "delivered" | "cancelled"> = { SHIPPED: "shipped", DELIVERED: "delivered", CANCELLED: "cancelled" };
   const next = map[String(d.orderStatus).toUpperCase()] ?? (newTrack ? "shipped" : undefined);
-  if (next && next !== o.status && o.status !== "delivered") {
+  const changed = !!next && next !== o.status && o.status !== "delivered";
+  if (changed) {
     o.status = next;
     o.timeline.push({ status: next, at: new Date(), note: d.trackNumber ? `Tracking ${d.trackNumber}` : "" });
     await notifyUser(o.user, "notif.orderStatus", { number: o.number, status: next }, "/account/orders");
   }
   await o.save();
+  if (changed) await emailOrderStatus(o);
   return o;
 }
 

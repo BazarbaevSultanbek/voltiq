@@ -19,6 +19,7 @@ import { CardBrands } from "../CardBrands";
 import { CardPreview } from "./CardPreview";
 import { AuthForm } from "../AuthForm";
 import { cn } from "@/lib/cn";
+import { validPhone } from "@/lib/phone";
 
 type Addr = { fullName: string; phone: string; country: string; region: string; city: string; line1: string; line2: string; postal: string };
 const EMPTY: Addr = { fullName: "", phone: "", country: "", region: "", city: "", line1: "", line2: "", postal: "" };
@@ -86,7 +87,7 @@ function Checkout({ freeOver, stripePk, providers }: { freeOver: number; stripeP
   const brandBad = (stripePk ? stripeBrand !== "unknown" : card.number.replace(/\D/g, "").length >= 2) && !ALLOWED_BRANDS.includes(brand);
   const fmtDate = (d: string) => new Date(d).toLocaleDateString(locale, { weekday: "short", month: "short", day: "numeric" });
 
-  const addrOk = addr.fullName.trim().length > 1 && addr.phone.trim().length > 4 && addr.country && addr.city.trim() && addr.line1.trim().length > 2;
+  const addrOk = addr.fullName.trim().length > 1 && validPhone(addr.phone) && addr.country && addr.city.trim() && addr.line1.trim().length > 2;
   const cardOk = stripePk ? stripeComplete && !brandBad : luhn(card.number) && validExpiry(card.exp) && /^\d{3,4}$/.test(card.cvc) && card.name.trim().length > 1 && !brandBad;
 
   if (!hydrated || loading) return <div className="grid min-h-[60vh] place-items-center"><Loader2 className="animate-spin text-volt" size={32} /></div>;
@@ -148,12 +149,15 @@ function Checkout({ freeOver, stripePk, providers }: { freeOver: number; stripeP
   };
 
   const field = (k: keyof Addr, label: string, opts: { type?: string; auto?: string; req?: boolean; span?: boolean } = {}) => {
-    const bad = touched && opts.req !== false && !addr[k]?.trim() && ["fullName", "phone", "city", "line1"].includes(k);
+    const required = ["fullName", "phone", "city", "line1"].includes(k);
+    const phoneBad = k === "phone" && touched && !!addr.phone.trim() && !validPhone(addr.phone);
+    const bad = (touched && opts.req !== false && !addr[k]?.trim() && required) || phoneBad;
     return (
       <div className={opts.span ? "sm:col-span-2" : ""}>
-        <label className="label" htmlFor={`a-${k}`}>{label}</label>
+        <label className="label" htmlFor={`a-${k}`}>{label}{required && <span className="text-berry"> *</span>}</label>
         <input id={`a-${k}`} type={opts.type || "text"} autoComplete={opts.auto} value={addr[k]} onChange={(e) => setAddr({ ...addr, [k]: e.target.value })}
-          className={cn("input", bad && "border-berry")} />
+          required={required} aria-invalid={bad || undefined} className={cn("input", bad && "border-berry")} />
+        {phoneBad && <p className="mt-1 text-xs font-semibold text-berry">{t("checkout.phoneInvalid")}</p>}
       </div>
     );
   };
