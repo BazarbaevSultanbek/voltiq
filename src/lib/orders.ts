@@ -105,6 +105,7 @@ export async function createOrder(userId: string, input: z.infer<typeof Checkout
     });
     order.payment!.intentId = pi.id;
     order.payment!.status = pi.status;
+    order.payment!.livemode = pi.livemode;
     await order.save();
     if (pi.status === "succeeded") return finalize(String(order._id));
     if (pi.status === "requires_action") return { order: null, requiresAction: true, clientSecret: pi.client_secret, orderId: String(order._id) };
@@ -146,7 +147,7 @@ export async function finalize(orderId: string) {
     const a = order.address!;
     await Promise.allSettled([
       notifyOwner(
-        `🛒 <b>New order ${order.number}</b>${order.payment?.provider === "test" ? " (TEST)" : ""}\n` +
+        `🛒 <b>New order ${order.number}</b>${order.payment?.livemode ? "" : " (TEST — no real payment)"}\n` +
         `💵 $${order.total!.toFixed(2)} · ${order.items.reduce((s, i) => s + i.qty!, 0)} items · ${order.shippingMethod!.id}\n` +
         `👤 ${a.fullName} · ${a.phone} · ${order.email}\n📍 ${a.city}, ${countryName(a.country)}\n` +
         order.items.map((i) => `• ${i.qty}× ${i.title} (${i.color})`).join("\n"),
@@ -154,8 +155,9 @@ export async function finalize(orderId: string) {
       emailCustomer(order.email!, `Order ${order.number} confirmed`,
         `<h2>Thanks for your order!</h2><p>Order <b>${order.number}</b> is accepted. Total: $${order.total!.toFixed(2)}.</p><p>Estimated delivery: ${eta}.</p>`),
     ]);
-    // Auto-forward to CJ Dropshipping after the response is sent
-    if (cjEnabled()) {
+    // Auto-forward to CJ Dropshipping after the response is sent — only for real (live) payments,
+    // so test orders never spend money from the CJ balance.
+    if (cjEnabled() && order.payment?.livemode) {
       const id = String(order._id);
       after(async () => {
         try {

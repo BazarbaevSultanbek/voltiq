@@ -211,6 +211,7 @@ export async function cjSendOrder(orderId: string) {
   const o = await Order.findById(orderId);
   if (!o) throw new Error("Order not found");
   if (o.supplier?.orderId) return o;
+  if (!o.payment?.livemode) throw new Error("Test-mode order (no real payment) — not sent to CJ.");
   const ids = o.items.map((i) => i.product);
   const prods = new Map((await Product.find({ _id: { $in: ids } }).select("source variants").lean()).map((p) => [String(p._id), p]));
   const lines = o.items.map((i) => {

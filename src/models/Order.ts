@@ -27,6 +27,7 @@ const OrderSchema = new Schema(
     payment: {
       provider: { type: String, enum: ["stripe", "test"] },
       brand: String, last4: String, intentId: String, status: String,
+      livemode: { type: Boolean, default: false }, // true only when real money was charged
     },
     supplier: {
       provider: String, orderId: String, status: String, logisticName: String,

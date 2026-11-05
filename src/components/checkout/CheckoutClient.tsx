@@ -162,7 +162,7 @@ function Checkout({ freeOver, stripePk, providers }: { freeOver: number; stripeP
     <div className="mx-auto max-w-7xl px-4 pb-16 pt-8">
       <Link href={href("/cart")} className="mb-4 inline-flex items-center gap-1 text-sm font-bold text-muted hover:text-fg"><ChevronLeft size={16} />{t("checkout.back")}</Link>
       <h1 className="mb-8 font-display text-4xl font-black sm:text-5xl">{t("checkout.title")}</h1>
-      {!stripePk && (
+      {(!stripePk || stripePk.startsWith("pk_test")) && (
         <div className="mb-6 flex items-start gap-3 rounded-2xl border border-volt/30 bg-volt/5 p-4 text-sm font-semibold"><Info size={18} className="mt-0.5 shrink-0 text-volt" />{t("checkout.testMode")}</div>
       )}
 
