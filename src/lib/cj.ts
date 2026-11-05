@@ -170,7 +170,7 @@ export async function cjAutoImport(category: string, count: number, budgetMs = 4
   const { marginPct } = await getSettings();
   const have = new Set((await Product.find({ source: "cj" }).select("sourceId").lean()).map((p) => p.sourceId));
   let created = 0, rejected = 0, failed = 0;
-  outer: for (const page of [1, 2, 3]) {
+  outer: for (const page of [1, 2, 3, 4, 5]) {
     for (const kw of rule.keywords) {
       if (created >= count || late()) break outer;
       const { items } = await cjSearch(kw, 20, page);

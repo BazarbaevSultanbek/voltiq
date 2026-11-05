@@ -218,16 +218,23 @@ export function AutoImport({ categories, enabled }: { categories: { slug: string
 
   const run = async () => {
     const list = cat === "all" ? categories : categories.filter((c) => c.slug === cat);
-    const n = Math.max(1, Math.min(20, Number(count) || 8));
+    const n = Math.max(1, Math.min(100, Number(count) || 8));
     setLog([]);
     let total = 0;
-    for (const [i, c] of list.entries()) {
-      setBusy(`${c.label} (${i + 1}/${list.length})…`);
-      const { ok, d } = await post({ action: "import", category: c.slug, count: n });
-      const line = ok ? `${c.label}: ${d.created} added${d.rejected ? `, ${d.rejected} off-topic skipped` : ""}${d.failed ? `, ${d.failed} failed` : ""}` : `${c.label}: ${d.error || "failed"}`;
-      if (ok) total += d.created;
-      setLog((l) => [...l, line]);
-      if (!ok && /CJ_API_KEY|auth/i.test(d.error || "")) break;
+    outer: for (const [i, c] of list.entries()) {
+      // Each request imports a batch of up to 15 (to fit the server time limit);
+      // keep asking until this category has n new products or CJ runs out of matches.
+      let added = 0, rejected = 0, failed = 0, error = "";
+      for (let tries = 0; added < n && tries < 15; tries++) {
+        setBusy(`${c.label} (${i + 1}/${list.length}) — ${added}/${n}…`);
+        const { ok, d } = await post({ action: "import", category: c.slug, count: Math.min(15, n - added) });
+        if (!ok) { error = d.error || "failed"; break; }
+        added += d.created; rejected += d.rejected; failed += d.failed;
+        if (d.created === 0 && !d.timedOut) break; // nothing new left for this category
+      }
+      total += added;
+      setLog((l) => [...l, `${c.label}: ${added} added${added < n && !error ? " (no more matching products found)" : ""}${rejected ? `, ${rejected} off-topic skipped` : ""}${failed ? `, ${failed} failed` : ""}${error ? ` — ${error}` : ""}`]);
+      if (/CJ_API_KEY|auth/i.test(error)) break outer;
     }
     setBusy(null);
     toast.success(`Done — ${total} products added`);
@@ -250,7 +257,7 @@ export function AutoImport({ categories, enabled }: { categories: { slug: string
           <option value="all">All categories</option>
           {categories.map((c) => <option key={c.slug} value={c.slug}>{c.label}</option>)}
         </select>
-        <input className="input" inputMode="numeric" value={count} onChange={(e) => setCount(e.target.value.replace(/\D/g, ""))} aria-label="Products per category" title="Products per category (max 20)" disabled={!!busy} />
+        <input className="input" inputMode="numeric" value={count} onChange={(e) => setCount(e.target.value.replace(/\D/g, ""))} aria-label="Products per category" title="Products per category (max 100)" disabled={!!busy} />
       </div>
       <button className="btn btn-dark w-full" disabled={!!busy || !enabled} onClick={run}>{busy && <Loader2 size={16} className="animate-spin" />}{busy ?? "Import automatically"}</button>
       <button className="w-full text-xs font-bold text-volt disabled:opacity-40" disabled={!!busy || !enabled} onClick={cleanup}>Hide products that don&apos;t fit their category</button>
