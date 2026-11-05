@@ -64,30 +64,30 @@ export function ProductView({ p, related, freeOver }: { p: FullProduct; related:
         <span className="truncate text-fg">{p.title}</span>
       </nav>
 
-      <div className="grid gap-10 lg:grid-cols-[1.1fr_1fr] lg:gap-16">
-        <div className="lg:sticky lg:top-28 lg:self-start">
-          <div className="relative aspect-square cursor-zoom-in overflow-hidden rounded-[2.2rem] bg-cream"
+      <div className="grid gap-10 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)] lg:gap-16">
+        <div className="min-w-0 lg:sticky lg:top-28 lg:self-start">
+          <div className="relative aspect-square cursor-zoom-in overflow-hidden rounded-[2.2rem] bg-white"
             onMouseMove={(e) => { const r = e.currentTarget.getBoundingClientRect(); setZoom({ x: ((e.clientX - r.left) / r.width) * 100, y: ((e.clientY - r.top) / r.height) * 100 }); }}
             onMouseLeave={() => setZoom(null)}>
             <AnimatePresence mode="wait">
               <motion.img key={shown} src={shown} alt={p.title} initial={{ opacity: 0, scale: 1.04 }} animate={{ opacity: 1, scale: zoom ? 1.8 : 1 }} exit={{ opacity: 0 }}
-                transition={{ duration: zoom ? 0.2 : 0.4 }} style={{ transformOrigin: zoom ? `${zoom.x}% ${zoom.y}%` : "50% 50%" }} className="h-full w-full object-cover" />
+                transition={{ duration: zoom ? 0.2 : 0.4 }} style={{ transformOrigin: zoom ? `${zoom.x}% ${zoom.y}%` : "50% 50%" }} className="h-full w-full object-contain p-4" />
             </AnimatePresence>
             {off > 0 && <span className="absolute left-5 top-5 rounded-full bg-volt px-3 py-1.5 text-sm font-black text-white">{t("product.save", { pct: off })}</span>}
           </div>
           {images.length > 1 && (
-            <div className="no-scrollbar mt-4 flex gap-3 overflow-x-auto">
+            <div className="no-scrollbar mt-4 flex max-w-full gap-3 overflow-x-auto pb-1">
               {images.map((src, i) => (
                 <button key={src + i} onClick={() => { if (p.colors && p.colors.length > 1) setCi(i); else setImg(i); }}
-                  className={cn("h-20 w-20 shrink-0 overflow-hidden rounded-2xl border-2 transition", (p.colors && p.colors.length > 1 ? ci : img) === i ? "border-fg" : "border-transparent opacity-70 hover:opacity-100")}>
-                  <img src={src} alt="" className="h-full w-full object-cover" />
+                  className={cn("h-20 w-20 shrink-0 overflow-hidden rounded-2xl border-2 bg-white transition", (p.colors && p.colors.length > 1 ? ci : img) === i ? "border-fg" : "border-line hover:border-muted")}>
+                  <img src={src} alt="" loading="lazy" className="h-full w-full object-contain p-1" />
                 </button>
               ))}
             </div>
           )}
         </div>
 
-        <div>
+        <div className="min-w-0">
           <p className="text-sm font-bold uppercase tracking-widest text-volt">{t(`cat.${p.category}`)}</p>
           <h1 className="mt-2 font-display text-3xl font-black leading-tight sm:text-4xl">{p.title}</h1>
           <div className="mt-3 flex flex-wrap items-center gap-3 text-sm font-semibold">
@@ -107,7 +107,7 @@ export function ProductView({ p, related, freeOver }: { p: FullProduct; related:
                 <div className="flex flex-wrap gap-2">
                   {p.colors.map((c, i) => (
                     <button key={c.name + i} onClick={() => setCi(i)} className={cn("flex items-center gap-2 rounded-2xl border-2 py-1.5 pl-1.5 pr-3 text-sm font-semibold transition", i === ci ? "border-fg" : "border-line hover:border-muted")}>
-                      {p.images[i] && <img src={p.images[i]} alt="" className="h-9 w-9 rounded-xl object-cover" />}{c.name}
+                      {p.images[i] && <img src={p.images[i]} alt="" loading="lazy" className="h-9 w-9 shrink-0 rounded-xl bg-white object-contain" />}<span className="max-w-[12rem] truncate">{c.name}</span>
                     </button>
                   ))}
                 </div>

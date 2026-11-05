@@ -33,9 +33,9 @@ export function ProductCard({ p, index = 0 }: { p: CardProduct; index?: number }
     <motion.article initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-40px" }}
       transition={{ duration: 0.55, delay: Math.min(index, 8) * 0.05, ease: [0.2, 0.8, 0.2, 1] }} className="group">
       <Link href={href(`/p/${p.slug}`)} className="block">
-        <div className="relative aspect-square overflow-hidden rounded-[1.6rem] bg-cream">
+        <div className="relative aspect-square overflow-hidden rounded-[1.6rem] bg-white">
           <img src={p.images[color] || p.images[0]} alt={p.title} loading="lazy"
-            className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.07]" />
+            className="h-full w-full object-contain p-2 transition-transform duration-700 ease-out group-hover:scale-[1.07]" />
           <div className="absolute left-3 top-3 flex flex-col gap-1.5">
             {off > 0 && <span className="rounded-full bg-volt px-2.5 py-1 text-[11px] font-black text-white">-{off}%</span>}
             {isNew && !off && <span className="rounded-full bg-lime px-2.5 py-1 text-[11px] font-black text-ink">{t("product.new")}</span>}
