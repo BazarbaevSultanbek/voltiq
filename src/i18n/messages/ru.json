@@ -115,7 +115,10 @@
     "trendingSearches": "Популярные запросы",
     "recent": "Недавние запросы",
     "suggestions": "Товары",
-    "seeAll": "Все результаты по «{q}»"
+    "seeAll": "Все результаты по «{q}»",
+    "prev": "Назад",
+    "next": "Далее",
+    "pageOf": "Страница {n} из {total}"
   },
   "product": {
     "addToCart": "В корзину",

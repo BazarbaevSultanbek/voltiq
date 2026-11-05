@@ -29,7 +29,7 @@ function categoriesFor(q: string) {
 
 export type SearchParams = {
   q?: string; cat?: string; group?: string; min?: number; max?: number; deals?: boolean;
-  sort?: "relevance" | "popular" | "new" | "price_asc" | "price_desc"; limit?: number;
+  sort?: "relevance" | "popular" | "new" | "price_asc" | "price_desc"; limit?: number; page?: number;
 };
 
 export async function searchProducts(p: SearchParams) {
@@ -47,7 +47,7 @@ export async function searchProducts(p: SearchParams) {
     const textMatch = { $and: words.map((w) => ({ $or: [{ title: { $regex: esc(w), $options: "i" } }, { tags: { $regex: esc(w), $options: "i" } }, { category: { $regex: esc(w), $options: "i" } }] })) };
     filter.$or = cats.size ? [textMatch, { category: { $in: [...cats] } }] : [textMatch];
   }
-  let items = await Product.find(filter).select("-costPrice -supplierCompareAt -marginPct -sourceUrl -sourceId -variants").limit(400).lean();
+  let items = await Product.find(filter).select("-costPrice -supplierCompareAt -marginPct -sourceUrl -sourceId -variants").limit(2000).lean();
 
   const pop = (x: (typeof items)[number]) => x.sold * 5 + x.cartAdds * 2 + x.views * 0.2 + x.searchHits * 0.5;
   const score = (x: (typeof items)[number]) => {
@@ -65,7 +65,10 @@ export async function searchProducts(p: SearchParams) {
     price_desc: (a, b) => b.price - a.price,
   };
   items = items.sort(sorters[p.sort || "relevance"] || sorters.relevance);
-  return { q, items: items.slice(0, p.limit ?? 200), total: items.length };
+  const limit = p.limit ?? 200;
+  const pages = Math.max(1, Math.ceil(items.length / limit));
+  const page = Math.min(Math.max(1, Math.floor(p.page ?? 1)), pages);
+  return { q, items: items.slice((page - 1) * limit, page * limit), total: items.length, page, pages };
 }
 
 /** Count what people search for — shown in the admin "Interests" tab. */

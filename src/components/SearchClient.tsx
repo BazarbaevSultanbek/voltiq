@@ -1,8 +1,9 @@
 "use client";
+import Link from "next/link";
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import { useEffect, useRef, useState, useTransition } from "react";
 import { AnimatePresence, motion } from "motion/react";
-import { SlidersHorizontal, X, SearchX } from "lucide-react";
+import { SlidersHorizontal, X, SearchX, ChevronLeft, ChevronRight } from "lucide-react";
 import { useI18n } from "@/i18n/client";
 import { CATEGORIES } from "@/lib/catalog";
 import { ProductCard, type CardProduct } from "./ProductCard";
@@ -10,7 +11,7 @@ import { cn } from "@/lib/cn";
 
 const SORTS = [["relevance", "sortRelevance"], ["popular", "sortPopular"], ["new", "sortNew"], ["price_asc", "sortPriceAsc"], ["price_desc", "sortPriceDesc"]] as const;
 
-export function SearchClient({ items, total }: { items: CardProduct[]; total: number }) {
+export function SearchClient({ items, total, page, pages }: { items: CardProduct[]; total: number; page: number; pages: number }) {
   const { t } = useI18n();
   const sp = useSearchParams();
   const router = useRouter();
@@ -31,6 +32,7 @@ export function SearchClient({ items, total }: { items: CardProduct[]; total: nu
 
   const set = (patch: Record<string, string | null>) => {
     const next = new URLSearchParams(sp.toString());
+    next.delete("page"); // any filter/sort change starts again from page 1
     for (const [k, v] of Object.entries(patch)) { if (v === null || v === "") next.delete(k); else next.set(k, v); }
     start(() => router.replace(`${pathname}?${next.toString()}`, { scroll: false }));
   };
@@ -111,6 +113,7 @@ export function SearchClient({ items, total }: { items: CardProduct[]; total: nu
               </AnimatePresence>
             </motion.div>
           )}
+          {pages > 1 && <Pager page={page} pages={pages} pageHref={(n) => { const next = new URLSearchParams(sp.toString()); if (n > 1) next.set("page", String(n)); else next.delete("page"); const qs = next.toString(); return qs ? `${pathname}?${qs}` : pathname; }} />}
         </div>
       </div>
 
@@ -131,4 +134,32 @@ export function SearchClient({ items, total }: { items: CardProduct[]; total: nu
 
 function Chip({ children, onX }: { children: React.ReactNode; onX: () => void }) {
   return <span className="flex items-center gap-1 whitespace-nowrap rounded-full bg-ink py-1.5 pl-3 pr-1.5 text-sm font-bold text-white">{children}<button onClick={onX} className="rounded-full p-0.5 hover:bg-white/20" aria-label="remove"><X size={14} /></button></span>;
+}
+
+/** 1 … 4 5 [6] 7 8 … 20 */
+function pageList(page: number, pages: number): (number | "gap")[] {
+  const want = new Set([1, pages, page - 2, page - 1, page, page + 1, page + 2].filter((n) => n >= 1 && n <= pages));
+  const sorted = [...want].sort((a, b) => a - b);
+  const out: (number | "gap")[] = [];
+  sorted.forEach((n, i) => { if (i && n - sorted[i - 1] > 1) out.push("gap"); out.push(n); });
+  return out;
+}
+
+function Pager({ page, pages, pageHref }: { page: number; pages: number; pageHref: (n: number) => string }) {
+  const { t } = useI18n();
+  const arrow = "grid h-11 w-11 place-items-center rounded-full border-[1.5px] border-line bg-surface transition hover:border-fg";
+  const off = "pointer-events-none opacity-30";
+  return (
+    <nav aria-label={t("search.pageOf", { n: page, total: pages })} className="mt-14 flex flex-col items-center gap-3">
+      <div className="flex items-center gap-1.5">
+        <Link href={pageHref(page - 1)} aria-label={t("search.prev")} aria-disabled={page <= 1} tabIndex={page <= 1 ? -1 : undefined} className={cn(arrow, page <= 1 && off)}><ChevronLeft size={18} /></Link>
+        {pageList(page, pages).map((n, i) => n === "gap"
+          ? <span key={`g${i}`} className="px-1 font-bold text-muted">…</span>
+          : <Link key={n} href={pageHref(n)} aria-current={n === page ? "page" : undefined}
+              className={cn("grid h-11 min-w-11 place-items-center rounded-full px-3 font-bold transition", n === page ? "bg-ink text-white" : "hover:bg-cream")}>{n}</Link>)}
+        <Link href={pageHref(page + 1)} aria-label={t("search.next")} aria-disabled={page >= pages} tabIndex={page >= pages ? -1 : undefined} className={cn(arrow, page >= pages && off)}><ChevronRight size={18} /></Link>
+      </div>
+      <p className="text-sm font-semibold text-muted">{t("search.pageOf", { n: page, total: pages })}</p>
+    </nav>
+  );
 }

@@ -115,7 +115,10 @@
     "trendingSearches": "Trending searches",
     "recent": "Recent searches",
     "suggestions": "Products",
-    "seeAll": "See all results for “{q}”"
+    "seeAll": "See all results for “{q}”",
+    "prev": "Previous",
+    "next": "Next",
+    "pageOf": "Page {n} of {total}"
   },
   "product": {
     "addToCart": "Add to cart",

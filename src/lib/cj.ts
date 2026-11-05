@@ -120,6 +120,81 @@ export async function cjImport(keyWord: string, category: string, count: number)
   return { found: items.length, created, updated, failed };
 }
 
+// ───────────────────────── Automatic import ─────────────────────────
+/**
+ * What to search CJ for in each category, and how to tell whether a result really
+ * belongs there. Only products whose English title matches `match` (and not
+ * `exclude`) are imported — this is what keeps "mouse" from bringing in pet toys
+ * or "keyboard" from bringing in gloves.
+ */
+type Rule = { keywords: string[]; match: RegExp; exclude?: RegExp };
+const JUNK = /\b(sticker|decal|toy|plush|costume|glove|sock|shirt|t-shirt|hoodie|necklace|earring|keychain|key chain|pendant|poster|pillow|cushion|dog|cat|pet|kid'?s toy)s?\b/i;
+export const CJ_RULES: Record<string, Rule> = {
+  chargers: { keywords: ["gan fast charger usb c", "wireless charger", "car charger usb c", "pd charger 20w"], match: /\b(charger|charging (station|stand|pad|dock|block|head|adapter)|power adapter)\b/i, exclude: /\b(cable|case|cover|power bank)\b/i },
+  cables: { keywords: ["usb c cable fast charging", "lightning cable", "braided type c cable", "magnetic charging cable"], match: /\b(cable|cord|wire|line)\b/i, exclude: /\b(organi[sz]er|clip|protector|tie|winder)\b/i },
+  "power-banks": { keywords: ["power bank", "magnetic power bank", "portable charger 20000mah"], match: /\b(power ?bank|battery pack|portable charger)\b/i, exclude: /\b(case|cover)\b/i },
+  cases: { keywords: ["iphone case", "samsung galaxy case", "magsafe phone case", "shockproof phone case"], match: /\b(phone case|case|cover|bumper)\b/i, exclude: /\b(suitcase|pencil case|storage case|carrying case|watch|airpods?|earbuds?|tablet|ipad|laptop)\b/i },
+  "screen-protectors": { keywords: ["tempered glass screen protector", "privacy screen protector", "camera lens protector"], match: /\b(screen protector|tempered glass|protective (film|glass)|glass film|hydrogel|lens protector)\b/i },
+  audio: { keywords: ["wireless earbuds", "bluetooth headphones", "tws earphones", "bluetooth speaker"], match: /\b(earbuds?|earphones?|headphones?|headset|speaker|tws|in-ear|earpods?)\b/i, exclude: /\b(case|cover|cushion|ear ?pads?|tips|hook|holder)\b/i },
+  mounts: { keywords: ["car phone holder", "magnetic car mount", "desktop phone stand", "selfie stick tripod"], match: /\b(holder|mount|stand|tripod|selfie stick|gimbal|bracket)\b/i, exclude: /\b(laptop|notebook|monitor|cup|bottle|toothbrush|plant|flower|headphone)\b/i },
+  wearables: { keywords: ["apple watch band", "smart watch strap", "smart watch", "smart ring"], match: /\b(watch|band|strap|smart ?ring|fitness tracker|bracelet)\b/i, exclude: /\b(hair|rubber band|resistance|wedding|headband|bandage)\b/i },
+  keyboards: { keywords: ["mechanical keyboard", "wireless keyboard", "bluetooth keyboard", "keyboard mouse combo"], match: /\bkeyboards?\b/i, exclude: /\b(cover|skin|film|cleaner|cleaning|brush|wrist rest|piano|musical|electronic organ)\b/i },
+  mice: { keywords: ["wireless mouse", "gaming mouse", "bluetooth mouse", "ergonomic mouse"], match: /\b(computer|wireless|gaming|optical|bluetooth|ergonomic|silent|usb|vertical|rechargeable)\b[^,|]*\b(mouse|mice)\b|\b(mouse|mice)\b[^,|]*\b(wireless|gaming|optical|bluetooth|dpi|usb|computer|laptop|pc)\b/i, exclude: /\b(pads?|mats?|traps?|bait|repell\w*|rats?|rodents?|pests?|plush|animals?|mickey|minnie|jerry|cartoon|toys?|pets?|cats?)\b/i },
+  mousepads: { keywords: ["mouse pad", "gaming mouse pad large", "desk mat"], match: /\b(mouse ?pad|mouse ?mat|desk ?(mat|pad)|gaming pad)\b/i },
+  webcams: { keywords: ["webcam 1080p", "usb microphone", "wireless lavalier microphone", "streaming microphone"], match: /\b(webcam|web cam|pc camera|usb camera|microphone|mic|lavalier|lapel)\b/i, exclude: /\b(security|surveillance|cctv|spy|doorbell|baby monitor|dash ?cam|stand only|windscreen|foam)\b/i },
+  hubs: { keywords: ["usb c hub", "usb 3.0 hub", "usb c to hdmi adapter", "docking station"], match: /\b(hub|dock|docking station|adapter|converter|splitter|dongle)\b/i, exclude: /\b(power adapter|charger|travel adapter|plug adapter|wall)\b/i },
+  storage: { keywords: ["portable ssd", "usb flash drive", "micro sd card", "ssd enclosure"], match: /\b(ssd|flash drive|usb drive|pen ?drive|thumb drive|u disk|memory card|sd card|tf card|hard (drive|disk)|enclosure|nvme)\b/i, exclude: /\b(reader only|case for)\b/i },
+  stands: { keywords: ["laptop stand", "monitor stand riser", "adjustable laptop holder"], match: /\b(laptop|notebook|monitor|macbook|computer)\b[^,|]*\b(stand|holder|riser|arm|bracket|tray)\b|\b(stand|holder|riser|arm|bracket)\b[^,|]*\b(laptop|notebook|monitor|macbook|computer)\b/i, exclude: /\b(bag|sleeve|case|sticker)\b/i },
+  gaming: { keywords: ["wireless game controller", "gamepad", "gaming headset", "mobile game trigger"], match: /\b(controller|gamepad|game ?pad|joystick|gaming|game trigger|handle grip)\b/i, exclude: /\b(chair|desk|shirt|mouse pad|keyboard|mouse)\b/i },
+  lighting: { keywords: ["ring light", "monitor light bar", "rgb led light", "led desk lamp"], match: /\b(light|lamp|led|lighting)\b/i, exclude: /\b(bulb socket|lighter|flashlight|torch|headlight|tail ?light|bicycle|bike|car light|christmas)\b/i },
+};
+
+export const fitsCategory = (title: string, category: string) => {
+  const r = CJ_RULES[category];
+  return !!r && r.match.test(title) && !r.exclude?.test(title) && !JUNK.test(title);
+};
+
+/**
+ * Fill one category with up to `count` new, on-topic CJ products using the
+ * category's own search words. Products already in the store are skipped, so
+ * running it again brings in different ones. Stops early to stay inside the
+ * serverless time limit (CJ allows 1 request per second).
+ */
+export async function cjAutoImport(category: string, count: number, budgetMs = 48_000) {
+  if (!cjEnabled()) throw new Error("Add CJ_API_KEY in Vercel first.");
+  const rule = CJ_RULES[category];
+  if (!rule) throw new Error("Unknown category");
+  const t0 = Date.now();
+  const late = () => Date.now() - t0 > budgetMs;
+  await db();
+  const { marginPct } = await getSettings();
+  const have = new Set((await Product.find({ source: "cj" }).select("sourceId").lean()).map((p) => p.sourceId));
+  let created = 0, rejected = 0, failed = 0;
+  outer: for (const page of [1, 2, 3]) {
+    for (const kw of rule.keywords) {
+      if (created >= count || late()) break outer;
+      const { items } = await cjSearch(kw, 20, page);
+      for (const it of items) {
+        if (created >= count || late()) break outer;
+        if (have.has(it.id)) continue;
+        have.add(it.id);
+        if (!fitsCategory(it.nameEn || "", category)) { rejected++; continue; }
+        try { await cjImportOne(it.id, category, marginPct); created++; } catch { failed++; }
+      }
+    }
+  }
+  return { category, created, rejected, failed, timedOut: late() };
+}
+
+/** Switch off CJ products whose title doesn't fit their category (e.g. earlier keyword mistakes). */
+export async function cjHideOffTopic() {
+  await db();
+  const list = await Product.find({ source: "cj", active: true }).select("title category").lean();
+  const bad = list.filter((p) => !fitsCategory(p.title, p.category)).map((p) => p._id);
+  if (bad.length) await Product.updateMany({ _id: { $in: bad } }, { $set: { active: false } });
+  return { checked: list.length, hidden: bad.length };
+}
+
 // ───────────────────────── Orders ─────────────────────────
 type Freight = { logisticName: string; logisticPrice: number; logisticAging: string };
 async function pickLogistic(country: string, zip: string | undefined, products: { vid: string; quantity: number }[], speed: string) {

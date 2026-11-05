@@ -6,6 +6,8 @@ import { isLocale, type Locale } from "@/i18n/config";
 import { SearchClient } from "@/components/SearchClient";
 import type { CardProduct } from "@/components/ProductCard";
 
+const PER_PAGE = 24;
+
 type SP = Promise<Record<string, string | undefined>>;
 
 export async function generateMetadata({ params, searchParams }: { params: Promise<{ locale: string }>; searchParams: SP }): Promise<Metadata> {
@@ -22,7 +24,7 @@ export default async function SearchPage({ searchParams }: { searchParams: SP })
   const n = (v?: string) => (v && !isNaN(Number(v)) ? Number(v) : undefined);
   const r = await searchProducts({
     q: sp.q, cat: sp.cat, group: sp.group, min: n(sp.min), max: n(sp.max), deals: sp.deals === "1",
-    sort: (sp.sort as never) || "relevance",
+    sort: (sp.sort as never) || "relevance", limit: PER_PAGE, page: n(sp.page),
   });
-  return <SearchClient items={plain<CardProduct[]>(r.items)} total={r.total} />;
+  return <SearchClient items={plain<CardProduct[]>(r.items)} total={r.total} page={r.page} pages={r.pages} />;
 }

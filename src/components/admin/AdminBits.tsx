@@ -202,3 +202,59 @@ export function SyncAllButton() {
     }} className="btn btn-dark py-2 text-sm">{busy && <Loader2 size={14} className="animate-spin" />}Sync tracking from CJ</button>
   );
 }
+
+/**
+ * One-click CJ import: no keywords to type. Each category uses its own search words
+ * and only keeps products whose title fits the category. "All categories" runs one
+ * request per category so each stays inside the serverless time limit.
+ */
+export function AutoImport({ categories, enabled }: { categories: { slug: string; label: string }[]; enabled: boolean }) {
+  const router = useRouter();
+  const [cat, setCat] = useState("all");
+  const [count, setCount] = useState("8");
+  const [busy, setBusy] = useState<string | null>(null);
+  const [log, setLog] = useState<string[]>([]);
+  const post = (body: object) => fetch("/api/admin/cj/auto", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(body) }).then(async (r) => ({ ok: r.ok, d: await r.json() }));
+
+  const run = async () => {
+    const list = cat === "all" ? categories : categories.filter((c) => c.slug === cat);
+    const n = Math.max(1, Math.min(20, Number(count) || 8));
+    setLog([]);
+    let total = 0;
+    for (const [i, c] of list.entries()) {
+      setBusy(`${c.label} (${i + 1}/${list.length})…`);
+      const { ok, d } = await post({ action: "import", category: c.slug, count: n });
+      const line = ok ? `${c.label}: ${d.created} added${d.rejected ? `, ${d.rejected} off-topic skipped` : ""}${d.failed ? `, ${d.failed} failed` : ""}` : `${c.label}: ${d.error || "failed"}`;
+      if (ok) total += d.created;
+      setLog((l) => [...l, line]);
+      if (!ok && /CJ_API_KEY|auth/i.test(d.error || "")) break;
+    }
+    setBusy(null);
+    toast.success(`Done — ${total} products added`);
+    router.refresh();
+  };
+
+  const cleanup = async () => {
+    setBusy("Checking products…");
+    const { ok, d } = await post({ action: "cleanup" });
+    setBusy(null);
+    if (ok) { toast.success(`Checked ${d.checked}, hid ${d.hidden} off-topic`); router.refresh(); } else toast.error(d.error || "Failed");
+  };
+
+  return (
+    <div className="space-y-3">
+      {!enabled && <p className="rounded-xl bg-volt/10 p-3 text-xs font-semibold text-volt-dark">Add CJ_API_KEY in Vercel to enable importing.</p>}
+      <p className="text-xs text-muted">Picks products for each category automatically and skips anything that doesn&apos;t fit it. Run it again to get more.</p>
+      <div className="grid grid-cols-[1fr_90px] gap-2">
+        <select className="input" value={cat} onChange={(e) => setCat(e.target.value)} disabled={!!busy}>
+          <option value="all">All categories</option>
+          {categories.map((c) => <option key={c.slug} value={c.slug}>{c.label}</option>)}
+        </select>
+        <input className="input" inputMode="numeric" value={count} onChange={(e) => setCount(e.target.value.replace(/\D/g, ""))} aria-label="Products per category" title="Products per category (max 20)" disabled={!!busy} />
+      </div>
+      <button className="btn btn-dark w-full" disabled={!!busy || !enabled} onClick={run}>{busy && <Loader2 size={16} className="animate-spin" />}{busy ?? "Import automatically"}</button>
+      <button className="w-full text-xs font-bold text-volt disabled:opacity-40" disabled={!!busy || !enabled} onClick={cleanup}>Hide products that don&apos;t fit their category</button>
+      {log.length > 0 && <ul className="max-h-40 space-y-0.5 overflow-auto rounded-xl bg-cream p-3 text-xs">{log.map((l, i) => <li key={i}>{l}</li>)}</ul>}
+    </div>
+  );
+}

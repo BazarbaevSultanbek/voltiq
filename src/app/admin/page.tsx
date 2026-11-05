@@ -17,7 +17,7 @@ import { stripeEnabled } from "@/lib/stripe";
 import { providerFlags } from "@/auth";
 import en from "@/i18n/messages/en.json";
 import { AdminLogin } from "@/components/admin/AdminLogin";
-import { LogoutButton, StatusSelect, OrderDetails, ProductToggle, ProductCost, SettingsForm, ImportForm, AddProductForm, SupplierPanel, SyncAllButton } from "@/components/admin/AdminBits";
+import { LogoutButton, StatusSelect, OrderDetails, ProductToggle, ProductCost, SettingsForm, ImportForm, AddProductForm, SupplierPanel, SyncAllButton, AutoImport } from "@/components/admin/AdminBits";
 import { Logo } from "@/components/Logo";
 import { ThemeToggle } from "@/components/ThemeToggle";
 
@@ -270,7 +270,7 @@ async function Products() {
     <>
       <H sub={`Customer price = supplier cost + margin (global ${settings.marginPct}%, or per-product override), rounded to .99`}>Products ({products.length})</H>
       <div className="mb-6 grid gap-6 lg:grid-cols-3">
-        <Card><p className="mb-3 font-display font-bold">Import from CJ Dropshipping</p><ImportForm categories={cats} enabled={cjEnabled()} endpoint="/api/admin/cj/import" source="CJ" envHint="CJ_API_KEY" max={20} /></Card>
+        <Card><p className="mb-3 font-display font-bold">Import from CJ Dropshipping</p><AutoImport categories={cats} enabled={cjEnabled()} /></Card>
         <Card><p className="mb-3 font-display font-bold">Import from AliExpress</p><ImportForm categories={cats} enabled={aliEnabled()} /></Card>
         <Card><p className="mb-3 font-display font-bold">Add product manually (Alibaba link)</p><AddProductForm categories={cats} /></Card>
       </div>
