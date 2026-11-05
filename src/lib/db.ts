@@ -31,9 +31,9 @@ export async function db() {
     cache.promise = null;
     throw e;
   }
-  cache.seeded ??= import("./seed").then((m) => m.ensureSeed()).catch((e) => {
+  cache.seeded ??= import("./seed").then((m) => m.ensureSetup()).catch((e) => {
     cache.seeded = null;
-    console.error("[db] seed failed", e);
+    console.error("[db] setup failed", e);
   });
   await cache.seeded;
   return cache.conn;
