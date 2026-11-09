@@ -153,11 +153,43 @@ export const CJ_RULES: Record<string, Rule> = {
   stands: { keywords: ["laptop stand", "monitor stand riser", "adjustable laptop holder"], match: /\b(laptop|notebook|monitor|macbook|computer)\b[^,|]*\b(stand|holder|riser|arm|bracket|tray)\b|\b(stand|holder|riser|arm|bracket)\b[^,|]*\b(laptop|notebook|monitor|macbook|computer)\b/i, exclude: /\b(bag|sleeve|case|sticker)\b/i },
   gaming: { keywords: ["wireless game controller", "gamepad", "gaming headset", "mobile game trigger"], match: /\b(controller|gamepad|game ?pad|joystick|gaming|game trigger|handle grip)\b/i, exclude: /\b(chair|desk|shirt|mouse pad|keyboard|mouse)\b/i },
   lighting: { keywords: ["ring light", "monitor light bar", "rgb led light", "led desk lamp"], match: /\b(light|lamp|led|lighting)\b/i, exclude: /\b(bulb socket|lighter|flashlight|torch|headlight|tail ?light|bicycle|bike|car light|christmas)\b/i },
+  // ── Fashion
+  "winter-wear": { keywords: ["knitted beanie hat", "winter scarf", "touchscreen winter gloves", "knitted hat scarf gloves set"], match: /\b(beanies?|hats?|caps?|scarf|scarves|gloves?|mittens?|earmuffs?|balaclava|neck warmer|snood)\b/i, exclude: /\b(baseball|sun ?hat|swim|pet|dog|cat|costume|wig|helmet)\b/i },
+  hoodies: { keywords: ["oversized hoodie", "fleece sweatshirt", "knitted sweater", "zip up hoodie"], match: /\b(hoodies?|sweatshirts?|sweaters?|pullovers?|cardigans?|jumpers?|fleece)\b/i, exclude: /\b(pet|dog|cat|doll|blanket)\b/i },
+  socks: { keywords: ["warm wool socks", "fuzzy socks", "plush winter slippers", "thermal socks"], match: /\b(socks?|slippers?)\b/i, exclude: /\b(pet|dog|cat|toy)\b/i },
+  bags: { keywords: ["backpack", "crossbody bag", "tote bag", "waist bag"], match: /\b(backpacks?|bags?|handbags?|totes?|purses?|wallets?|crossbody|messenger|duffel|fanny pack|waist pack)\b/i, exclude: /\b(garbage|trash|vacuum|storage bags?|sleeping bag|punching|bean bag|zip ?lock|plastic bags?|bag clip|sealer|pet carrier)\b/i },
+  jewelry: { keywords: ["necklace", "bracelet", "earrings", "rings jewelry set"], match: /\b(necklaces?|bracelets?|earrings?|rings?|pendants?|anklets?|brooch(es)?|jewelry|jewellery)\b/i, exclude: /\b(key ?chains?|ring light|phone ring|o-ring|snow chain|bike chain|ring holder|ring stand)\b/i },
+  // ── Home
+  holiday: { keywords: ["christmas decorations", "christmas tree ornaments", "new year decoration", "christmas string lights", "christmas gift box"], match: /\b(christmas|xmas|new year|santa|snowman|snowflakes?|reindeer|advent|ornaments?|garland|fairy lights|string lights|wreath|tinsel|gift (box|wrap|bag))\b/i, exclude: /\b(fireworks?|firecrackers?|sexy|lingerie)\b/i },
+  kitchen: { keywords: ["kitchen gadgets", "silicone kitchen utensils", "vegetable chopper manual", "coffee accessories"], match: /\b(kitchen|cooking|utensils?|spatulas?|whisks?|peelers?|graters?|choppers?|slicers?|cutting board|measuring|baking|molds?|moulds?|spice|oil bottle|coffee|tea|mugs?|cups?|bottle opener|can opener|lunch box|food (container|storage)|aprons?|pot holders?|oven mitts?)\b/i, exclude: /\b(knife|knives|stove|cooker|oven(?! mitt)|microwave|fridge|refrigerator|blender|air fryer|electric|machine)\b/i },
+  decor: { keywords: ["home decor ornaments", "wall art decor", "artificial flowers", "led candles flameless"], match: /\b(decor|decoration|ornaments?|vases?|figurines?|wall (art|sticker|decal)|artificial (flowers?|plants?)|candles?|photo frames?|picture frames?|clocks?|tapestry|cushion covers?|pillow ?cases?|mirrors?)\b/i, exclude: /\b(car|dash|phone)\b/i },
+  blankets: { keywords: ["fleece throw blanket", "sherpa blanket", "pillow covers", "bed sheet set"], match: /\b(blankets?|throws?|bedding|duvets?|quilts?|comforters?|bed ?sheets?|pillows?|pillowcases?|cushions?)\b/i, exclude: /\b(electric|heated|pet|dog|cat)\b/i },
+  organizers: { keywords: ["drawer organizer", "closet storage organizer", "storage box foldable", "hanging organizer"], match: /\b(organi[sz]ers?|storage (box(es)?|baskets?|bins?|racks?)|drawers?|closet|shel(f|ves)|hangers?|hooks?|racks?)\b/i, exclude: /\b(phone|car|bike|gun|knife|shoe rack metal)\b/i },
+  bathroom: { keywords: ["bathroom accessories set", "shower caddy", "soap dispenser", "microfiber bath towel"], match: /\b(bath|bathroom|shower|towels?|soap (dish|dispenser|holder)|toilet|toothbrush holder|bath ?mat)\b/i, exclude: /\b(shower gel|shampoo|toothpaste|liquid soap|refill|electric)\b/i },
+  // ── Lifestyle
+  beauty: { keywords: ["makeup brush set", "hair claw clips", "makeup mirror", "nail art tools"], match: /\b(make-?up|brush(es)?|hair (clips?|claws?|ties?|bands?|accessories|brush|comb)|scrunchies?|combs?|mirrors?|nail|eyelash curler|tweezers|beauty|sponges?|headbands?)\b/i, exclude: /\b(cream|serum|lotion|liquid|polish|remover|perfume|shampoo|oil|gel|glue|electric|toothbrush|hair dryer|straightener|curling iron)\b/i },
+  toys: { keywords: ["educational toys kids", "building blocks set", "fidget toys", "plush toy gift", "puzzle for kids"], match: /\b(toys?|puzzles?|building blocks|plush|stuffed|dolls?|fidget|board game|card game|cube|kids|children)\b/i, exclude: /\b(adult|sex|gun|airsoft|blaster|darts?|pet|dog|cat|water gun|slime|magnetic balls)\b/i },
+  pets: { keywords: ["dog chew toy", "cat toy interactive", "pet bed warm", "dog collar leash"], match: /\b(pets?|dogs?|cats?|puppy|kitten|leash|collar|litter|scratching|scratcher)\b/i, exclude: /\b(food|treats?|shampoo|medicine|flea|spray|supplement)\b/i },
+  sports: { keywords: ["resistance bands set", "yoga mat", "jump rope", "fitness gloves", "cycling accessories"], match: /\b(fitness|yoga|gym|resistance bands?|jump rope|skipping rope|exercise|workout|sports?|cycling|bike|bicycle|running|hiking|camping)\b/i, exclude: /\b(knife|knives|axe|gun|crossbow|arrows?|electric (bike|scooter)|e-?bike|scooter|treadmill|dumbbells?|kettlebell|weights? plates?)\b/i },
+  car: { keywords: ["car organizer", "car seat cushion", "car interior accessories", "car cleaning tools"], match: /\b(car|auto|automotive|vehicle|steering wheel|seat covers?|windshield|dashboard)\b/i, exclude: /\b(car charger|phone holder|phone mount|mount|dash ?cam|engine|tires?|tyres?|battery|jump starter|motor oil|toy car|rc car|car toy|model car|perfume|diffuser oil)\b/i },
 };
+
+/**
+ * Never import these, whatever the category: phones, TVs, laptops, tablets, stoves and other
+ * big or fragile appliances (likely to be damaged or held at customs), plus dangerous or
+ * restricted goods. Accessories for those devices (cases, stands, chargers...) are still fine.
+ */
+const DEVICE = /\b(smart ?phones?|mobile phones?|cell ?phones?|iphone ?\d+|android phones?|tablets?( pc)?|ipad|televisions?|smart tv|tv|tv box|projectors?|laptops?|notebook (computers?|pcs?)|desktop (pcs?|computers?)|monitors?|gas (stoves?|cookers?|burners?)|stoves?|cookers?|ovens?|microwaves?|refrigerators?|fridges?|freezers?|washing machines?|dishwashers?|air conditioners?|heaters?|vacuum cleaners?|drones?)\b/i;
+const ACCESSORY = /\b(cases?|covers?|holders?|stands?|mounts?|chargers?|charging|cables?|protectors?|films?|bags?|sleeves?|straps?|adapters?|grips?|lens(es)?|skins?|stylus|remote|brackets?|risers?|arms?|mats?|pads?|shelf|organi[sz]ers?|racks?|light bars?|lamps?|dust covers?|keyboards?|mouse|tripods?|clips?|mitts?|cleaning|brush(es)?|stickers?)\b/i;
+const NEVER = /\b(knife|knives|daggers?|swords?|blades?|guns?|pistols?|airsoft|tasers?|stun|pepper spray|aerosols?|perfumes?|colognes?|e-?cig\w*|vapes?|vaping|supplements?|capsules?|vitamins?|pills?|medicines?|lighters?|fireworks?|firecrackers?|lithium batter(y|ies) only)\b/i;
+export const isBanned = (title: string) => NEVER.test(title) || (DEVICE.test(title) && !ACCESSORY.test(title));
 
 export const fitsCategory = (title: string, category: string) => {
   const r = CJ_RULES[category];
-  return !!r && r.match.test(title) && !r.exclude?.test(title) && !JUNK.test(title);
+  if (!r || isBanned(title) || !r.match.test(title) || r.exclude?.test(title)) return false;
+  // The tech catalog also skips clothes, toys and pet items that keyword searches drag in.
+  const tech = CATEGORIES.find((c) => c.slug === category)?.group;
+  return !(tech === "phone" || tech === "pc") || !JUNK.test(title);
 };
 
 /**

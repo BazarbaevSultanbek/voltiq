@@ -2,7 +2,7 @@ import "server-only";
 import { db } from "./db";
 import { Product } from "@/models/Product";
 import { SearchStat } from "@/models/SearchStat";
-import { CATEGORIES } from "./catalog";
+import { CATEGORIES, isGroup } from "./catalog";
 import { locales } from "@/i18n/config";
 import { localize } from "./localize";
 import en from "@/i18n/messages/en.json";
@@ -45,7 +45,7 @@ export async function searchProducts(p: SearchParams) {
   const q = normalize(p.q || "");
   const filter: Record<string, unknown> = { active: true };
   if (p.cat) filter.category = p.cat;
-  if (p.group === "phone" || p.group === "pc") filter.group = p.group;
+  if (isGroup(p.group)) filter.group = p.group;
   if (p.min != null || p.max != null) filter.price = { ...(p.min != null ? { $gte: p.min } : {}), ...(p.max != null ? { $lte: p.max } : {}) };
   if (p.deals) filter.compareAt = { $gt: 0 };
 

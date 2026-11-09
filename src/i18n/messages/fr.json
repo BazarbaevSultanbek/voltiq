@@ -26,7 +26,11 @@
     "deliverTo": "Livrer à",
     "language": "Langue",
     "dark": "Mode sombre",
-    "light": "Mode clair"
+    "light": "Mode clair",
+    "catalog": "Catalogue",
+    "fashion": "Mode",
+    "home": "Maison",
+    "lifestyle": "Plus"
   },
   "home": {
     "heroA": "Boostez",
@@ -50,7 +54,10 @@
     "why3t": "Paiement par carte sécurisé",
     "why3d": "Visa, Mastercard et UnionPay, traités par Stripe. Nous ne voyons jamais votre numéro de carte complet.",
     "why4t": "Suivi du statut de commande",
-    "why4d": "Suivez votre commande dans votre compte. Vous recevez une notification à chaque changement de statut."
+    "why4d": "Suivez votre commande dans votre compte. Vous recevez une notification à chaque changement de statut.",
+    "fashionTitle": "Pour votre garde-robe",
+    "homeTitle": "Pour votre maison",
+    "lifestyleTitle": "À découvrir aussi"
   },
   "cat": {
     "chargers": "Chargeurs",
@@ -72,7 +79,26 @@
     "lighting": "Éclairage",
     "all": "Tous les produits",
     "phone": "Accessoires téléphone",
-    "pc": "Accessoires PC & bureau"
+    "pc": "Accessoires PC & bureau",
+    "fashion": "Vêtements et accessoires",
+    "home": "Maison et fêtes",
+    "lifestyle": "Beauté, jouets, animaux et plus",
+    "winter-wear": "Bonnets, écharpes et gants",
+    "hoodies": "Sweats et pulls",
+    "socks": "Chaussettes et chaussons",
+    "bags": "Sacs et sacs à dos",
+    "jewelry": "Bijoux",
+    "holiday": "Noël et Nouvel An",
+    "kitchen": "Cuisine",
+    "decor": "Déco maison",
+    "blankets": "Plaids et literie",
+    "organizers": "Rangement",
+    "bathroom": "Salle de bain",
+    "beauty": "Accessoires beauté",
+    "toys": "Jouets et cadeaux",
+    "pets": "Animaux",
+    "sports": "Sport et fitness",
+    "car": "Accessoires auto"
   },
   "search": {
     "title": "Recherche",

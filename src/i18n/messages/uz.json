@@ -26,7 +26,11 @@
     "deliverTo": "Yetkazish manzili",
     "language": "Til",
     "dark": "Tungi rejim",
-    "light": "Kunduzgi rejim"
+    "light": "Kunduzgi rejim",
+    "catalog": "Katalog",
+    "fashion": "Kiyim",
+    "home": "Uy",
+    "lifestyle": "Boshqa"
   },
   "home": {
     "heroA": "Har bir",
@@ -50,7 +54,10 @@
     "why3t": "Xavfsiz karta to‘lovi",
     "why3d": "Visa, Mastercard va UnionPay, Stripe orqali. Karta raqamingizni to‘liq ko‘rmaymiz.",
     "why4t": "Buyurtma holati haqida xabarlar",
-    "why4d": "Buyurtmangizni hisobingizda kuzating. Holati o‘zgarganda har safar bildirishnoma olasiz."
+    "why4d": "Buyurtmangizni hisobingizda kuzating. Holati o‘zgarganda har safar bildirishnoma olasiz.",
+    "fashionTitle": "Kiyim-kechak uchun",
+    "homeTitle": "Uyingiz uchun",
+    "lifestyleTitle": "Yana ko‘proq"
   },
   "cat": {
     "chargers": "Quvvatlagichlar",
@@ -72,7 +79,26 @@
     "lighting": "Yoritish",
     "all": "Barcha mahsulotlar",
     "phone": "Telefon aksessuarlari",
-    "pc": "Kompyuter va stol aksessuarlari"
+    "pc": "Kompyuter va stol aksessuarlari",
+    "fashion": "Kiyim va aksessuarlar",
+    "home": "Uy va bayram",
+    "lifestyle": "Go‘zallik, o‘yinchoqlar, uy hayvonlari va boshqalar",
+    "winter-wear": "Shapka, sharf va qo‘lqoplar",
+    "hoodies": "Xudi va sviterlar",
+    "socks": "Paypoq va shippaklar",
+    "bags": "Sumka va ryukzaklar",
+    "jewelry": "Taqinchoqlar",
+    "holiday": "Yangi yil va Rojdestvo",
+    "kitchen": "Oshxona",
+    "decor": "Uy bezaklari",
+    "blankets": "Adyol va choyshablar",
+    "organizers": "Saqlash va tartiblash",
+    "bathroom": "Hammom",
+    "beauty": "Go‘zallik buyumlari",
+    "toys": "O‘yinchoqlar va sovg‘alar",
+    "pets": "Uy hayvonlari",
+    "sports": "Sport va fitnes",
+    "car": "Avtomobil aksessuarlari"
   },
   "search": {
     "title": "Qidiruv",

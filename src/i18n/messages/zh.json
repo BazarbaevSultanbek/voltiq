@@ -26,7 +26,11 @@
     "deliverTo": "配送至",
     "language": "语言",
     "dark": "深色模式",
-    "light": "浅色模式"
+    "light": "浅色模式",
+    "catalog": "全部分类",
+    "fashion": "服饰",
+    "home": "家居",
+    "lifestyle": "更多"
   },
   "home": {
     "heroA": "为你的",
@@ -50,7 +54,10 @@
     "why3t": "安全的银行卡支付",
     "why3d": "支持 Visa、Mastercard 和银联，由 Stripe 处理。我们不会看到您的完整卡号。",
     "why4t": "订单状态通知",
-    "why4d": "在您的账户中跟踪订单。每次状态变化时您都会收到通知。"
+    "why4d": "在您的账户中跟踪订单。每次状态变化时您都会收到通知。",
+    "fashionTitle": "为您的衣橱",
+    "homeTitle": "为您的家",
+    "lifestyleTitle": "更多好物"
   },
   "cat": {
     "chargers": "充电器",
@@ -72,7 +79,26 @@
     "lighting": "照明",
     "all": "全部商品",
     "phone": "手机配件",
-    "pc": "电脑与桌面配件"
+    "pc": "电脑与桌面配件",
+    "fashion": "服装与配饰",
+    "home": "家居与节日",
+    "lifestyle": "美妆、玩具、宠物等",
+    "winter-wear": "帽子、围巾和手套",
+    "hoodies": "卫衣和毛衣",
+    "socks": "袜子和拖鞋",
+    "bags": "包袋和背包",
+    "jewelry": "首饰",
+    "holiday": "圣诞和新年",
+    "kitchen": "厨房",
+    "decor": "家居装饰",
+    "blankets": "毛毯和床品",
+    "organizers": "收纳整理",
+    "bathroom": "浴室",
+    "beauty": "美妆工具",
+    "toys": "玩具和礼物",
+    "pets": "宠物用品",
+    "sports": "运动健身",
+    "car": "汽车用品"
   },
   "search": {
     "title": "搜索",

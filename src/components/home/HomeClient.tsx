@@ -3,7 +3,7 @@ import Link from "next/link";
 import { motion } from "motion/react";
 import { ArrowRight, Bell, CreditCard, Globe2 } from "lucide-react";
 import { useI18n } from "@/i18n/client";
-import { CATEGORIES } from "@/lib/catalog";
+import { CATEGORIES, GROUPS } from "@/lib/catalog";
 import { COUNTRIES } from "@/lib/shipping";
 import { ProductCard, type CardProduct } from "../ProductCard";
 import { Reveal } from "../Reveal";
@@ -49,7 +49,7 @@ export function HomeClient({ trending, deals, fresh, total, cats }: { trending: 
 
       {cats.length > 0 && <section className="mx-auto mt-24 max-w-7xl px-4">
         <SectionHead title={t("home.shopBy")} />
-        {(["phone", "pc"] as const).filter((g) => CATEGORIES.some((c) => c.group === g && shot.has(c.slug))).map((g) => (
+        {GROUPS.filter((g) => CATEGORIES.some((c) => c.group === g && shot.has(c.slug))).map((g) => (
           <div key={g} className="mb-10">
             <div className="mb-4 flex items-center justify-between">
               <h3 className="text-sm font-bold uppercase tracking-widest text-muted">{t(`home.${g}Title`)}</h3>

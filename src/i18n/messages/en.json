@@ -26,7 +26,11 @@
     "deliverTo": "Deliver to",
     "language": "Language",
     "dark": "Dark mode",
-    "light": "Light mode"
+    "light": "Light mode",
+    "catalog": "Catalog",
+    "fashion": "Fashion",
+    "home": "Home",
+    "lifestyle": "More"
   },
   "home": {
     "heroA": "Power up",
@@ -50,7 +54,10 @@
     "why3t": "Secure card payments",
     "why3d": "Visa, Mastercard and UnionPay, processed by Stripe. We never see your full card number.",
     "why4t": "Order status updates",
-    "why4d": "Follow your order in your account. You get a notification every time its status changes."
+    "why4d": "Follow your order in your account. You get a notification every time its status changes.",
+    "fashionTitle": "For your wardrobe",
+    "homeTitle": "For your home",
+    "lifestyleTitle": "More to explore"
   },
   "cat": {
     "chargers": "Chargers",
@@ -72,7 +79,26 @@
     "lighting": "Lighting",
     "all": "All products",
     "phone": "Phone accessories",
-    "pc": "PC & desk accessories"
+    "pc": "PC & desk accessories",
+    "fashion": "Clothing & accessories",
+    "home": "Home & holiday",
+    "lifestyle": "Beauty, toys, pets & more",
+    "winter-wear": "Hats, scarves & gloves",
+    "hoodies": "Hoodies & sweaters",
+    "socks": "Socks & slippers",
+    "bags": "Bags & backpacks",
+    "jewelry": "Jewelry",
+    "holiday": "Christmas & New Year",
+    "kitchen": "Kitchen",
+    "decor": "Home decor",
+    "blankets": "Blankets & bedding",
+    "organizers": "Storage & organizers",
+    "bathroom": "Bathroom",
+    "beauty": "Beauty tools",
+    "toys": "Toys & gifts",
+    "pets": "Pets",
+    "sports": "Sports & fitness",
+    "car": "Car accessories"
   },
   "search": {
     "title": "Search",

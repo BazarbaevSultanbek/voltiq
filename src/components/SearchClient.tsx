@@ -5,7 +5,7 @@ import { useEffect, useRef, useState, useTransition } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { SlidersHorizontal, X, SearchX, ChevronLeft, ChevronRight } from "lucide-react";
 import { useI18n } from "@/i18n/client";
-import { CATEGORIES } from "@/lib/catalog";
+import { CATEGORIES, GROUPS } from "@/lib/catalog";
 import { ProductCard, type CardProduct } from "./ProductCard";
 import { CategoryIcon } from "./CategoryIcon";
 import { cn } from "@/lib/cn";
@@ -43,7 +43,7 @@ export function SearchClient({ items, total, page, pages }: { items: CardProduct
 
   const Filters = (
     <div className="space-y-7">
-      {(["phone", "pc"] as const).map((g) => (
+      {GROUPS.map((g) => (
         <div key={g}>
           <button onClick={() => set({ group: group === g ? null : g, cat: null })} className={cn("mb-2 text-xs font-bold uppercase tracking-widest", group === g ? "text-volt" : "text-muted hover:text-fg")}>{t(`nav.${g}`)}</button>
           <div className="flex flex-wrap gap-2 lg:flex-col lg:gap-0.5">

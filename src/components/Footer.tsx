@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { useI18n } from "@/i18n/client";
-import { CATEGORIES } from "@/lib/catalog";
+import { GROUPS } from "@/lib/catalog";
 import { Logo } from "./Logo";
 import { CardBrands } from "./CardBrands";
 
@@ -24,7 +24,7 @@ export function Footer() {
             <p className="mb-2 mt-6 text-xs font-bold uppercase tracking-wider text-white/40">{t("footer.payments")}</p>
             <CardBrands />
           </div>
-          {col(t("footer.shop"), CATEGORIES.slice(0, 6).map((c) => [t(`cat.${c.slug}`), `/search?cat=${c.slug}`]))}
+          {col(t("footer.shop"), GROUPS.map((g) => [t(`cat.${g}`), `/search?group=${g}`]))}
           {col(t("footer.help"), [[t("footer.faq"), "/info/faq"], [t("footer.shipping"), "/info/shipping"], [t("footer.returns"), "/info/returns"], [t("footer.contact"), "/info/contact"]])}
           {col(t("footer.company"), [[t("footer.about"), "/info/about"], [t("footer.privacy"), "/info/privacy"], [t("footer.terms"), "/info/terms"]])}
         </div>

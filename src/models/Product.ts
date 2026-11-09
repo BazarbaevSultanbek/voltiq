@@ -1,4 +1,5 @@
 import { Schema, model, models, type InferSchemaType, type Model } from "mongoose";
+import { GROUPS } from "@/lib/catalog";
 
 const ProductSchema = new Schema(
   {
@@ -6,7 +7,7 @@ const ProductSchema = new Schema(
     title: { type: String, required: true },
     description: { type: String, default: "" },
     category: { type: String, required: true, index: true },
-    group: { type: String, enum: ["phone", "pc"], required: true, index: true },
+    group: { type: String, enum: GROUPS, required: true, index: true },
     price: { type: Number, required: true },
     compareAt: { type: Number, default: 0 },
     costPrice: { type: Number, default: 0 },
